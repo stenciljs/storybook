@@ -1,0 +1,21 @@
+{
+  "name": "@stencil/storybook",
+  "author": "OutSystems Inc",
+  "description": "Monorepo for the Storybook plugin for Stencil",
+  "license": "MIT",
+  "version": "0.0.0",
+  "contributors": [{
+    "name": "Christian Bromann",
+    "email": "christian.bromann@outsystems.com"
+  }],
+  "private": true,
+  "scripts": {
+    "build": "pnpm --filter @stencil/storybook-plugin build",
+    "watch": "pnpm --filter @stencil/storybook-plugin watch"
+  },
+  "devDependencies": {
+  },
+  "dependencies": {
+  },
+  "packageManager": "pnpm@9.14.2"
+}
