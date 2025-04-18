@@ -3,13 +3,6 @@ import { h } from '@stencil/core';
 
 import { MyComponent } from './my-component';
 
-// Define the props type for consistency
-type MyComponentProps = {
-  first: string;
-  last: string;
-  middle: string;
-};
-
 const meta = {
   title: 'StencilJS/MyComponent',
   component: MyComponent,
@@ -23,10 +16,10 @@ const meta = {
     middle: { control: 'text' },
   },
   args: { first: 'John', last: 'Doe', middle: 'Michael' },
-} satisfies Meta<MyComponentProps>;
+} satisfies Meta<MyComponent>;
 
 export default meta;
-type Story = StoryObj<MyComponentProps>;
+type Story = StoryObj<MyComponent>;
 
 export const Primary: Story = {
   args: {
@@ -34,8 +27,7 @@ export const Primary: Story = {
     last: 'Doe',
     middle: 'Michael',
   },
-  // render: (props: MyComponentProps) => {
-  //   console.log(MyComponent)
-  //   return <my-component {...props} />;
-  // }
+  render: (props) => {
+    return <my-component {...props} />;
+  }
 };
