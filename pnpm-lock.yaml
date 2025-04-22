@@ -11,8 +11,8 @@ importers:
   packages/example:
     devDependencies:
       '@stencil/core':
-        specifier: ^4.27.1
-        version: 4.29.3
+        specifier: 4.29.2-dev.1745356698.fd7be97
+        version: 4.29.2-dev.1745356698.fd7be97
       '@stencil/storybook-plugin':
         specifier: workspace:*
         version: link:../plugin
@@ -53,8 +53,8 @@ importers:
   packages/plugin:
     dependencies:
       '@stencil/core':
-        specifier: ^4.29.3
-        version: 4.29.3
+        specifier: 4.29.2-dev.1745356698.fd7be97
+        version: 4.29.2-dev.1745356698.fd7be97
       '@storybook/addon-actions':
         specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
@@ -83,8 +83,8 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.6.3)
       unplugin-stencil:
-        specifier: ^0.2.0
-        version: 0.2.0(@stencil/core@4.29.3)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1))
+        specifier: ^0.2.1
+        version: 0.2.1(@stencil/core@4.29.2-dev.1745356698.fd7be97)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1))
     devDependencies:
       '@storybook/types':
         specifier: ^8.4.1
@@ -813,8 +813,8 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-  '@stencil/core@4.29.3':
-    resolution: {integrity: sha512-k2YMDpmHAeOxW3Djoh2JGR6BdEycxNFR1q/njQxa+65sfMzJcSP/6ShcbC3KeFjlvn4h9wvTAqCQGkrV4MUNCw==}
+  '@stencil/core@4.29.2-dev.1745356698.fd7be97':
+    resolution: {integrity: sha512-Iip0lvsSWpuepHz+uEPPUIltKKs7WQNrpKNASqk4nohkH09TjCu0T96bFY0G11bA5rpBbnYiI5VpP0Kr/v/MkQ==}
     engines: {node: '>=16.0.0', npm: '>=7.10.0'}
     hasBin: true
 
@@ -2379,8 +2379,8 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
-  unplugin-stencil@0.2.0:
-    resolution: {integrity: sha512-KVoCUbuBvoOLi0mpGFhHK/vnG1aI6bIz0CloPd2bUYb85j3EWlWisLAHlJ3qu0ANjbwALNwGQNIP30mfui+eJQ==}
+  unplugin-stencil@0.2.1:
+    resolution: {integrity: sha512-4hO/nhdaiMGcXuTkxeNUNDww2HffrKfHhh/NLlG8lj6BiQDugXhw6DHHUrD4iKknld7MjdWReWjakpj/cuxjOg==}
     peerDependencies:
       '@nuxt/kit': ^3
       '@nuxt/schema': ^3
@@ -3168,7 +3168,7 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@stencil/core@4.29.3':
+  '@stencil/core@4.29.2-dev.1745356698.fd7be97':
     optionalDependencies:
       '@rollup/rollup-darwin-arm64': 4.34.9
       '@rollup/rollup-darwin-x64': 4.34.9
@@ -5038,9 +5038,9 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  unplugin-stencil@0.2.0(@stencil/core@4.29.3)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1)):
+  unplugin-stencil@0.2.1(@stencil/core@4.29.2-dev.1745356698.fd7be97)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1)):
     dependencies:
-      '@stencil/core': 4.29.3
+      '@stencil/core': 4.29.2-dev.1745356698.fd7be97
       mlly: 1.7.4
       unplugin: 2.3.2
     optionalDependencies:

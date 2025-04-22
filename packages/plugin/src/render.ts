@@ -1,9 +1,6 @@
 import { ArgsStoryFn, RenderContext } from '@storybook/types'
 import { simulatePageLoad } from '@storybook/preview-api'
-import type { ComponentRuntimeMeta, HostRef, } from '@stencil/core/internal'
-
-// @ts-expect-error
-import { renderVdom } from '@stencil/core/internal/testing/index.js'
+import { render as renderStencil } from '@stencil/core'
 
 import { componentToJSX } from './component-to-jsx'
 import type { StencilRenderer } from './types'
@@ -36,22 +33,6 @@ export function renderToCanvas(
 
     const element = document.createElement('div')
     canvasElement.appendChild(element)
-
-    // Set up component metadata
-    const cmpMeta: ComponentRuntimeMeta = {
-        $flags$: 0,
-        $tagName$: element.tagName,
-    }
-    
-    const ref: HostRef = {
-        $ancestorComponent$: element,
-        $flags$: 0,
-        $modeName$: undefined,
-        $cmpMeta$: cmpMeta,
-        $hostElement$: element,
-    }
-
-    // Initial render
-    renderVdom(ref, vdom);
+    renderStencil(vdom, element);
     simulatePageLoad(element)
 }

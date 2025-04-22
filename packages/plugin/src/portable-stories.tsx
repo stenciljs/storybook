@@ -36,7 +36,6 @@ export function setProjectAnnotations(
         | NamedOrDefaultProjectAnnotations<any>[]
 ): NormalizedProjectAnnotations<StencilRenderer<unknown>> {
     setDefaultProjectAnnotations(stencilAnnotations);
-    console.log(11, '!!!', projectAnnotations);
     return originalSetProjectAnnotations(
         projectAnnotations
     ) as NormalizedProjectAnnotations<StencilRenderer<unknown>>;

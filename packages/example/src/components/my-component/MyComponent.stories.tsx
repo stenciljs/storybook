@@ -31,3 +31,11 @@ export const Primary: Story = {
     return <my-component {...props} />;
   }
 };
+
+export const Secondary: Story = {
+  args: {
+    first: 'Jane',
+    last: 'Smith',
+    middle: 'Marie',
+  },
+};

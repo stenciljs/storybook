@@ -11,7 +11,7 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter @stencil/storybook-plugin build",
-    "watch": "pnpm --filter @stencil/storybook-plugin watch"
+    "dev": "pnpm --filter @stencil/storybook-plugin watch"
   },
   "devDependencies": {
   },

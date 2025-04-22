@@ -19,9 +19,9 @@
       "types": "./dist/components/my-component.d.ts"
     },
     "./loader": {
+      "types": "./loader/index.d.ts",
       "import": "./loader/index.js",
-      "require": "./loader/index.cjs",
-      "types": "./loader/index.d.ts"
+      "require": "./loader/index.cjs"
     }
   },
   "repository": {
@@ -42,7 +42,7 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "^4.27.1",
+    "@stencil/core": "4.29.2-dev.1745356698.fd7be97",
     "@stencil/storybook-plugin": "workspace:*",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-onboarding": "^8.6.12",

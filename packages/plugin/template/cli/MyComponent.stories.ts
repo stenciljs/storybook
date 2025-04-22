@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@stencil/storybook-plugin';
-import { h } from '@stencil/core';
-
 import { MyComponent } from './MyComponent';
 
 const meta = {
-  title: 'StencilJS/MyComponent',
+  title: 'MyComponent',
   component: MyComponent,
   parameters: {
     layout: 'centered',
@@ -26,8 +24,5 @@ export const Primary: Story = {
     first: 'John',
     last: 'Doe',
     middle: 'Michael',
-  },
-  render: (props) => {
-    return <my-component {...props} />;
   }
 };

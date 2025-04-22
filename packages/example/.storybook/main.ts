@@ -6,8 +6,7 @@ const config = {
     "@storybook/addon-interactions",
   ],
   framework: {
-    name: "@stencil/storybook-plugin",
-    // name: "@storybook/web-components-vite",
+    name: "@stencil/storybook-plugin"
   }
 };
 

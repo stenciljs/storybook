@@ -3,20 +3,20 @@
   "version": "0.0.0",
   "description": "Storybook plugin for Stencil",
   "license": "MIT",
-  "homepage": "https://github.com/literalpie/storybook-framework-qwik",
+  "homepage": "https://github.com/stenciljs/storybook",
   "bugs": {
-    "url": "https://github.com/literalpie/storybook-framework-qwik"
+    "url": "https://github.com/stenciljs/storybook"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/literalpie/storybook-framework-qwik.git",
-    "directory": "app/qwik"
+    "url": "https://github.com/stenciljs/storybook.git",
+    "directory": "packages/plugin"
   },
   "keywords": [
     "storybook",
-    "hydration",
-    "resumable",
     "stencil",
+    "stenciljs",
+    "webcomponents",
     "components",
     "framework"
   ],
@@ -56,7 +56,7 @@
     "build": "tsc --outDir ./dist --listEmittedFiles"
   },
   "dependencies": {
-    "@stencil/core": "^4.29.3",
+    "@stencil/core": "4.29.2-dev.1745356698.fd7be97",
     "@storybook/addon-actions": "^8.6.12",
     "@storybook/builder-vite": "^7.6.16 || ^8.0.0",
     "@storybook/core-events": "^8.6.12",
@@ -66,10 +66,10 @@
     "@storybook/preview-api": "^8.6.12",
     "preact-render-to-string": "^6.5.13",
     "react-docgen-typescript": "^2.2.2",
-    "unplugin-stencil": "^0.2.0"
+    "unplugin-stencil": "^0.2.1"
   },
   "peerDependencies": {
-    "@stencil/core": ">=4.x"
+    "@stencil/core": ">=4.30.0"
   },
   "devDependencies": {
     "@storybook/types": "^8.4.1",

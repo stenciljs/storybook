@@ -1,4 +1,4 @@
-import { JSX } from '@stencil/core';
+import { VNode } from '@stencil/core';
 import { StorybookConfigVite } from '@storybook/builder-vite';
 import { WebRenderer } from '@storybook/types';
 export type { Args, ArgTypes, Parameters, StrictArgs } from '@storybook/types';
@@ -22,14 +22,8 @@ interface DevJSX {
   stack?: string;
 }
 
-type JSXChildren = string | number | boolean | null | undefined | Function | RegExp | JSXChildren[] | Promise<JSXChildren> | JSXNode;
-interface JSXNode<T extends string | FunctionComponent | unknown = unknown> {
-  type: T;
-  props: T extends FunctionComponent<infer P> ? P : Record<any, unknown>;
-  children: JSXChildren | null;
-  key: string | null;
-  dev?: DevJSX;
-}
+type JSXChildren = string | number | boolean | null | undefined | Function | RegExp | JSXChildren[] | Promise<JSXChildren> | VNode;
+
 type ComponentChildren<PROPS> = PROPS extends {
   children: any;
 } ? never : {
@@ -37,9 +31,8 @@ type ComponentChildren<PROPS> = PROPS extends {
 }
 type PublicProps<PROPS> = (PROPS extends Record<any, any> ? Omit<PROPS, `${string}$`> : unknown extends PROPS ? {} : PROPS) & ComponentChildren<PROPS>;
 
-type JSXOutput = JSXNode | string | number | boolean | null | undefined | JSXOutput[];
 type FunctionComponent<P = unknown> = {
-  renderFn(props: P, key: string | null, flags: number, dev?: DevJSX): JSXOutput;
+  renderFn(props: P, key: string | null, flags: number, dev?: DevJSX): VNode;
 }['renderFn']
 type Component<PROPS = unknown> = FunctionComponent<PublicProps<PROPS>>
 
