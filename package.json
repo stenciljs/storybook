@@ -10,9 +10,25 @@
   }],
   "private": true,
   "scripts": {
-    "build": "pnpm --filter @stencil/storybook-plugin build",
-    "dev": "pnpm --filter @stencil/storybook-plugin watch",
-    "start.storybook": "pnpm --filter example run storybook"
+    "build": "run-p build.*",
+    "build.plugin": "pnpm --filter @stencil/storybook-plugin build",
+    "build.example": "pnpm --filter example build",
+    "dev": "run-p dev.*",
+    "dev.plugin": "pnpm --filter @stencil/storybook-plugin watch",
+    "dev.example": "pnpm --filter example run storybook",
+    "test": "wdio run ./tests/wdio.conf.ts"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.14.1",
+    "@wdio/cli": "^9.12.7",
+    "@wdio/globals": "^9.12.7",
+    "@wdio/local-runner": "^9.12.7",
+    "@wdio/mocha-framework": "^9.12.6",
+    "@wdio/spec-reporter": "^9.12.6",
+    "npm-run-all2": "^7.0.2",
+    "typescript": "~5.6.3",
+    "webdriverio": "^9.12.7"
   },
   "packageManager": "pnpm@9.14.2"
 }

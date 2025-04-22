@@ -69,7 +69,7 @@
     "unplugin-stencil": "^0.2.2"
   },
   "peerDependencies": {
-    "@stencil/core": ">=4.30.0"
+    "@stencil/core": "4.29.2-dev.1745356698.fd7be97"
   },
   "devDependencies": {
     "@storybook/types": "^8.4.1",
