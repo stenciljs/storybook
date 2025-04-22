@@ -4,12 +4,11 @@ import { h } from '@stencil/core';
 import { MyComponent } from './my-component';
 
 const meta = {
-  title: 'StencilJS/MyComponent',
+  title: 'MyComponent',
   component: MyComponent,
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     first: { control: 'text' },
     last: { control: 'text' },

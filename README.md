@@ -1,32 +1,24 @@
-# Storybook Framework StencilJS
+# StencilJS Storybook
 
-> This is still early and work in progress, don't use it yet!
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## Limitations
+> Monorepo for the Storybook plugin for StencilJS
 
-- This has only been tested with brand new Qwik applications and component libraries.
-- Story is completely reloaded when component is changed (no hot module replacement)
-- There is no automation yet for easily scaffolding storybook in a Qwik project.
-- Stories are run in dev mode - no SSR, or serialization happens
+This project provides a Storybook integration for StencilJS applications, allowing you to build, document, and test your StencilJS components in isolation using Storybook.
 
-## Setup
+**Note: This project is still in early development and might have limitations. Contributions are welcome!**
 
-In an existing Qwik project, run `npx storybook@next init` (Storybook 7 is required)
+## Project Structure
 
-See the [Storybook Docs](https://storybook.js.org/docs/7.0/qwik/get-started/introduction) for the best documentation on getting started with Storybook.
+The project contains the following packages:
 
-## Usage
+- **[@stencil/storybook-plugin](./packages/plugin)**: The core Storybook plugin for StencilJS
+- **[example](./packages/example)**: An example StencilJS project with Storybook integration
 
-A basic story will look like this:
+## Contributing
 
-```tsx
-import MyComponent, { MyComponentProps } from "./MyComponent";
-import { StoryObj } from "@stencil/storybook";
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-export default {
-  title: "MyComponent",
-  component: MyComponent, // component value may be a `component$`, or a "Lite component" (function component)
-} as Meta<MyComponentProps>;
+## License
 
-export const Default: StoryObj<MyComponentProps> = {};
-```
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
