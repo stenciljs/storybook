@@ -56,5 +56,6 @@
     "puppeteer": "^24.3.0",
     "storybook": "^8.6.12"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }

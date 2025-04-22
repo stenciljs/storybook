@@ -83,8 +83,8 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.6.3)
       unplugin-stencil:
-        specifier: ^0.2.1
-        version: 0.2.1(@stencil/core@4.29.2-dev.1745356698.fd7be97)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1))
+        specifier: ^0.2.2
+        version: 0.2.2(@stencil/core@4.29.2-dev.1745356698.fd7be97)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1))
     devDependencies:
       '@storybook/types':
         specifier: ^8.4.1
@@ -2379,8 +2379,8 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
-  unplugin-stencil@0.2.1:
-    resolution: {integrity: sha512-4hO/nhdaiMGcXuTkxeNUNDww2HffrKfHhh/NLlG8lj6BiQDugXhw6DHHUrD4iKknld7MjdWReWjakpj/cuxjOg==}
+  unplugin-stencil@0.2.2:
+    resolution: {integrity: sha512-ffoLXMKCkjQu1ETHjgppOOAxfjXyn7SUp+Pbb9TRIVBQm0keRTNyfQmF5xSW5izDX7MYC1RTtgPwsUUU3qtBMA==}
     peerDependencies:
       '@nuxt/kit': ^3
       '@nuxt/schema': ^3
@@ -5038,7 +5038,7 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  unplugin-stencil@0.2.1(@stencil/core@4.29.2-dev.1745356698.fd7be97)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1)):
+  unplugin-stencil@0.2.2(@stencil/core@4.29.2-dev.1745356698.fd7be97)(esbuild@0.25.2)(vite@5.4.18(@types/node@22.14.1)):
     dependencies:
       '@stencil/core': 4.29.2-dev.1745356698.fd7be97
       mlly: 1.7.4

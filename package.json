@@ -11,11 +11,8 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter @stencil/storybook-plugin build",
-    "dev": "pnpm --filter @stencil/storybook-plugin watch"
-  },
-  "devDependencies": {
-  },
-  "dependencies": {
+    "dev": "pnpm --filter @stencil/storybook-plugin watch",
+    "start.storybook": "pnpm --filter example run storybook"
   },
   "packageManager": "pnpm@9.14.2"
 }

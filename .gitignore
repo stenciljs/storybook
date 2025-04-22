@@ -13,4 +13,4 @@ pnp.*
 storybook-static
 .vercel
 
-.tokens.txt
+*.tgz
