@@ -4,10 +4,6 @@ description: "Reusable action to set up the environment and build the project"
 runs:
   using: "composite"
   steps:
-    - name: ⬇️ Checkout Code
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      shell: bash
-
     - name: 📦 Setup pnpm
       uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
       shell: bash
