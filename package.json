@@ -10,7 +10,7 @@
   }],
   "private": true,
   "scripts": {
-    "build": "run-p build.*",
+    "build": "run-s build.*",
     "build.plugin": "pnpm --filter @stencil/storybook-plugin build",
     "build.example": "pnpm --filter example build",
     "dev": "run-p dev.*",
