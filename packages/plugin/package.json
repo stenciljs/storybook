@@ -1,6 +1,6 @@
 {
   "name": "@stencil/storybook-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Storybook plugin for Stencil",
   "license": "MIT",
   "homepage": "https://github.com/stenciljs/storybook",
