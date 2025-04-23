@@ -109,6 +109,7 @@ jobs:
         with:
           tag: latest
           working-directory: packages/plugin
+          skip-setup: "yes"
           version: ${{ inputs.releaseType }}
           token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
           github-token: ${{ secrets.GH_ADMIN_PAT }}
