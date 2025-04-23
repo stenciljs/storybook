@@ -34,7 +34,7 @@ jobs:
       - name: 📦 Upload Build Artifacts
         uses: stenciljs/.github/actions/upload-archive@main
         with:
-          path: packages/plugin/dist
+          paths: packages/plugin/dist
 
   get_dev_version:
     if: inputs.devRelease == 'yes'
