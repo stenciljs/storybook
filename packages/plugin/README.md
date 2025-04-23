@@ -13,7 +13,7 @@ npx storybook@next init
 to setup a new Storybook project. Select any preset available, e.g. Lit and finish the setup process. After, install the StencilJS preset.
 
 ```sh
-npm i --save-dev @stencil/storybook
+npm i --save-dev @stencil/storybook-plugin
 ```
 
 Last, update the `.storybook/main.ts` file as following:
