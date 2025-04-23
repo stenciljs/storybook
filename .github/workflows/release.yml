@@ -32,7 +32,7 @@ jobs:
         uses: ./.github/actions/build
 
       - name: 📦 Upload Build Artifacts
-        uses: stenciljs/.github/actions/upload-build-artifacts@main
+        uses: stenciljs/.github/actions/upload-archive@main
         with:
           path: packages/plugin/dist
 
