@@ -23,8 +23,15 @@ on:
 
 jobs:
   build:
-    name: Build
-    uses: stenciljs/.github/.github/workflows/build.yml@main
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗️ Setup and Build
+        uses: ./.github/actions/build
+
+      - name: 📦 Upload Build Artifacts
+        uses: stenciljs/.github/actions/upload-build-artifacts@main
+        with:
+          path: packages/plugin/dist
 
   get_dev_version:
     if: inputs.devRelease == 'yes'
@@ -38,6 +45,7 @@ jobs:
 
       - name: Generate Dev Version
         id: generate-dev-version
+        working-directory: packages/plugin
         run: |
           PKG_JSON_VERSION=$(cat package.json | jq -r '.version')
           GIT_HASH=$(git rev-parse --short HEAD)
@@ -63,9 +71,15 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: stenciljs/.github/actions/publish-npm@main
+      - name: Download Build Archive
+        uses: stenciljs/.github/actions/download-archive@main
+        with:
+          path: packages/plugin
+      - name: Publish NPM
+        uses: stenciljs/.github/actions/publish-npm@main
         with:
           tag: dev
+          working-directory: packages/plugin
           version: ${{ needs.get_dev_version.outputs.dev-version }}
           token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
 
@@ -80,9 +94,14 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Download Build Archive
+        uses: stenciljs/.github/actions/download-archive@main
+        with:
+          path: packages/plugin
       - uses: stenciljs/.github/actions/publish-npm@main
         with:
           tag: latest
+          working-directory: packages/plugin
           version: ${{ inputs.releaseType }}
           token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
           github-token: ${{ secrets.GH_ADMIN_PAT }}

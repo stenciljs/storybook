@@ -3,33 +3,18 @@ name: Build & Test
 on:
   push:
     branches:
-      - 'main'
+      - "main"
   pull_request:
     branches:
-      - '**'
+      - "**"
 
 jobs:
   build_and_test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: ⬇️ Checkout Code
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-    - name: 📦 Setup pnpm
-      uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-
-    - name: 🐢 Setup Node
-      uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
-      with:
-        node-version-file: .nvmrc
-        cache: 'pnpm'
-
-    - name: 🏗️ Install Dependencies
-      run: pnpm install
-
-    - name: 👷 Build
-      run: pnpm build
+    - name: 🏗️ Setup and Build
+      uses: ./.github/actions/build
 
     - name: 🧪 Test jest
       run: pnpm test
