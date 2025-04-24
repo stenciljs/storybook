@@ -68,6 +68,7 @@
     "@storybook/global": "^5.0.0",
     "@storybook/html": "^8.6.12",
     "@storybook/preview-api": "^8.6.12",
+    "@storybook/types": "^8.6.12",
     "preact-render-to-string": "^6.5.13",
     "react-docgen-typescript": "^2.2.2",
     "unplugin-stencil": "^0.2.2"

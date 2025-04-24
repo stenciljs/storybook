@@ -104,6 +104,9 @@ importers:
       '@storybook/preview-api':
         specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
+      '@storybook/types':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12)
       preact-render-to-string:
         specifier: ^6.5.13
         version: 6.5.13(preact@10.26.5)
@@ -117,9 +120,6 @@ importers:
       '@stencil/core':
         specifier: 4.30.0
         version: 4.30.0
-      '@storybook/types':
-        specifier: ^8.4.1
-        version: 8.6.12(storybook@8.6.12)
       '@types/node':
         specifier: ^22.8.7
         version: 22.14.1
@@ -1087,7 +1087,7 @@ packages:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
   '@storybook/types@8.6.12':
-    resolution: {integrity: sha512-G/nR+js7KV1qKH3nAcOfwceERBic5e03dpkeA6PDmqBiQ8XeM9B6N4NTMhXi/2gM5ZAGJ+NxJMaW6zLnc32DjA==}
+    resolution: {integrity: sha512-G/nR+js7KV1qKH3nAcOfwceERBic5e03dpkeA6PDmqBiQ8XeM9B6N4NTMhXi/2gM5ZAGJ+NxJMaW6zLnc32DjA==, tarball: https://registry.npmjs.org/@storybook/types/-/types-8.6.12.tgz}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
