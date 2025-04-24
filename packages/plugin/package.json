@@ -61,7 +61,6 @@
     "build": "tsc --outDir ./dist --listEmittedFiles"
   },
   "dependencies": {
-    "@stencil/core": "4.29.2-dev.1745369714.ab62ab3",
     "@storybook/addon-actions": "^8.6.12",
     "@storybook/builder-vite": "^7.6.16 || ^8.0.0",
     "@storybook/core-events": "^8.6.12",
@@ -74,9 +73,10 @@
     "unplugin-stencil": "^0.2.2"
   },
   "peerDependencies": {
-    "@stencil/core": "4.29.2-dev.1745369714.ab62ab3"
+    "@stencil/core": "^4.30.0"
   },
   "devDependencies": {
+    "@stencil/core": "4.30.0",
     "@storybook/types": "^8.4.1",
     "@types/node": "^22.8.7",
     "typescript": "~5.6.3",

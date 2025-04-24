@@ -42,7 +42,7 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "4.29.2-dev.1745369714.ab62ab3",
+    "@stencil/core": "4.30.0",
     "@stencil/storybook-plugin": "workspace:*",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-onboarding": "^8.6.12",
