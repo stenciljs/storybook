@@ -27,6 +27,7 @@
   "files": [
     "dist",
     "template",
+    "@types",
     "preset.js"
   ],
   "//": "not sure why dist/preview is needed, but it is",
