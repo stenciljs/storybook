@@ -59,6 +59,9 @@ importers:
       '@storybook/addon-onboarding':
         specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
+      '@storybook/html':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12)
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
@@ -101,9 +104,6 @@ importers:
       '@storybook/preview-api':
         specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
-      '@storybook/types':
-        specifier: ^8.4.1
-        version: 8.6.12(storybook@8.6.12)
       preact-render-to-string:
         specifier: ^6.5.13
         version: 6.5.13(preact@10.26.5)
@@ -117,6 +117,9 @@ importers:
       '@stencil/core':
         specifier: 4.30.0
         version: 4.30.0
+      '@storybook/types':
+        specifier: ^8.4.1
+        version: 8.6.12(storybook@8.6.12)
       '@types/node':
         specifier: ^22.8.7
         version: 22.14.1
