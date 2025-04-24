@@ -1,4 +1,4 @@
-import { VNode } from '@stencil/core';
+import { VNode, JSX as StencilJSX } from '@stencil/core';
 import { StorybookConfigVite } from '@storybook/builder-vite';
 import { WebRenderer } from '@storybook/types';
 export type { Args, ArgTypes, Parameters, StrictArgs } from '@storybook/types';
@@ -89,3 +89,16 @@ export type StoryContext<TArgs = StrictArgs> = GenericStoryContext<
 export type StorybookConfig = Omit<StorybookConfigBase, 'framework'> & {
   framework: '@stencil/storybook-plugin' | { name: '@stencil/storybook-plugin' };
 } & StorybookConfigVite;
+
+/**
+ * Extend the JSX namespace to include StencilJSX.IntrinsicElements, StencilJSX.Element, and StencilJSX.ElementClass.
+ * This is necessary to allow the use of Stencil components in Storybook.
+ * Without we get are getting type errors.
+ */
+declare global {
+  namespace JSX {
+    interface IntrinsicElements extends StencilJSX.IntrinsicElements {}
+    interface Element extends StencilJSX.Element {}
+    interface ElementClass {}
+  }
+}
