@@ -72,7 +72,7 @@
     "@storybook/types": "^8.6.12",
     "preact-render-to-string": "^6.5.13",
     "react-docgen-typescript": "^2.2.2",
-    "unplugin-stencil": "^0.2.4"
+    "unplugin-stencil": "^0.2.5"
   },
   "peerDependencies": {
     "@stencil/core": "^4.30.0"
