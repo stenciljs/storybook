@@ -21,11 +21,18 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
 };
 
 export function renderToCanvas(
-    { storyFn, showMain }: RenderContext<StencilRenderer<unknown>>,
+    { storyFn, showMain, storyContext }: RenderContext<StencilRenderer<unknown>>,
     canvasElement: StencilRenderer<unknown>['canvasElement']
 ) {
     const vdom = storyFn()
     showMain()
+
+    /**
+     * If the component is not automatically registered after import, register it here
+     */
+    if (storyContext.component && storyContext.component.is && !customElements.get(storyContext.component.is)) {
+        customElements.define(storyContext.component.is, storyContext.component);
+    }
 
     if (canvasElement.firstChild) {
         canvasElement.removeChild(canvasElement.firstChild)
