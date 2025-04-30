@@ -46,3 +46,9 @@ export const previewAnnotations: StorybookConfig["previewAnnotations"] = async (
     .concat([renderer])
     .concat(docsEnabled ? [resolve(getAbsolutePath('@storybook/html'), 'dist', 'entry-preview-docs.mjs')] : []);
 };
+
+// Add docs configuration
+export const docs = {
+  autodocs: true,
+  defaultName: 'Documentation',
+};
