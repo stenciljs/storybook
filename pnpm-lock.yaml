@@ -114,8 +114,8 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2(typescript@5.8.3)
       unplugin-stencil:
-        specifier: ^0.2.5
-        version: 0.2.5(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(tsx@4.19.3))
+        specifier: ^0.2.6
+        version: 0.2.6(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(tsx@4.19.3))
     devDependencies:
       '@stencil/core':
         specifier: 4.30.0
@@ -3185,8 +3185,8 @@ packages:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
     engines: {node: '>=18'}
 
-  unplugin-stencil@0.2.5:
-    resolution: {integrity: sha512-4/wufyqIRkcYfWlWvfUBtPm2/z0EuhWfHbBUKSL0dcAGpgC65LhH05jfwVpfrlSuc44Tp1rFx3ciaIFsjpXDsg==, tarball: https://registry.npmjs.org/unplugin-stencil/-/unplugin-stencil-0.2.5.tgz}
+  unplugin-stencil@0.2.6:
+    resolution: {integrity: sha512-buLzEBcTLE9B+6/5N0OjFItEFifK19QBj80a4oPuX82K6+/kb3ooHmQiklcam9Y6L8/tyAfjj2ADQbhg0GaM2Q==, tarball: https://registry.npmjs.org/unplugin-stencil/-/unplugin-stencil-0.2.6.tgz}
     peerDependencies:
       '@nuxt/kit': ^3
       '@nuxt/schema': ^3
@@ -6982,7 +6982,7 @@ snapshots:
 
   unicorn-magic@0.3.0: {}
 
-  unplugin-stencil@0.2.5(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(tsx@4.19.3)):
+  unplugin-stencil@0.2.6(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(tsx@4.19.3)):
     dependencies:
       '@stencil/core': 4.30.0
       mlly: 1.7.4
