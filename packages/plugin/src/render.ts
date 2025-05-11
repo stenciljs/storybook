@@ -2,7 +2,7 @@ import { ArgsStoryFn, RenderContext } from '@storybook/types'
 import { simulatePageLoad } from '@storybook/preview-api'
 import { render as renderStencil } from '@stencil/core'
 
-import { componentToJSX } from './component-to-jsx'
+import { componentToJSX } from './component-to-jsx.js'
 import type { StencilRenderer } from './types'
 
 export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => {

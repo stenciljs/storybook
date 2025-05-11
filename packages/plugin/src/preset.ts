@@ -1,5 +1,6 @@
 import { dirname, join, resolve } from "node:path";
 import { createRequire } from "node:module";
+import {fileURLToPath} from 'node:url';
 import { mergeConfig } from 'vite'
 import stencil from 'unplugin-stencil/vite'
 
@@ -8,6 +9,8 @@ import { StorybookConfig } from './types.js'
 const require = createRequire(import.meta.url);
 const getAbsolutePath = <I extends string>(input: I): I =>
   dirname(require.resolve(join(input, 'package.json'))) as any;
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const renderer = join(__dirname, 'preview.js')
 
