@@ -1,6 +1,6 @@
 import { dirname, join, resolve } from "node:path";
 import { createRequire } from "node:module";
-import {fileURLToPath} from 'node:url';
+import { fileURLToPath } from 'node:url';
 import { mergeConfig } from 'vite'
 import stencil from 'unplugin-stencil/vite'
 
