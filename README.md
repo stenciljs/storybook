@@ -8,6 +8,8 @@ This project provides a Storybook integration for StencilJS applications, allowi
 
 **Note: This project is still in early development and might have limitations. Contributions are welcome!**
 
+Read more about how to integrate Storybook with Stencil in the [StencilJS documentation](https://stenciljs.com/docs/storybook).
+
 ## Project Structure
 
 The project contains the following packages:
