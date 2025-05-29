@@ -95,10 +95,13 @@ export type StorybookConfig = Omit<StorybookConfigBase, 'framework'> & {
  * This is necessary to allow the use of Stencil components in Storybook.
  * Without we get are getting type errors.
  */
+type StencilIntrinsic = StencilJSX.IntrinsicElements;
+type StencilElement   = StencilJSX.Element;
+
 declare global {
   namespace JSX {
-    interface IntrinsicElements extends StencilJSX.IntrinsicElements {}
-    interface Element extends StencilJSX.Element {}
+    interface IntrinsicElements extends StencilIntrinsic {}
+    interface Element extends StencilElement {}
     interface ElementClass {}
   }
 }
