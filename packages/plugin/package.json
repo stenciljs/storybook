@@ -34,32 +34,34 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     },
     "./preset": {
       "types": "./dist/preset.d.ts",
       "import": "./dist/preset.js",
-      "require": "./dist/preset.js"
+      "require": "./dist/preset.cjs"
     },
     "./preview": {
       "types": "./dist/preview.d.ts",
       "import": "./dist/preview.js",
-      "require": "./dist/preview.js"
+      "require": "./dist/preview.cjs"
     },
     "./dist/preview.js": {
       "types": "./dist/preview.d.ts",
       "import": "./dist/preview.js",
-      "require": "./dist/preview.js"
+      "require": "./dist/preview.cjs"
     },
     "./node": {
       "types": "./dist/node/index.d.ts",
-      "import": "./dist/node/index.js"
+      "import": "./dist/node/index.js",
+      "require": "./dist/node/index.cjs"
     },
     "./package.json": "./package.json"
   },
   "scripts": {
-    "watch": "tsc --watch --outDir ./dist --listEmittedFiles",
-    "build": "tsc --outDir ./dist --listEmittedFiles"
+    "watch": "tsdown --watch",
+    "build": "tsdown"
   },
   "dependencies": {
     "@storybook/addon-actions": "^8.6.12",
@@ -72,7 +74,7 @@
     "@storybook/types": "^8.6.12",
     "preact-render-to-string": "^6.5.13",
     "react-docgen-typescript": "^2.2.2",
-    "unplugin-stencil": "^0.2.8"
+    "unplugin-stencil": "^0.3.2"
   },
   "peerDependencies": {
     "@stencil/core": "^4.30.0"
@@ -81,6 +83,7 @@
     "@stencil/core": "4.30.0",
     "@storybook/types": "^8.6.12",
     "@types/node": "^22.15.3",
+    "tsdown": "^0.12.4",
     "typescript": "~5.8.3",
     "vite": "^6.3.3"
   },
