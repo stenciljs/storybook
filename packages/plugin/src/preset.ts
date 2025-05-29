@@ -1,6 +1,11 @@
-import { dirname, join, resolve } from "node:path";
-import { createRequire } from "node:module";
-import { fileURLToPath } from 'node:url';
+/**
+ * we can't prefix the Node.js imports with `node:` because it will break
+ * within Storybook due to its Vite setup.
+ */
+import { dirname, join, resolve } from "path";
+import { createRequire } from "module";
+import { fileURLToPath } from 'url';
+
 import { mergeConfig } from 'vite'
 import stencil from 'unplugin-stencil/vite'
 
