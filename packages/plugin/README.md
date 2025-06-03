@@ -75,6 +75,36 @@ export const Primary: Story = {
 };
 ```
 
+If you are using slots in your component, pass them as parameters to the story object like this:
+
+```tsx
+import type { Meta, StoryObj } from '@stencil/storybook-plugin';
+import { h } from '@stencil/core';
+
+import { MySlotted } from './my-slotted';
+
+const meta = {
+  title: 'MySlotted',
+  component: MySlotted,
+  parameters: {
+    layout: 'centered',
+  },
+} satisfies Meta<MySlotted>;
+
+export default meta;
+type Story = StoryObj<MySlotted>;
+
+export const Primary: Story = {
+  args: {},
+  parameters: {
+    slots: {
+      default: 'Hello World',
+      another: <div>another</div>
+    },
+  }
+};
+```
+
 ## Limitations
 
 This is early development and we are still seeing some limitations we want to see fixed:

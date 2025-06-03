@@ -1,11 +1,11 @@
 import { ArgsStoryFn, RenderContext } from '@storybook/types'
 import { simulatePageLoad } from '@storybook/preview-api'
-import { render as renderStencil, h } from '@stencil/core'
+import { render as renderStencil, h, VNode } from '@stencil/core'
 
 import type { StencilRenderer } from './types'
 
 export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => {
-    const { component } = context;
+    const { component, parameters } = context;
 
     if (Array.isArray(component)) {
         throw new Error('If your story does not contain a render function, you must provide a component property!')
@@ -16,8 +16,24 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
         throw new Error('Component is not registered!')
     }
 
+    const children: VNode[] = Object.entries<VNode>(parameters.slots || []).map(
+      ([key, value]) => {
+          // if the parameter key is 'default' don't give it a slot name so it renders just as a child
+          const slot = key === 'default' ? undefined : key
+          // if the value it s a string, create a vnode with the string as the children
+          return typeof value === "string"
+            ? h(null, { slot }, value)
+            : {
+                ...value,
+                $attrs$: {
+                  slot,
+                },
+              };
+      },
+    );
+
     const Component = `${cmpName}`;
-    return h(Component, { ...args })
+    return h(Component, { ...args }, children)
 };
 
 export function renderToCanvas(
