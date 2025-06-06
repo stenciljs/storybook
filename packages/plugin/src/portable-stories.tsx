@@ -1,12 +1,12 @@
 import type {
     NamedOrDefaultProjectAnnotations,
     NormalizedProjectAnnotations,
-} from '@storybook/types';
+} from 'storybook/internal/types';
 
 import {
     setProjectAnnotations as originalSetProjectAnnotations,
     setDefaultProjectAnnotations,
-} from '@storybook/preview-api';
+} from 'storybook/preview-api';
 
 import * as stencilAnnotations from './preview';
 import type { StencilRenderer } from './types';
