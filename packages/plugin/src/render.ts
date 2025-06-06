@@ -1,5 +1,5 @@
-import { ArgsStoryFn, RenderContext } from '@storybook/types'
-import { simulatePageLoad } from '@storybook/preview-api'
+import { ArgsStoryFn, RenderContext } from 'storybook/internal/types'
+import { simulatePageLoad } from 'storybook/preview-api'
 import { render as renderStencil, h, VNode } from '@stencil/core'
 
 import type { StencilRenderer } from './types'
