@@ -1,0 +1,12 @@
+/** not using shadow dom, so cant use :host */
+my-advanced {
+  display: grid;
+  gap: 1rem;
+  align-items: center;
+  justify-items: center;
+  text-align: center;
+}
+
+.my-advanced-slot img {
+  height: 100px;
+}
