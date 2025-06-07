@@ -44,13 +44,17 @@ export const viteFinal: StorybookConfig["viteFinal"] = async (
 
 export const previewAnnotations: StorybookConfig["previewAnnotations"] = async (
   input = [],
-  options
+  options: any
 ) => {
-  const docsEnabled = Object.keys(await options.presets.apply('docs', {}, options)).length > 0;
+  // Check if docs are enabled either through the framework options or through the docs addon
+  const docsEnabled = 
+    (options.framework && typeof options.framework === 'object' && options.framework.options?.enableDocs) ||
+    Object.keys(await options.presets.apply('docs', {}, options)).length > 0;
+    
   const result: string[] = [];
 
   return result
     .concat(input)
     .concat([renderer])
-    .concat(docsEnabled ? [resolve(getAbsolutePath('@storybook/html'), 'dist', 'entry-preview-docs.mjs')] : []);
+    .concat(docsEnabled ? [join(__dirname, 'preview-docs.js')] : []);
 };

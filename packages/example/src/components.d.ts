@@ -6,6 +6,32 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface MyAdvanced {
+        /**
+          * The render function
+         */
+        "customFormat": (first: string, middle: string, last: string[]) => JSX.Element;
+        /**
+          * The first name
+         */
+        "first": string;
+        /**
+          * Whether to show the button
+         */
+        "hideButton": boolean;
+        /**
+          * The last name
+         */
+        "last": string |string[];
+        /**
+          * The middle name
+         */
+        "middle": string;
+        /**
+          * The step to increment the clicked counter
+         */
+        "step": number;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -23,7 +49,28 @@ export namespace Components {
     interface MySlotted {
     }
 }
+export interface MyAdvancedCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMyAdvancedElement;
+}
 declare global {
+    interface HTMLMyAdvancedElementEventMap {
+        "myClick": number;
+    }
+    interface HTMLMyAdvancedElement extends Components.MyAdvanced, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMyAdvancedElementEventMap>(type: K, listener: (this: HTMLMyAdvancedElement, ev: MyAdvancedCustomEvent<HTMLMyAdvancedElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMyAdvancedElementEventMap>(type: K, listener: (this: HTMLMyAdvancedElement, ev: MyAdvancedCustomEvent<HTMLMyAdvancedElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMyAdvancedElement: {
+        prototype: HTMLMyAdvancedElement;
+        new (): HTMLMyAdvancedElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -37,11 +84,39 @@ declare global {
         new (): HTMLMySlottedElement;
     };
     interface HTMLElementTagNameMap {
+        "my-advanced": HTMLMyAdvancedElement;
         "my-component": HTMLMyComponentElement;
         "my-slotted": HTMLMySlottedElement;
     }
 }
 declare namespace LocalJSX {
+    interface MyAdvanced {
+        /**
+          * The render function
+         */
+        "customFormat"?: (first: string, middle: string, last: string[]) => JSX.Element;
+        /**
+          * The first name
+         */
+        "first"?: string;
+        /**
+          * Whether to show the button
+         */
+        "hideButton"?: boolean;
+        /**
+          * The last name
+         */
+        "last"?: string |string[];
+        /**
+          * The middle name
+         */
+        "middle"?: string;
+        "onMyClick"?: (event: MyAdvancedCustomEvent<number>) => void;
+        /**
+          * The step to increment the clicked counter
+         */
+        "step"?: number;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -59,6 +134,7 @@ declare namespace LocalJSX {
     interface MySlotted {
     }
     interface IntrinsicElements {
+        "my-advanced": MyAdvanced;
         "my-component": MyComponent;
         "my-slotted": MySlotted;
     }
@@ -67,6 +143,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "my-advanced": LocalJSX.MyAdvanced & JSXBase.HTMLAttributes<HTMLMyAdvancedElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "my-slotted": LocalJSX.MySlotted & JSXBase.HTMLAttributes<HTMLMySlottedElement>;
         }

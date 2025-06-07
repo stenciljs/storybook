@@ -33,3 +33,35 @@ export const Secondary: Story = {
     },
   },
 };
+
+export const Multiple: Story = {
+  args: {},
+  parameters: {
+    slots: {
+      default: <div>default</div>,
+      another: [
+        'does it work?',
+        <div style={{background: 'lightgreen'}}>yes it does!</div>
+      ]
+    },
+  },
+};
+
+export const CustomRender: Story = {
+  parameters: {
+    docs: {
+      source: {
+        type: 'code',
+      }
+    }
+  },
+  render: () => {
+    const foo = <div>foo</div>;
+    return (
+      <my-slotted>
+        {foo}
+        <div slot="another">another</div>
+      </my-slotted>
+    );
+  },
+};

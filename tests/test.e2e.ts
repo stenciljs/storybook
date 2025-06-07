@@ -15,7 +15,7 @@ async function setPropInput(label: string, value: string, inputTagName = 'textar
 
 describe('StencilJS Storybook', () => {
     before(async () => {
-        await browser.url(`/`)
+        await browser.url(`/?path=/story/mycomponent--primary`)
 
         /**
          * not ideal but this guarantees that we switch to the right frame
@@ -65,7 +65,7 @@ describe('StencilJS Storybook', () => {
         await expect($('my-slotted')).toBeExisting()
         await expect($('my-slotted')).toMatchInlineSnapshot(`
           "<my-slotted class="hydrated">
-            <null>Hello World</null>
+            <span>Hello World</span>
             <div slot="another">another</div>
             <template shadowrootmode="open">
               <style>:host { display: block; }</style>
@@ -80,4 +80,29 @@ describe('StencilJS Storybook', () => {
           </my-slotted>"
         `)
     })
+
+    it('should render the component with multiple slots', async () => {
+      await browser.url(`/?path=/story/myslotted--multiple`)
+      await browser.pause(3000)
+      await browser.switchFrame(() => Boolean(document.querySelector('my-slotted')))
+
+      await expect($('my-slotted')).toBeExisting()
+      await expect($('my-slotted')).toMatchInlineSnapshot(`
+        "<my-slotted class="hydrated">
+          <div>default</div>
+          <span slot="another">does it work?</span>
+          <div slot="another" style="background: lightgreen;">yes it does!</div>
+          <template shadowrootmode="open">
+            <style>:host { display: block; }</style>
+            <div>
+              <slot></slot>
+              <hr />
+              <div style="background: pink;">
+                <slot name="another"></slot>
+              </div>
+            </div>
+          </template>
+        </my-slotted>"
+      `)
+  })
 })
