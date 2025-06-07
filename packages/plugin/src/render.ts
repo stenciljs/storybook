@@ -16,21 +16,48 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
         throw new Error('Component is not registered!')
     }
 
-    const children: VNode[] = Object.entries<VNode>(parameters.slots || []).map(
-      ([key, value]) => {
-          // if the parameter key is 'default' don't give it a slot name so it renders just as a child
-          const slot = key === 'default' ? undefined : key
-          // if the value it s a string, create a vnode with the string as the children
-          return typeof value === "string"
-            ? h(null, { slot }, value)
-            : {
-                ...value,
-                $attrs$: {
-                  slot,
-                },
-              };
-      },
-    );
+    const children: VNode[] = [];
+
+    if (parameters.slots) {
+      Object.entries(parameters.slots).forEach(([key, value]) => {
+        // if the parameter key is 'default' don't give it a slot name so it renders just as a child
+        const slot = key === 'default' ? undefined : key;
+
+        // Handle array of values for the same slot
+        const values = Array.isArray(value) ? value : [value];
+
+        values.forEach(item => {
+          if (item === undefined || item === null) return;
+
+          if (typeof item === 'string') {
+            // For strings, create a vnode with the string as the children
+            children.push(h('span', { slot }, item));
+          } else if (Array.isArray(item)) {
+            // Handle nested arrays (flatten them)
+            item.forEach(nestedItem => {
+              if (nestedItem !== undefined && nestedItem !== null) {
+                children.push({
+                  ...nestedItem,
+                  $attrs$: {
+                    ...(nestedItem.$attrs$ || {}),
+                    slot,
+                  },
+                });
+              }
+            });
+          } else {
+            // For VNodes or other objects
+            children.push({
+              ...item,
+              $attrs$: {
+                ...(item.$attrs$ || {}),
+                slot,
+              },
+            });
+          }
+        });
+      });
+    }
 
     const Component = `${cmpName}`;
     return h(Component, { ...args }, children)
