@@ -14,22 +14,42 @@ const meta = {
 export default meta;
 type Story = StoryObj<MySlotted>;
 
-export const Primary: Story = {
+export const Strings: Story = {
   args: {},
   parameters: {
     slots: {
-      default: 'Hello World',
+      default: 'default',
+      another: 'another',
+    },
+  },
+};
+
+export const Elements: Story = {
+  args: {},
+  parameters: {
+    slots: {
+      default: <div>default</div>,
       another: <div>another</div>,
     },
   },
 };
 
-export const Secondary: Story = {
+export const Fragments: Story = {
   args: {},
   parameters: {
     slots: {
-      default: <div>default</div>,
-      another: 'does it work?'
+      default: (
+        <>
+          <h1>hello</h1>
+          <h2>world</h2>
+        </>
+      ),
+      another: (
+        <>
+          <h1>hello</h1>
+          <h2>world</h2>
+        </>
+      ),
     },
   },
 };

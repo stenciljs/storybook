@@ -1,8 +1,9 @@
 import { ArgsStoryFn, RenderContext } from 'storybook/internal/types'
 import { simulatePageLoad } from 'storybook/preview-api'
-import { render as renderStencil, h, VNode } from '@stencil/core'
+import { render as renderStencil, h, VNode, Fragment } from '@stencil/core'
 
 import type { StencilRenderer } from './types'
+
 
 export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => {
     const { component, parameters } = context;
@@ -16,12 +17,12 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
         throw new Error('Component is not registered!')
     }
 
-    const children: VNode[] = Object.entries<VNode>(parameters.slots || []).map(
+    const children: any[] = Object.entries<VNode>(parameters.slots || []).map(
       ([key, value]) => {
           // if the parameter key is 'default' don't give it a slot name so it renders just as a child
           const slot = key === 'default' ? undefined : key
           // if the value it s a string, create a vnode with the string as the children
-          return typeof value === "string"
+          const child = typeof value === "string"
             ? h(null, { slot }, value)
             : {
                 ...value,
@@ -29,6 +30,9 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
                   slot,
                 },
               };
+          // if the value is a fragment and it is a named slot, create a span element with the slot name
+          child.$tag$ = child.$tag$ || (slot ? 'span': null);
+          return child.$tag$ ? child : child.$children$
       },
     );
 

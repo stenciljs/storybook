@@ -57,16 +57,65 @@ describe('StencilJS Storybook', () => {
         `)
     })
 
-    it('should render the component with slots', async () => {
-        await browser.url(`/?path=/story/myslotted--primary`)
+    it('should render the component with slots as strings', async () => {
+        await browser.url(`/?path=/story/myslotted--strings`)
         await browser.pause(3000)
         await browser.switchFrame(() => Boolean(document.querySelector('my-slotted')))
 
         await expect($('my-slotted')).toBeExisting()
         await expect($('my-slotted')).toMatchInlineSnapshot(`
           "<my-slotted class="hydrated">
-            <null>Hello World</null>
+            "default"
+            <span slot="another">another</div>
+            <template shadowrootmode="open">
+              <style>:host { display: block; }</style>
+              <div>
+                <slot></slot>
+                <hr />
+                <div style="background: pink;">
+                  <slot name="another"></slot>
+                </div>
+              </div>
+            </template>
+          </my-slotted>"
+        `)
+    })
+
+    it('should render the component with slots as elements', async () => {
+        await browser.url(`/?path=/story/myslotted--elements`)
+        await browser.pause(3000)
+        await browser.switchFrame(() => Boolean(document.querySelector('my-slotted')))
+
+        await expect($('my-slotted')).toBeExisting()
+        await expect($('my-slotted')).toMatchInlineSnapshot(`
+          "<my-slotted class="hydrated">
+            <div>Hello World</div>
             <div slot="another">another</div>
+            <template shadowrootmode="open">
+              <style>:host { display: block; }</style>
+              <div>
+                <slot></slot>
+                <hr />
+                <div style="background: pink;">
+                  <slot name="another"></slot>
+                </div>
+              </div>
+            </template>
+          </my-slotted>"
+        `)
+    })
+
+    it('should render the component with slots as fragments', async () => {
+        await browser.url(`/?path=/story/myslotted--fragments`)
+        await browser.pause(3000)
+        await browser.switchFrame(() => Boolean(document.querySelector('my-slotted')))
+
+        await expect($('my-slotted')).toBeExisting()
+        await expect($('my-slotted')).toMatchInlineSnapshot(`
+          "<my-slotted class="hydrated">
+            <h1>hello</h1>
+            <h2>world</h2>
+            <span slot="another">another</span>
             <template shadowrootmode="open">
               <style>:host { display: block; }</style>
               <div>
