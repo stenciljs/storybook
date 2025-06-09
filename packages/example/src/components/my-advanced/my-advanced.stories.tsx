@@ -12,20 +12,6 @@ const meta = {
     actions: { argTypesRegex: '^on.*' },
     layout: 'centered',
   },
-  argTypes: {
-    first: { control: 'text' },
-    middle: { control: 'text' },
-    last: { control: 'object' },
-    step: { control: 'number' },
-    hideButton: { control: 'boolean' },
-    customFormat: { control: false },
-  },
-  args: {
-    first: 'John',
-    middle: 'M.',
-    last: 'Doe',
-    step: 1,
-  },
 } satisfies Meta<JSX.IntrinsicElements['my-advanced']>;
 
 export default meta;
@@ -33,6 +19,9 @@ type Story = StoryObj<JSX.IntrinsicElements['my-advanced']>;
 
 export const Primary: Story = {
   args: {
+    first: 'John',
+    middle: 'M.',
+    last: 'Doe',
     hideButton: true,
   },
   render: (props) => {

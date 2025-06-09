@@ -1,0 +1,348 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/components/my-advanced/my-advanced.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "My Advanced component does many things",
+          "name": "MyAdvanced",
+          "cssProperties": [
+            {
+              "description": "color of the slot",
+              "name": "--my-advanced-slot-color"
+            }
+          ],
+          "cssParts": [
+            {
+              "description": "the slot container",
+              "name": "my-advanced-slot"
+            }
+          ],
+          "slots": [
+            {
+              "description": "additional content of the component",
+              "name": "default"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "first",
+              "type": {
+                "text": "string"
+              },
+              "description": "The first name"
+            },
+            {
+              "kind": "field",
+              "name": "middle",
+              "type": {
+                "text": "string"
+              },
+              "description": "The middle name"
+            },
+            {
+              "kind": "field",
+              "name": "last",
+              "type": {
+                "text": "string |string[]"
+              },
+              "description": "The last name"
+            },
+            {
+              "kind": "field",
+              "name": "customFormat",
+              "type": {
+                "text": "(first: string, middle: string, last: string[]) => JSX.Element"
+              },
+              "description": "A custom format function for the name"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "default": "1",
+              "description": "The step to increment the clicked counter"
+            },
+            {
+              "kind": "field",
+              "name": "hideButton",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false",
+              "description": "Whether to show the button"
+            },
+            {
+              "kind": "field",
+              "name": "clicked",
+              "type": {
+                "text": "number"
+              },
+              "privacy": "private",
+              "default": "0",
+              "description": "The clicked counter"
+            },
+            {
+              "kind": "method",
+              "name": "getFoo",
+              "privacy": "public",
+              "return": {
+                "type": {
+                  "text": "Promise<\"foo\">"
+                }
+              },
+              "description": "A method to get \"foo\""
+            },
+            {
+              "kind": "method",
+              "name": "doSomething",
+              "privacy": "public",
+              "description": "A method that does something"
+            },
+            {
+              "kind": "method",
+              "name": "handleClick",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "getText",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "JSX.Element"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "first",
+              "fieldName": "first",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "middle",
+              "fieldName": "middle",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "last",
+              "fieldName": "last",
+              "type": {
+                "text": "string |string[]"
+              }
+            },
+            {
+              "name": "custom-format",
+              "fieldName": "customFormat",
+              "type": {
+                "text": "(first: string, middle: string, last: string[]) => JSX.Element"
+              }
+            },
+            {
+              "name": "step",
+              "fieldName": "step",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "name": "hide-button",
+              "fieldName": "hideButton",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "tagName": "my-advanced",
+          "events": [
+            {
+              "name": "myClick",
+              "type": {
+                "text": "EventEmitter<number>"
+              }
+            }
+          ],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyAdvanced",
+          "declaration": {
+            "name": "MyAdvanced",
+            "module": "src/components/my-advanced/my-advanced.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-advanced",
+          "declaration": {
+            "name": "MyAdvanced",
+            "module": "src/components/my-advanced/my-advanced.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/my-component/my-component.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MyComponent",
+          "members": [
+            {
+              "kind": "field",
+              "name": "first",
+              "type": {
+                "text": "string"
+              },
+              "description": "The first name"
+            },
+            {
+              "kind": "field",
+              "name": "middle",
+              "type": {
+                "text": "string"
+              },
+              "description": "The middle name"
+            },
+            {
+              "kind": "field",
+              "name": "last",
+              "type": {
+                "text": "string"
+              },
+              "description": "The last name"
+            },
+            {
+              "kind": "method",
+              "name": "getText",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              }
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "first",
+              "fieldName": "first",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "middle",
+              "fieldName": "middle",
+              "type": {
+                "text": "string"
+              }
+            },
+            {
+              "name": "last",
+              "fieldName": "last",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "tagName": "my-component",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MyComponent",
+          "declaration": {
+            "name": "MyComponent",
+            "module": "src/components/my-component/my-component.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-component",
+          "declaration": {
+            "name": "MyComponent",
+            "module": "src/components/my-component/my-component.tsx"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/my-slotted/my-slotted.tsx",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "MySlotted",
+          "slots": [
+            {
+              "description": "place content here",
+              "name": "default"
+            },
+            {
+              "description": "place content here",
+              "name": "another"
+            }
+          ],
+          "members": [
+            {
+              "kind": "method",
+              "name": "render"
+            }
+          ],
+          "tagName": "my-slotted",
+          "events": [],
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "MySlotted",
+          "declaration": {
+            "name": "MySlotted",
+            "module": "src/components/my-slotted/my-slotted.tsx"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "my-slotted",
+          "declaration": {
+            "name": "MySlotted",
+            "module": "src/components/my-slotted/my-slotted.tsx"
+          }
+        }
+      ]
+    }
+  ]
+}

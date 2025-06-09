@@ -18,6 +18,7 @@ const getAbsolutePath = <I extends string>(input: I): I =>
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const renderer = join(__dirname, 'preview.js')
+const previewArgs = join(__dirname, 'preview-argtypes.js')
 
 export const core: StorybookConfig['core'] = {
   builder: getAbsolutePath('@storybook/builder-vite'),
@@ -47,14 +48,14 @@ export const previewAnnotations: StorybookConfig["previewAnnotations"] = async (
   options: any
 ) => {
   // Check if docs are enabled either through the framework options or through the docs addon
-  const docsEnabled = 
+  const docsEnabled =
     (options.framework && typeof options.framework === 'object' && options.framework.options?.enableDocs) ||
     Object.keys(await options.presets.apply('docs', {}, options)).length > 0;
-    
+
   const result: string[] = [];
 
   return result
     .concat(input)
-    .concat([renderer])
+    .concat([renderer, previewArgs])
     .concat(docsEnabled ? [join(__dirname, 'preview-docs.js')] : []);
 };

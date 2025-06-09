@@ -1,4 +1,6 @@
 import { Config } from '@stencil/core';
+import { JsonDocs } from '@stencil/core/internal';
+import { execSync } from 'child_process';
 
 export const config: Config = {
   namespace: 'example',
@@ -14,6 +16,13 @@ export const config: Config = {
     },
     {
       type: 'docs-readme',
+    },
+    {
+      type: 'docs-custom',
+      generator: (_docs: JsonDocs, _config: Config) => {
+        execSync('pnpm run cem', { stdio: 'inherit' });
+        return;
+      }
     },
     {
       type: 'www',

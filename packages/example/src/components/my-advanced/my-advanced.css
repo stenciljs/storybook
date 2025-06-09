@@ -1,3 +1,7 @@
+/**
+ * @prop --my-advanced-slot-color color of the slot
+ */
+
 /** not using shadow dom, so cant use :host */
 my-advanced {
   display: grid;
@@ -5,6 +9,11 @@ my-advanced {
   align-items: center;
   justify-items: center;
   text-align: center;
+  --my-advanced-slot-color: red;
+}
+
+.my-advanced-slot {
+  color: var(--my-advanced-slot-color);
 }
 
 .my-advanced-slot img {

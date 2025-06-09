@@ -7,6 +7,7 @@ export default defineConfig({
     './src/preset.ts',
     './src/preview.ts',
     './src/preview-docs.ts',
+    './src/preview-argtypes.ts',
     './src/node/index.ts',
   ],
   // Externalize native modules and problematic dependencies

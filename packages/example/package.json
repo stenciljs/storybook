@@ -39,9 +39,11 @@
     "build-storybook": "storybook build",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate"
+    "generate": "stencil generate",
+    "cem": "custom-elements-manifest analyze --stencil --globs 'src/components/**/*.tsx' --exclude 'src/components/**/*.stories.tsx'"
   },
   "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.4",
     "@stencil/core": "^4.30.0",
     "@stencil/storybook-plugin": "workspace:*",
     "@storybook/addon-docs": "^9.0.5",

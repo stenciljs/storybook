@@ -6,15 +6,28 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    /**
+     * My Advanced component does many things
+     * @cssprop --my-advanced-slot-color - color of the slot
+     * @csspart my-advanced-slot - the slot container
+     */
     interface MyAdvanced {
         /**
-          * The render function
+          * A custom format function for the name
          */
         "customFormat": (first: string, middle: string, last: string[]) => JSX.Element;
+        /**
+          * A method that does something
+         */
+        "doSomething": () => Promise<void>;
         /**
           * The first name
          */
         "first": string;
+        /**
+          * A method to get "foo"
+         */
+        "getFoo": () => Promise<"foo">;
         /**
           * Whether to show the button
          */
@@ -57,6 +70,11 @@ declare global {
     interface HTMLMyAdvancedElementEventMap {
         "myClick": number;
     }
+    /**
+     * My Advanced component does many things
+     * @cssprop --my-advanced-slot-color - color of the slot
+     * @csspart my-advanced-slot - the slot container
+     */
     interface HTMLMyAdvancedElement extends Components.MyAdvanced, HTMLStencilElement {
         addEventListener<K extends keyof HTMLMyAdvancedElementEventMap>(type: K, listener: (this: HTMLMyAdvancedElement, ev: MyAdvancedCustomEvent<HTMLMyAdvancedElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
         addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
@@ -90,9 +108,14 @@ declare global {
     }
 }
 declare namespace LocalJSX {
+    /**
+     * My Advanced component does many things
+     * @cssprop --my-advanced-slot-color - color of the slot
+     * @csspart my-advanced-slot - the slot container
+     */
     interface MyAdvanced {
         /**
-          * The render function
+          * A custom format function for the name
          */
         "customFormat"?: (first: string, middle: string, last: string[]) => JSX.Element;
         /**
@@ -143,6 +166,11 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            /**
+             * My Advanced component does many things
+             * @cssprop --my-advanced-slot-color - color of the slot
+             * @csspart my-advanced-slot - the slot container
+             */
             "my-advanced": LocalJSX.MyAdvanced & JSXBase.HTMLAttributes<HTMLMyAdvancedElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
             "my-slotted": LocalJSX.MySlotted & JSXBase.HTMLAttributes<HTMLMySlottedElement>;
