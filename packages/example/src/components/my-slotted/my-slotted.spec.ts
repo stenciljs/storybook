@@ -11,10 +11,14 @@ describe('my-slotted', () => {
       <my-slotted>
         <mock:shadow-root>
           <div>
-            Hello, World!
+            <slot></slot>
             <hr />
+            <div style="background: pink;">
+              <slot name="another"></slot>
+            </div>
           </div>
         </mock:shadow-root>
+        Hello, World!
       </my-slotted>
     `);
   });
@@ -28,13 +32,15 @@ describe('my-slotted', () => {
       <my-slotted>
         <mock:shadow-root>
           <div>
-            Hello there
+            <slot></slot>
             <hr />
-            <div style={{background: 'pink'}}>
-              <div slot="another">another</div>
+            <div style="background: pink;">
+              <slot name="another"></slot>
             </div>
           </div>
         </mock:shadow-root>
+        Hello there
+        <div slot="another">another</div>
       </my-slotted>
     `);
   });
