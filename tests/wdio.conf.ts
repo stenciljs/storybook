@@ -15,7 +15,7 @@ export const config: WebdriverIO.Config = {
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
     tsConfigPath: './tsconfig.json',
-    
+
     //
     // ==================
     // Specify Test Files
@@ -66,7 +66,7 @@ export const config: WebdriverIO.Config = {
             args: process.env.CI ? ['--headless'] : []
         }
     }],
-
+    cacheDir: 'node_modules/.cache',
     //
     // ===================
     // Test Configurations
@@ -123,7 +123,7 @@ export const config: WebdriverIO.Config = {
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
     framework: 'mocha',
-    
+
     //
     // The number of times to retry the entire specfile when it fails as a whole
     specFileRetries: 1,

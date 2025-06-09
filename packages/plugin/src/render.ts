@@ -23,7 +23,7 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
           const slot = key === 'default' ? undefined : key
           // if the value it s a string, create a vnode with the string as the children
           const child = typeof value === "string"
-            ? h(null, { slot }, value)
+            ? h(undefined, { slot }, value)
             : {
                 ...value,
                 $attrs$: {

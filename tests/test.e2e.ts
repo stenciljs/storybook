@@ -65,8 +65,8 @@ describe('StencilJS Storybook', () => {
         await expect($('my-slotted')).toBeExisting()
         await expect($('my-slotted')).toMatchInlineSnapshot(`
           "<my-slotted class="hydrated">
-            "default"
-            <span slot="another">another</div>
+            default
+            <span slot="another">another</span>
             <template shadowrootmode="open">
               <style>:host { display: block; }</style>
               <div>
@@ -89,7 +89,7 @@ describe('StencilJS Storybook', () => {
         await expect($('my-slotted')).toBeExisting()
         await expect($('my-slotted')).toMatchInlineSnapshot(`
           "<my-slotted class="hydrated">
-            <div>Hello World</div>
+            <div>default</div>
             <div slot="another">another</div>
             <template shadowrootmode="open">
               <style>:host { display: block; }</style>
@@ -115,7 +115,10 @@ describe('StencilJS Storybook', () => {
           "<my-slotted class="hydrated">
             <h1>hello</h1>
             <h2>world</h2>
-            <span slot="another">another</span>
+            <span slot="another">
+              <h1>hello</h1>
+              <h2>world</h2>
+            </span>
             <template shadowrootmode="open">
               <style>:host { display: block; }</style>
               <div>
