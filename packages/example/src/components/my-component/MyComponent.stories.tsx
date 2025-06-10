@@ -26,9 +26,9 @@ export const Primary: Story = {
     last: 'Doe',
     middle: 'Michael',
   },
-  render: (props) => {
+  render: props => {
     return <my-component {...props} />;
-  }
+  },
 };
 
 export const Secondary: Story = {

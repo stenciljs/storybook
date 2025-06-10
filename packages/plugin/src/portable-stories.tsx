@@ -1,11 +1,8 @@
-import type {
-    NamedOrDefaultProjectAnnotations,
-    NormalizedProjectAnnotations,
-} from 'storybook/internal/types';
+import type { NamedOrDefaultProjectAnnotations, NormalizedProjectAnnotations } from 'storybook/internal/types';
 
 import {
-    setProjectAnnotations as originalSetProjectAnnotations,
-    setDefaultProjectAnnotations,
+  setProjectAnnotations as originalSetProjectAnnotations,
+  setDefaultProjectAnnotations,
 } from 'storybook/preview-api';
 
 import * as stencilAnnotations from './preview';
@@ -31,12 +28,8 @@ import type { StencilRenderer } from './types';
  * @param projectAnnotations - E.g. (import projectAnnotations from '../.storybook/preview')
  */
 export function setProjectAnnotations(
-    projectAnnotations:
-        | NamedOrDefaultProjectAnnotations<any>
-        | NamedOrDefaultProjectAnnotations<any>[]
+  projectAnnotations: NamedOrDefaultProjectAnnotations<any> | NamedOrDefaultProjectAnnotations<any>[],
 ): NormalizedProjectAnnotations<StencilRenderer<unknown>> {
-    setDefaultProjectAnnotations(stencilAnnotations);
-    return originalSetProjectAnnotations(
-        projectAnnotations
-    ) as NormalizedProjectAnnotations<StencilRenderer<unknown>>;
+  setDefaultProjectAnnotations(stencilAnnotations);
+  return originalSetProjectAnnotations(projectAnnotations) as NormalizedProjectAnnotations<StencilRenderer<unknown>>;
 }
