@@ -5,7 +5,7 @@ import { MyComponent } from './my-component';
 
 const meta = {
   title: 'MyComponent',
-  component: MyComponent,
+  component: 'my-component',
   parameters: {
     layout: 'centered',
   },

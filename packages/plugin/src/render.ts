@@ -1,20 +1,25 @@
+import { h, render as renderStencil, VNode } from '@stencil/core';
 import { ArgsStoryFn, RenderContext } from 'storybook/internal/types';
 import { simulatePageLoad } from 'storybook/preview-api';
-import { render as renderStencil, h, VNode, Fragment } from '@stencil/core';
 
 import type { StencilRenderer } from './types';
 
 export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => {
   const { component, parameters } = context;
 
-  if (Array.isArray(component)) {
-    throw new Error('If your story does not contain a render function, you must provide a component property!');
-  }
-
-  const cmpName = customElements.getName(component);
-  if (!cmpName) {
-    throw new Error('Component is not registered!');
-  }
+    if (Array.isArray(component)) {
+        throw new Error('If your story does not contain a render function, you must provide a component property!')
+    }
+    if (typeof component === 'string') {
+      if (!customElements.get(component)) {
+        throw new Error(`Stencil component not found. If you are not lazy loading your components with \`defineCustomElements()\` in preview.ts, pass a constructor value for component in your story \`component: MyComponent\``)
+      }
+    } else {
+      if (!customElements.getName(component)) {
+        throw new Error(`Stencil component not found. If you are lazy loading your components with \`defineCustomElements()\` in preview.ts, pass a string value for component in your story \`component: 'my-component'\``)
+      }
+    }
+    const cmpName = typeof component === 'string' ? component : customElements.getName(component)
 
   const children: any[] = Object.entries<VNode>(parameters.slots || []).map(([key, value]) => {
     // if the parameter key is 'default' don't give it a slot name so it renders just as a child

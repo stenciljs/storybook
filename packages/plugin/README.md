@@ -105,6 +105,14 @@ export const Primary: Story = {
 };
 ```
 
+### Troubleshooting
+
+If you encounter any issues with the story rendering, please check the following:
+
+- If your `customElementsExportBehavior` is set to a value that lazy loads components, ensure that you are using `defineCustomElements()` in `preview.ts`. You should also define your component as a string in your story file: `component: 'my-component'` as it does not yet exist in the custom element registry.
+- If your `customElementsExportBehavior` is set to a value like `auto-define-custom-elements` or `default`, do not include `defineCustomElements()` in `preview.ts` and use the constructor as the component value in your story file: `component: MyComponent`.
+- Check the console for any error messages.
+
 ## Limitations
 
 This is early development and we are still seeing some limitations we want to see fixed:

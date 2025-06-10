@@ -4,7 +4,7 @@ import { MySlotted } from './my-slotted';
 
 const meta = {
   title: 'MySlotted',
-  component: MySlotted,
+  component: 'my-slotted',
   parameters: {
     layout: 'centered',
   },
