@@ -14,8 +14,10 @@ export class MySlotted {
     return (
       <div>
         <slot />
-        <hr/>
-        <div style={{background: 'pink'}}><slot name="another"/></div>
+        <hr />
+        <div style={{ background: 'pink' }}>
+          <slot name="another" />
+        </div>
       </div>
     );
   }

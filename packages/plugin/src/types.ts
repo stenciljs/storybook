@@ -22,19 +22,36 @@ interface DevJSX {
   stack?: string;
 }
 
-type JSXChildren = string | number | boolean | null | undefined | Function | RegExp | JSXChildren[] | Promise<JSXChildren> | VNode;
+type JSXChildren =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | Function
+  | RegExp
+  | JSXChildren[]
+  | Promise<JSXChildren>
+  | VNode;
 
 type ComponentChildren<PROPS> = PROPS extends {
   children: any;
-} ? never : {
-  children?: JSXChildren;
 }
-type PublicProps<PROPS> = (PROPS extends Record<any, any> ? Omit<PROPS, `${string}$`> : unknown extends PROPS ? {} : PROPS) & ComponentChildren<PROPS>;
+  ? never
+  : {
+      children?: JSXChildren;
+    };
+type PublicProps<PROPS> = (PROPS extends Record<any, any>
+  ? Omit<PROPS, `${string}$`>
+  : unknown extends PROPS
+    ? {}
+    : PROPS) &
+  ComponentChildren<PROPS>;
 
 type FunctionComponent<P = unknown> = {
   renderFn(props: P, key: string | null, flags: number, dev?: DevJSX): VNode;
-}['renderFn']
-type Component<PROPS = unknown> = FunctionComponent<PublicProps<PROPS>>
+}['renderFn'];
+type Component<PROPS = unknown> = FunctionComponent<PublicProps<PROPS>>;
 
 export interface StencilRenderer<T> extends WebRenderer {
   component: Component<T> | any;
@@ -48,43 +65,25 @@ export type Preview = ProjectAnnotations<StencilRenderer<unknown>>;
  *
  * @see [Default export](https://storybook.js.org/docs/formats/component-story-format/#default-export)
  */
-export type Meta<TArgs = Args> = ComponentAnnotations<
-  StencilRenderer<TArgs>,
-  TArgs
->;
+export type Meta<TArgs = Args> = ComponentAnnotations<StencilRenderer<TArgs>, TArgs>;
 
 /**
  * Story function that represents a CSFv2 component example.
  *
  * @see [Named Story exports](https://storybook.js.org/docs/formats/component-story-format/#named-story-exports)
  */
-export type StoryFn<TArgs = Args> = AnnotatedStoryFn<
-  StencilRenderer<TArgs>,
-  TArgs
->;
+export type StoryFn<TArgs = Args> = AnnotatedStoryFn<StencilRenderer<TArgs>, TArgs>;
 
 /**
  * Story function that represents a CSFv3 component example.
  *
  * @see [Named Story exports](https://storybook.js.org/docs/formats/component-story-format/#named-story-exports)
  */
-export type StoryObj<TArgs = Args> = StoryAnnotations<
-  StencilRenderer<TArgs>,
-  TArgs
->;
+export type StoryObj<TArgs = Args> = StoryAnnotations<StencilRenderer<TArgs>, TArgs>;
 
-export type Decorator<TArgs = StrictArgs> = DecoratorFunction<
-  StencilRenderer<TArgs>,
-  TArgs
->;
-export type Loader<TArgs = StrictArgs> = LoaderFunction<
-  StencilRenderer<TArgs>,
-  TArgs
->;
-export type StoryContext<TArgs = StrictArgs> = GenericStoryContext<
-  StencilRenderer<TArgs>,
-  TArgs
->;
+export type Decorator<TArgs = StrictArgs> = DecoratorFunction<StencilRenderer<TArgs>, TArgs>;
+export type Loader<TArgs = StrictArgs> = LoaderFunction<StencilRenderer<TArgs>, TArgs>;
+export type StoryContext<TArgs = StrictArgs> = GenericStoryContext<StencilRenderer<TArgs>, TArgs>;
 
 export type StorybookConfig = Omit<StorybookConfigBase, 'framework'> & {
   framework: '@stencil/storybook-plugin' | { name: '@stencil/storybook-plugin' };
@@ -96,7 +95,7 @@ export type StorybookConfig = Omit<StorybookConfigBase, 'framework'> & {
  * Without we get are getting type errors.
  */
 type StencilIntrinsic = StencilJSX.IntrinsicElements;
-type StencilElement   = StencilJSX.Element;
+type StencilElement = StencilJSX.Element;
 
 declare global {
   namespace JSX {

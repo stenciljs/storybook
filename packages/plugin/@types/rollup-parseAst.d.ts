@@ -17,6 +17,6 @@
  * importing `rollup/parseAst` in `unplugin-stencil`.
  */
 declare module 'rollup/parseAst' {
-  export function parseAst(code: string, options?: any): any
-  export function parseAstAsync(code: string, options?: any): Promise<any>
+  export function parseAst(code: string, options?: any): any;
+  export function parseAstAsync(code: string, options?: any): Promise<any>;
 }

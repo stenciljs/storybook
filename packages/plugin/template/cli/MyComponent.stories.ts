@@ -24,5 +24,5 @@ export const Primary: Story = {
     first: 'John',
     last: 'Doe',
     middle: 'Michael',
-  }
+  },
 };

@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       releaseType:
-        description: "Release type - major, minor or patch"
+        description: 'Release type - major, minor or patch'
         required: true
         type: choice
-        default: "patch"
+        default: 'patch'
         options:
           - patch
           - minor
@@ -16,10 +16,10 @@ on:
         description: Set to "yes" to release a dev build
         required: true
         type: choice
-        default: "no"
+        default: 'no'
         options:
-          - "yes"
-          - "no"
+          - 'yes'
+          - 'no'
 
 jobs:
   build:
@@ -56,7 +56,7 @@ jobs:
           # A unique string to publish Stencil Storybook Plugin under
           # e.g. "2.1.0-dev.1677185104.7c87e34"
           DEV_VERSION=$PKG_JSON_VERSION-dev.$(date +"%s").$GIT_HASH
-          
+
           echo "Using version $DEV_VERSION"
 
           # store a key/value pair in GITHUB_OUTPUT
@@ -111,7 +111,7 @@ jobs:
         with:
           tag: latest
           working-directory: packages/plugin
-          skip-setup: "yes"
+          skip-setup: 'yes'
           version: ${{ inputs.releaseType }}
           token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
           github-token: ${{ secrets.GH_ADMIN_PAT }}

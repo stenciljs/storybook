@@ -1,8 +1,8 @@
-name: "Build Setup"
-description: "Reusable action to set up the environment and build the project"
+name: 'Build Setup'
+description: 'Reusable action to set up the environment and build the project'
 
 runs:
-  using: "composite"
+  using: 'composite'
   steps:
     - name: 📦 Setup pnpm
       uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
@@ -11,7 +11,7 @@ runs:
       uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
       with:
         node-version-file: .nvmrc
-        cache: "pnpm"
+        cache: 'pnpm'
 
     - name: 🏗️ Install Dependencies
       shell: bash
