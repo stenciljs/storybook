@@ -5,7 +5,7 @@ import {
   setDefaultProjectAnnotations,
 } from 'storybook/preview-api';
 
-import * as stencilAnnotations from './preview';
+import * as stencilAnnotations from './entry-preview';
 import type { StencilRenderer } from './types';
 
 /**
