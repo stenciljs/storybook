@@ -4,10 +4,12 @@
   "description": "Monorepo for the Storybook plugin for Stencil",
   "license": "MIT",
   "version": "0.0.0",
-  "contributors": [{
-    "name": "Christian Bromann",
-    "email": "christian.bromann@outsystems.com"
-  }],
+  "contributors": [
+    {
+      "name": "Christian Bromann",
+      "email": "christian.bromann@outsystems.com"
+    }
+  ],
   "private": true,
   "scripts": {
     "build": "run-s build.*",
@@ -16,9 +18,13 @@
     "dev": "run-p dev.*",
     "dev.plugin": "pnpm --filter @stencil/storybook-plugin watch",
     "dev.example": "pnpm --filter example run storybook",
-    "test": "wdio run ./tests/wdio.conf.ts"
+    "test": "wdio run ./tests/wdio.conf.ts",
+    "prettier": "npm run prettier.base -- --write",
+    "prettier.base": "prettier --cache \"./({packages,tests}/**/*.{ts,tsx,js,jsx})|.github/(**/)?*.(yml|yaml)|*.js\"",
+    "prettier.dry-run": "npm run prettier.base -- --list-different"
   },
   "devDependencies": {
+    "@ionic/prettier-config": "4.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.3",
     "@wdio/cli": "^9.12.7",
@@ -30,5 +36,10 @@
     "typescript": "~5.8.3",
     "webdriverio": "^9.12.7"
   },
-  "packageManager": "pnpm@10.10.0"
+  "packageManager": "pnpm@10.10.0",
+  "prettier": "@ionic/prettier-config",
+    "volta": {
+      "node": "22.2.0",
+      "npm": "10.8.1"
+    }
 }

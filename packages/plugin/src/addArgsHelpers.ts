@@ -1,19 +1,17 @@
 // This file is entirely copied from @storybook/addon-actions (changing the action import)
 
-import type { Args, Renderer, ArgsEnhancer } from "storybook/internal/types";
-import { action } from "storybook/actions";
+import type { Args, Renderer, ArgsEnhancer } from 'storybook/internal/types';
+import { action } from 'storybook/actions';
 
 const isInInitialArgs = (name: string, initialArgs: Args) =>
-  typeof initialArgs[name] === "undefined" && !(name in initialArgs);
+  typeof initialArgs[name] === 'undefined' && !(name in initialArgs);
 
 /**
  * Automatically add action args for argTypes whose name
  * matches a regex, such as `^on.*` for react-style `onClick` etc.
  */
 
-export const inferActionsFromArgTypesRegex: ArgsEnhancer<Renderer> = (
-  context,
-) => {
+export const inferActionsFromArgTypesRegex: ArgsEnhancer<Renderer> = (context) => {
   const {
     initialArgs,
     argTypes,
@@ -24,9 +22,7 @@ export const inferActionsFromArgTypesRegex: ArgsEnhancer<Renderer> = (
   }
 
   const argTypesRegex = new RegExp(actions.argTypesRegex);
-  const argTypesMatchingRegex = Object.entries(argTypes).filter(
-    ([name]) => !!argTypesRegex.test(name),
-  );
+  const argTypesMatchingRegex = Object.entries(argTypes).filter(([name]) => !!argTypesRegex.test(name));
 
   return argTypesMatchingRegex.reduce((acc, [name, argType]) => {
     if (isInInitialArgs(name, initialArgs)) {
@@ -49,15 +45,11 @@ export const addActionsFromArgTypes: ArgsEnhancer<Renderer> = (context) => {
     return {};
   }
 
-  const argTypesWithAction = Object.entries(argTypes).filter(
-    ([name, argType]) => !!argType["action"],
-  );
+  const argTypesWithAction = Object.entries(argTypes).filter(([name, argType]) => !!argType['action']);
 
   return argTypesWithAction.reduce((acc, [name, argType]) => {
     if (isInInitialArgs(name, initialArgs)) {
-      acc[name] = action(
-        typeof argType["action"] === "string" ? argType["action"] : name,
-      );
+      acc[name] = action(typeof argType['action'] === 'string' ? argType['action'] : name);
     }
     return acc;
   }, {} as Args);
