@@ -27,8 +27,7 @@ export const sourceDecorator: DecoratorFunction<StencilRenderer<unknown>> = (sto
 
     switch (context.parameters.docs.source.language) {
       case 'html': {
-        const source = renderHTML(renderedForSource);
-        emitTransformCode(source, context);
+        emitTransformCode(renderHTML(renderedForSource), context);
       }
     }
   });
