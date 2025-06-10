@@ -1,8 +1,8 @@
-import { render as renderStencil, VNode } from '@stencil/core';
 import { SourceType } from 'storybook/internal/docs-tools';
 import { emitTransformCode, useEffect } from 'storybook/internal/preview-api';
 import type { AnnotatedStoryFn, Args, DecoratorFunction } from 'storybook/internal/types';
 import type { StencilRenderer } from '../types';
+import { renderHTML } from './render-html';
 
 type StoryFn<TArgs = Args> = AnnotatedStoryFn<StencilRenderer<unknown>, TArgs>;
 
@@ -25,16 +25,13 @@ export const sourceDecorator: DecoratorFunction<StencilRenderer<unknown>> = (sto
 
     if (skip(context)) return;
 
-    if (context.parameters.docs.source.language === 'html') {
-      emitTransformCode(renderHTML(renderedForSource), context);
+    switch (context.parameters.docs.source.language) {
+      case 'html': {
+        const source = renderHTML(renderedForSource);
+        emitTransformCode(source, context);
+      }
     }
   });
 
   return story;
-};
-
-const renderHTML = (vnode: VNode) => {
-  const el = document.createElement('div');
-  renderStencil(vnode, el);
-  return el.innerHTML;
 };
