@@ -1,5 +1,5 @@
+import { $, browser, expect } from '@wdio/globals';
 import { Key } from 'webdriverio';
-import { expect, browser, $ } from '@wdio/globals';
 
 function getPropInput(label: string, inputTagName = 'textarea') {
   return $(`span=${label}`).parentElement().parentElement().$(inputTagName);
@@ -15,7 +15,7 @@ async function setPropInput(label: string, value: string, inputTagName = 'textar
 
 describe('StencilJS Storybook', () => {
   before(async () => {
-    await browser.url(`/`);
+    await browser.url(`/?path=/story/mycomponent--primary`);
 
     /**
      * not ideal but this guarantees that we switch to the right frame
