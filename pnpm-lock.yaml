@@ -144,8 +144,8 @@ importers:
         specifier: ^9.0.5
         version: 9.0.5(@testing-library/dom@10.4.0)(prettier@3.5.3)
       unplugin-stencil:
-        specifier: ^0.3.2
-        version: 0.3.2(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(tsx@4.19.3))
+        specifier: ^0.3.3
+        version: 0.3.3(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(tsx@4.19.3))
     devDependencies:
       '@stencil/core':
         specifier: ^4.30.0
@@ -3205,8 +3205,8 @@ packages:
     resolution: {integrity: sha512-+QBBXBCvifc56fsbuxZQ6Sic3wqqc3WWaqxs58gvJrcOuN83HGTCwz3oS5phzU9LthRNE9VrJCFCLUgHeeFnfA==}
     engines: {node: '>=18'}
 
-  unplugin-stencil@0.3.2:
-    resolution: {integrity: sha512-njSuwkHZq7okZG0AESpsvWgzm60rfdH5nbwkaKSJMAici/0FOJ7HJZJfwwH7TiRm9gThwM/qVZ66UvsT3qUyLw==}
+  unplugin-stencil@0.3.3:
+    resolution: {integrity: sha512-267g0+lVEbMU3nC66KCzZJFyIg8f4LL6HnQROdQAkA0mB7uYDY2dCAWq7uxSRErc/ULSqu6gsM4IrqfslynH6w==}
     peerDependencies:
       '@nuxt/kit': ^3
       '@nuxt/schema': ^3
@@ -6884,7 +6884,7 @@ snapshots:
 
   unicorn-magic@0.3.0: {}
 
-  unplugin-stencil@0.3.2(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(tsx@4.19.3)):
+  unplugin-stencil@0.3.3(@stencil/core@4.30.0)(esbuild@0.25.2)(vite@6.3.3(@types/node@22.15.3)(jiti@2.4.2)(tsx@4.19.3)):
     dependencies:
       '@stencil/core': 4.30.0
       mlly: 1.7.4
