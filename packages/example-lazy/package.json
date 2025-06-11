@@ -1,0 +1,60 @@
+{
+  "name": "example-lazy",
+  "version": "0.0.1",
+  "description": "Stencil Component Starter",
+  "type": "module",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "collection": "dist/collection/collection-manifest.json",
+  "collection:main": "dist/collection/index.js",
+  "unpkg": "dist/example-lazy/example-lazy.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/example-lazy/example-lazy.esm.js",
+      "require": "./dist/example-lazy/example-lazy.cjs.js"
+    },
+    "./my-component": {
+      "import": "./dist/components/my-component.js",
+      "types": "./dist/components/my-component.d.ts"
+    },
+    "./loader": {
+      "types": "./loader/index.d.ts",
+      "import": "./loader/index.js",
+      "require": "./loader/index.cjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stenciljs/component-starter.git"
+  },
+  "files": [
+    "dist/",
+    "loader/"
+  ],
+  "scripts": {
+    "build": "stencil build",
+    "start": "stencil build --dev --watch --serve",
+    "storybook": "storybook dev -p 6006 --no-open",
+    "build-storybook": "storybook build",
+    "test": "stencil test --spec --e2e",
+    "test.watch": "stencil test --spec --e2e --watchAll",
+    "generate": "stencil generate"
+  },
+  "devDependencies": {
+    "@stencil/core": "^4.30.0",
+    "@stencil/storybook-plugin": "workspace:*",
+    "@storybook/addon-docs": "^9.0.5",
+    "@storybook/addon-links": "^9.0.5",
+    "@storybook/addon-onboarding": "^9.0.5",
+    "@storybook/html": "^9.0.5",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.13.5",
+    "jest": "^29.7.0",
+    "jest-cli": "^29.7.0",
+    "puppeteer": "^24.3.0",
+    "storybook": "^9.0.5"
+  },
+  "license": "MIT",
+  "private": true
+}

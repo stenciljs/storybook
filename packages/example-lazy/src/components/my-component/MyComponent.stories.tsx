@@ -1,11 +1,11 @@
-import { h } from '@stencil/core';
 import type { Meta, StoryObj } from '@stencil/storybook-plugin';
+import { h } from '@stencil/core';
 
 import { MyComponent } from './my-component';
 
 const meta = {
   title: 'MyComponent',
-  component: MyComponent,
+  component: 'my-component',
   parameters: {
     layout: 'centered',
   },
