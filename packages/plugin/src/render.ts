@@ -31,6 +31,7 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
         : {
             ...value,
             $attrs$: {
+              ...value.$attrs$,
               slot,
             },
           };
