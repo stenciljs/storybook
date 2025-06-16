@@ -12,11 +12,15 @@ function vnodeToHtml(node: VNode, indentLevel = 0): string {
   }
 
   const tag = node.$tag$;
-
   const attrs = node.$attrs$
     ? Object.entries(node.$attrs$)
         .filter(([_, value]) => value !== undefined)
-        .map(([key, value]) => ` ${key}="${value}"`)
+        .map(([key, value]) => {
+          if (typeof value === 'boolean') {
+            return value ? ` ${key}` : '';
+          }
+          return ` ${key}="${value}"`;
+        })
         .join('')
     : '';
 

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@stencil/storybook-plugin';
 import { h } from '@stencil/core';
+import type { Meta, StoryObj } from '@stencil/storybook-plugin';
 
 import { MyComponent } from './my-component';
 
