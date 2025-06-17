@@ -1,18 +1,17 @@
-import { VNode, JSX as StencilJSX } from '@stencil/core';
+import { JSX as StencilJSX, VNode } from '@stencil/core';
 import { StorybookConfigVite } from '@storybook/builder-vite';
-import { WebRenderer } from 'storybook/internal/types';
-export type { Args, ArgTypes, Parameters, StrictArgs } from 'storybook/internal/types';
 import type {
   AnnotatedStoryFn,
   Args,
   ComponentAnnotations,
-  StoryAnnotations,
   DecoratorFunction,
-  LoaderFunction,
   StoryContext as GenericStoryContext,
-  StrictArgs,
+  LoaderFunction,
   ProjectAnnotations,
+  StoryAnnotations,
   StorybookConfig as StorybookConfigBase,
+  StrictArgs,
+  WebRenderer,
 } from 'storybook/internal/types';
 
 interface DevJSX {

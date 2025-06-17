@@ -36,7 +36,7 @@
     "build": "stencil build",
     "start": "stencil build --dev --watch --serve",
     "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build",
+    "build-storybook": "storybook build --disable-telemetry",
     "test": "stencil test --spec --e2e",
     "test.watch": "stencil test --spec --e2e --watchAll",
     "generate": "stencil generate"
