@@ -21,6 +21,9 @@ on:
           - 'yes'
           - 'no'
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
