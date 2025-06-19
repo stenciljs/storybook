@@ -12,6 +12,10 @@ export const config: Config = {
       customElementsExportBehavior: 'single-export-module',
       externalRuntime: true,
     },
+    {
+      type: 'docs-json',
+      file: 'dist/docs.json',
+    },
   ],
   testing: {
     browserHeadless: 'shell',

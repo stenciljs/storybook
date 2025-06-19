@@ -20,3 +20,7 @@ runs:
     - name: 👷 Build
       shell: bash
       run: pnpm build
+
+    - name: 🎨 Build Storybook
+      shell: bash
+      run: pnpm build-storybook

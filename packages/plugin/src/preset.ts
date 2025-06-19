@@ -4,12 +4,10 @@
  */
 import { createRequire } from 'module';
 import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
-
 import stencil from 'unplugin-stencil/vite';
+import { fileURLToPath } from 'url';
 import { mergeConfig } from 'vite';
-
-import { StorybookConfig } from './types.js';
+import { StorybookConfig } from './types';
 
 const require = createRequire(import.meta.url);
 const getAbsolutePath = <I extends string>(input: I): I => dirname(require.resolve(join(input, 'package.json'))) as any;
@@ -23,13 +21,10 @@ export const core: StorybookConfig['core'] = {
   renderer,
 };
 
-export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig) => {
+export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, { configType }) => {
   const config = mergeConfig(defaultConfig, {
     build: {
       target: 'es2020',
-      rollupOptions: {
-        external: ['@stencil/core'],
-      },
     },
     plugins: [
       stencil({
@@ -37,6 +32,15 @@ export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig) => 
       }),
     ],
   });
+  if (configType === 'DEVELOPMENT') {
+    return mergeConfig(config, {
+      build: {
+        rollupOptions: {
+          external: ['@stencil/core'],
+        },
+      },
+    });
+  }
 
   return config;
 };

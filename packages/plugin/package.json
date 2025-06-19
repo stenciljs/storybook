@@ -70,7 +70,7 @@
     "@storybook/html": "^9.0.8",
     "preact-render-to-string": "^6.5.13",
     "react-docgen-typescript": "^2.4.0",
-    "unplugin-stencil": "^0.3.4"
+    "unplugin-stencil": "^0.3.5"
   },
   "peerDependencies": {
     "@stencil/core": "^4.30.0",
