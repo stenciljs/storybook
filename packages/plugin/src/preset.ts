@@ -12,9 +12,9 @@ import { StorybookConfig } from './types';
 const require = createRequire(import.meta.url);
 const getAbsolutePath = <I extends string>(input: I): I => dirname(require.resolve(join(input, 'package.json'))) as any;
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const _dirname = dirname(fileURLToPath(import.meta.url));
 
-const renderer = join(__dirname, 'entry-preview.js');
+const renderer = join(_dirname, 'entry-preview.js');
 
 export const core: StorybookConfig['core'] = {
   builder: getAbsolutePath('@storybook/builder-vite'),
@@ -52,5 +52,5 @@ export const previewAnnotations: StorybookConfig['previewAnnotations'] = async (
   return result
     .concat(input)
     .concat([renderer])
-    .concat(docsEnabled ? [join(__dirname, 'entry-preview-docs.js')] : []);
+    .concat(docsEnabled ? [join(_dirname, 'entry-preview-docs.js')] : []);
 };
