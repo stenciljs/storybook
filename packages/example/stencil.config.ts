@@ -12,6 +12,10 @@ export const config: Config = {
       customElementsExportBehavior: 'auto-define-custom-elements',
       externalRuntime: true,
     },
+    {
+      type: 'docs-vscode',
+      file: 'custom-elements.json',
+    }
   ],
   testing: {
     browserHeadless: 'shell',
