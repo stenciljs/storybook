@@ -1,4 +1,5 @@
 import { global } from '@storybook/global';
+import type { JsonDocs } from '@stencil/core/internal';
 
 export function isValidComponent(tagName: string) {
   if (!tagName) {
@@ -10,19 +11,16 @@ export function isValidComponent(tagName: string) {
   throw new Error('Provided component needs to be a string. e.g. component: "my-element"');
 }
 
-export function isValidMetaData(customElements: any) {
+export function isValidMetaData(customElements: JsonDocs) {
   if (!customElements) {
     return false;
   }
 
-  if (
-    (customElements.tags && Array.isArray(customElements.tags)) ||
-    (customElements.modules && Array.isArray(customElements.modules))
-  ) {
+  if (customElements.components && Array.isArray(customElements.components)) {
     return true;
   }
-  throw new Error(`You need to setup valid meta data in your config.js via setCustomElements().
-    See the readme of addon-docs for web components for more details.`);
+  
+  throw new Error(`You need to setup valid meta data in your stencil.config.js via docs-json output target.`);
 }
 
 /** @param customElements `any` for now as spec is not super stable yet */

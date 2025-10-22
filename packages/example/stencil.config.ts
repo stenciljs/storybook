@@ -13,7 +13,7 @@ export const config: Config = {
       externalRuntime: true,
     },
     {
-      type: 'docs-vscode',
+      type: 'docs-json',
       file: 'custom-elements.json',
     }
   ],
