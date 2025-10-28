@@ -1,9 +1,30 @@
 import { logger } from 'storybook/internal/client-logger';
 import type { ArgTypes } from 'storybook/internal/types';
-import type { JsonDocs, JsonDocsProp, JsonDocsEvent, JsonDocsSlot, JsonDocsMethod } from '@stencil/core/internal';
+import type {
+  JsonDocs,
+  JsonDocsProp,
+  JsonDocsEvent,
+  JsonDocsSlot,
+  JsonDocsMethod,
+  JsonDocsStyle,
+  JsonDocsPart,
+} from '@stencil/core/internal';
 
 import { inferSBType, inferControlType } from './infer-type';
 import { getCustomElements, isValidComponent, isValidMetaData } from '..';
+
+const mapData = <T extends JsonDocsPart>(data: T[], category: string): ArgTypes =>
+  data.reduce<ArgTypes>((acc, item) => {
+    acc[item.name] = {
+      name: item.name,
+      description: item.docs,
+      control: false,
+      table: {
+        category,
+      },
+    };
+    return acc;
+  }, {});
 
 const mapMethods = (methods: JsonDocsMethod[]): ArgTypes =>
   methods.reduce<ArgTypes>((acc, method) => {
@@ -15,19 +36,6 @@ const mapMethods = (methods: JsonDocsMethod[]): ArgTypes =>
       table: {
         category: 'methods',
         type: { summary: method.signature },
-      },
-    };
-    return acc;
-  }, {});
-
-const mapSlots = (slots: JsonDocsSlot[]): ArgTypes =>
-  slots.reduce<ArgTypes>((acc, slot) => {
-    acc[slot.name] = {
-      name: slot.name,
-      description: slot.docs,
-      control: false,
-      table: {
-        category: 'slots',
       },
     };
     return acc;
@@ -91,8 +99,10 @@ export const extractArgTypesFromElements = (tagName: string, customElements: Jso
     metaData && {
       ...mapProps(metaData.props),
       ...mapEvent(metaData.events),
-      ...mapSlots(metaData.slots),
       ...mapMethods(metaData.methods),
+      ...mapData<JsonDocsSlot>(metaData.slots, 'slots'),
+      ...mapData<JsonDocsPart>(metaData.parts, 'parts'),
+      ...mapData<JsonDocsStyle>(metaData.styles, 'styles'),
     }
   );
 };
