@@ -1,15 +1,31 @@
 import { logger } from 'storybook/internal/client-logger';
 import type { ArgTypes } from 'storybook/internal/types';
-import type { JsonDocs, JsonDocsProp, JsonDocsEvent, JsonDocsSlot } from '@stencil/core/internal';
+import type { JsonDocs, JsonDocsProp, JsonDocsEvent, JsonDocsSlot, JsonDocsMethod } from '@stencil/core/internal';
 
-import { inferSBType } from './infer-sb-type';
+import { inferSBType, inferControlType } from './infer-type';
 import { getCustomElements, isValidComponent, isValidMetaData } from '..';
+
+const mapMethods = (methods: JsonDocsMethod[]): ArgTypes =>
+  methods.reduce<ArgTypes>((acc, method) => {
+    acc[method.name] = {
+      name: method.name,
+      description: method.docs,
+      control: null,
+      type: { name: 'function' },
+      table: {
+        category: 'methods',
+        type: { summary: method.signature },
+      },
+    };
+    return acc;
+  }, {});
 
 const mapSlots = (slots: JsonDocsSlot[]): ArgTypes =>
   slots.reduce<ArgTypes>((acc, slot) => {
     acc[slot.name] = {
       name: slot.name,
       description: slot.docs,
+      control: false,
       table: {
         category: 'slots',
       },
@@ -30,9 +46,12 @@ const mapEvent = (events: JsonDocsEvent[]): ArgTypes =>
     acc[name] = {
       name,
       description: event.docs,
+      control: null,
       table: {
         category: 'events',
+        type: { summary: event.detail },
       },
+      type: { name: 'function' },
     };
 
     return acc;
@@ -40,17 +59,16 @@ const mapEvent = (events: JsonDocsEvent[]): ArgTypes =>
 
 const mapProps = (props: JsonDocsProp[]): ArgTypes =>
   props.reduce<ArgTypes>((acc, prop) => {
-    const type = inferSBType(prop.type);
-
     acc[prop.name] = {
-      name: prop.name,
+      name: prop.attr || prop.name,
       description: prop.docs,
+      control: inferControlType(prop),
       table: {
         category: 'properties',
         type: { summary: prop.complexType?.original },
         defaultValue: { summary: prop.default },
       },
-      type,
+      type: inferSBType(prop),
     };
 
     return acc;
@@ -74,6 +92,7 @@ export const extractArgTypesFromElements = (tagName: string, customElements: Jso
       ...mapProps(metaData.props),
       ...mapEvent(metaData.events),
       ...mapSlots(metaData.slots),
+      ...mapMethods(metaData.methods),
     }
   );
 };
