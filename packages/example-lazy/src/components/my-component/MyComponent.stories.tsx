@@ -9,12 +9,6 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    first: { control: 'text' },
-    last: { control: 'text' },
-    middle: { control: 'text' },
-  },
-  args: { first: 'John', last: 'Doe', middle: 'Michael' },
 } satisfies Meta<MyComponent>;
 
 export default meta;
