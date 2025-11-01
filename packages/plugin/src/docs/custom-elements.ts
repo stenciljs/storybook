@@ -1,17 +1,17 @@
-import { logger } from 'storybook/internal/client-logger';
-import type { ArgTypes } from 'storybook/internal/types';
 import type {
   JsonDocs,
-  JsonDocsProp,
   JsonDocsEvent,
-  JsonDocsSlot,
   JsonDocsMethod,
-  JsonDocsStyle,
   JsonDocsPart,
+  JsonDocsProp,
+  JsonDocsSlot,
+  JsonDocsStyle,
 } from '@stencil/core/internal';
+import { logger } from 'storybook/internal/client-logger';
+import type { ArgTypes } from 'storybook/internal/types';
 
-import { inferSBType, inferControlType } from './infer-type';
 import { getCustomElements, isValidComponent, isValidMetaData } from '..';
+import { inferControlType, inferSBType } from './infer-type';
 
 const mapData = <T extends JsonDocsPart>(data: T[], category: string): ArgTypes =>
   data.reduce<ArgTypes>((acc, item) => {
@@ -109,10 +109,14 @@ export const extractArgTypesFromElements = (tagName: string, customElements: Jso
 
 export const extractArgTypes = (component: any) => {
   const cem = getCustomElements();
-  return extractArgTypesFromElements(component.is, cem);
+  // Handle both string references (lazy loading) and class references (auto-define)
+  const tagName = typeof component === 'string' ? component : component?.is;
+  return extractArgTypesFromElements(tagName, cem);
 };
 
 export const extractComponentDescription = (component: any) => {
-  const metaData = getMetaData(component.is, getCustomElements());
+  // Handle both string references (lazy loading) and class references (auto-define)
+  const tagName = typeof component === 'string' ? component : component?.is;
+  const metaData = getMetaData(tagName, getCustomElements());
   return metaData && metaData.docs;
 };
