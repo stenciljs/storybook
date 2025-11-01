@@ -23,6 +23,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   build:
@@ -73,6 +74,7 @@ jobs:
     needs: [build, get_dev_version]
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       id-token: write
     steps:
       - name: 📥 Checkout Code
@@ -84,12 +86,11 @@ jobs:
           path: packages/plugin
 
       - name: 📦 Publish NPM
-        uses: stenciljs/.github/actions/publish-npm@main
+        uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
         with:
           tag: dev
           working-directory: packages/plugin
           version: ${{ needs.get_dev_version.outputs.dev-version }}
-          token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
 
   release_create_stencil_cli:
     if: inputs.devRelease == 'no'
@@ -111,11 +112,9 @@ jobs:
           path: packages/plugin
 
       - name: 📦 Publish NPM
-        uses: stenciljs/.github/actions/publish-npm@main
+        uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
         with:
           tag: latest
           working-directory: packages/plugin
-          skip-setup: 'yes'
           version: ${{ inputs.releaseType }}
-          token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
-          github-token: ${{ secrets.GH_ADMIN_PAT }}
+          github-token: ${{ github.token }}
