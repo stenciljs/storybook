@@ -6,6 +6,7 @@ export default defineConfig({
     './src/preset.ts',
     './src/entry-preview.ts',
     './src/entry-preview-docs.ts',
+    './src/entry-preview-argtypes.ts',
     './src/docs/index.ts',
     './src/node/index.ts',
   ],
