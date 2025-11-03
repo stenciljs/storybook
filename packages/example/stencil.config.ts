@@ -14,8 +14,8 @@ export const config: Config = {
     },
     {
       type: 'docs-json',
-      file: 'custom-elements.json',
-    }
+      file: 'dist/custom-elements.json',
+    },
   ],
   testing: {
     browserHeadless: 'shell',
