@@ -1,5 +1,5 @@
 import { setCustomElementsManifest, type Preview } from '@stencil/storybook-plugin';
-import customElements from '../custom-elements.json';
+import customElements from '../dist/custom-elements.json';
 
 setCustomElementsManifest(customElements);
 
