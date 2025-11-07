@@ -20,18 +20,25 @@ export const mapPropOptions = (prop: JsonDocsProp) =>
 export const inferControlType = (prop: JsonDocsProp): InputType['control'] => {
   switch (prop.type) {
     case 'string':
+    case 'string | undefined':
       return { type: 'text' };
     case 'number':
+    case 'number | undefined':
       return { type: 'number' };
     case 'boolean':
+    case 'boolean | undefined':
       return { type: 'boolean' };
     case 'Date':
+    case 'Date | string':
       return { type: 'date' };
     case 'function':
+    case 'function | undefined':
     case 'void':
+    case 'void | undefined':
       return null;
     default:
       const values = mapPropOptions(prop);
+
       if (values.length === 0) {
         return { type: 'object' };
       }
