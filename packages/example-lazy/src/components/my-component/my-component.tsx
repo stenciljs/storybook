@@ -1,5 +1,7 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop, h } from '@stencil/core';
 import { format } from '../../utils/utils';
+
+type ComplexType = string;
 
 @Component({
   tag: 'my-component',
@@ -27,6 +29,13 @@ export class MyComponent {
 
   /** show select control for >= 5 options */
   @Prop() selectTest?: '1' | '2' | '3' | '4' | '5';
+
+  @Prop() booleanTest: boolean;
+  @Prop() numberTest?: number;
+  @Prop() stringTest?: string = 'hello';
+  @Prop() complexTest?: ComplexType;
+
+  @Event() evalEvent: EventEmitter<void>;
 
   private getText(): string {
     return format(this.first, this.middle, this.last);

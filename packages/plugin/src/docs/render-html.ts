@@ -16,6 +16,10 @@ function vnodeToHtml(node: VNode, indentLevel = 0): string {
     ? Object.entries(node.$attrs$)
         .filter(([_, value]) => value !== undefined)
         .map(([key, value]) => {
+          if (typeof value === 'function') {
+            // hide event handlers from source code
+            return '';
+          }
           if (typeof value === 'boolean') {
             return value ? ` ${key}` : '';
           }
