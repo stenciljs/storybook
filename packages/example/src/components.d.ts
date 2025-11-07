@@ -7,6 +7,8 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface MyComponent {
+        "booleanTest": boolean;
+        "complexTest"?: ComplexType;
         /**
           * The first name
          */
@@ -19,6 +21,7 @@ export namespace Components {
           * The middle name
          */
         "middle": string;
+        "numberTest"?: number;
         /**
           * show radio control for < 5 options
          */
@@ -27,6 +30,10 @@ export namespace Components {
           * show select control for >= 5 options
          */
         "selectTest"?: '1' | '2' | '3' | '4' | '5';
+        /**
+          * @default 'hello'
+         */
+        "stringTest"?: string;
     }
     interface MySlotted {
     }
@@ -51,6 +58,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface MyComponent {
+        "booleanTest"?: boolean;
+        "complexTest"?: ComplexType;
         /**
           * The first name
          */
@@ -63,6 +72,7 @@ declare namespace LocalJSX {
           * The middle name
          */
         "middle"?: string;
+        "numberTest"?: number;
         /**
           * show radio control for < 5 options
          */
@@ -71,6 +81,10 @@ declare namespace LocalJSX {
           * show select control for >= 5 options
          */
         "selectTest"?: '1' | '2' | '3' | '4' | '5';
+        /**
+          * @default 'hello'
+         */
+        "stringTest"?: string;
     }
     interface MySlotted {
     }

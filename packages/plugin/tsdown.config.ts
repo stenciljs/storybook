@@ -22,6 +22,8 @@ export default defineConfig({
   platform: 'node',
   sourcemap: true,
   clean: true,
-  dts: true,
+  dts: {
+    sourcemap: true,
+  },
   tsconfig: './tsconfig.json',
 });
