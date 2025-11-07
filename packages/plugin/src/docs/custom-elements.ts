@@ -11,7 +11,7 @@ import { logger } from 'storybook/internal/client-logger';
 import type { ArgTypes } from 'storybook/internal/types';
 
 import { getCustomElements, isValidComponent, isValidMetaData } from '..';
-import { inferControlType, inferSBType } from './infer-type';
+import { inferControlType, inferSBType, mapPropOptions } from './infer-type';
 
 const mapData = <T extends JsonDocsPart>(data: T[], category: string): ArgTypes =>
   data.reduce<ArgTypes>((acc, item) => {
@@ -76,6 +76,7 @@ const mapProps = (props: JsonDocsProp[]): ArgTypes =>
         type: { summary: prop.complexType?.original },
         defaultValue: { summary: prop.default },
       },
+      options: mapPropOptions(prop),
       type: inferSBType(prop),
     };
 

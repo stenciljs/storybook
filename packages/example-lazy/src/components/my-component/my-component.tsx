@@ -22,6 +22,12 @@ export class MyComponent {
    */
   @Prop() last: string;
 
+  /** show radio control for < 5 options */
+  @Prop() radioTest?: 'foo' | 'bar' | 'baz';
+
+  /** show select control for >= 5 options */
+  @Prop() selectTest?: '1' | '2' | '3' | '4' | '5';
+
   private getText(): string {
     return format(this.first, this.middle, this.last);
   }
