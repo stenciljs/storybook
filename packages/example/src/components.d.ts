@@ -19,6 +19,14 @@ export namespace Components {
           * The middle name
          */
         "middle": string;
+        /**
+          * show radio control for < 5 options
+         */
+        "radioTest"?: 'foo' | 'bar' | 'baz';
+        /**
+          * show select control for >= 5 options
+         */
+        "selectTest"?: '1' | '2' | '3' | '4' | '5';
     }
     interface MySlotted {
     }
@@ -55,6 +63,14 @@ declare namespace LocalJSX {
           * The middle name
          */
         "middle"?: string;
+        /**
+          * show radio control for < 5 options
+         */
+        "radioTest"?: 'foo' | 'bar' | 'baz';
+        /**
+          * show select control for >= 5 options
+         */
+        "selectTest"?: '1' | '2' | '3' | '4' | '5';
     }
     interface MySlotted {
     }
