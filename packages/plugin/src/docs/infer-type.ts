@@ -1,5 +1,5 @@
 import type { JsonDocsProp } from '@stencil/core/internal';
-import type { SBType, SBScalarType, InputType } from 'storybook/internal/types';
+import type { InputType, SBScalarType, SBType } from 'storybook/internal/types';
 
 export const inferSBType = (prop: JsonDocsProp): SBType => {
   const scalarTypes: SBScalarType['name'][] = ['string', 'number', 'boolean', 'symbol'];
@@ -14,17 +14,37 @@ export const inferSBType = (prop: JsonDocsProp): SBType => {
   return { name: 'other', value: prop.type, raw: prop.type, required: prop.required };
 };
 
+export const mapPropOptions = (prop: JsonDocsProp) =>
+  prop.values.filter((value) => ['string', 'number'].includes(value.type)).map(({ value }) => value);
+
 export const inferControlType = (prop: JsonDocsProp): InputType['control'] => {
   switch (prop.type) {
     case 'string':
+    case 'string | undefined':
       return { type: 'text' };
     case 'number':
+    case 'number | undefined':
       return { type: 'number' };
     case 'boolean':
+    case 'boolean | undefined':
       return { type: 'boolean' };
     case 'Date':
+    case 'Date | string':
       return { type: 'date' };
+    case 'function':
+    case 'function | undefined':
+    case 'void':
+    case 'void | undefined':
+      return null;
     default:
-      return { type: 'object' };
+      const values = mapPropOptions(prop);
+
+      if (values.length === 0) {
+        return { type: 'object' };
+      }
+      if (values.length < 5) {
+        return { type: 'radio' };
+      }
+      return { type: 'select' };
   }
 };
