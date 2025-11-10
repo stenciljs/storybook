@@ -12,6 +12,7 @@ export const parameters: Preview['parameters'] = {
   docs: {
     source: {
       excludeDecorators: true,
+      language: 'jsx',
     },
   },
 };
