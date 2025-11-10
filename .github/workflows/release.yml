@@ -85,17 +85,6 @@ jobs:
         with:
           path: packages/plugin
 
-      - name: 🟢 Setup Node
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
-        with:
-          node-version-file: .nvmrc
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: 📋 Generate package-lock.json
-        working-directory: packages/plugin
-        run: npm install --package-lock-only
-        shell: bash
-
       - name: 📦 Publish NPM
         uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
         with:
@@ -121,17 +110,6 @@ jobs:
         uses: stenciljs/.github/actions/download-archive@main
         with:
           path: packages/plugin
-
-      - name: 🟢 Setup Node
-        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
-        with:
-          node-version-file: .nvmrc
-          registry-url: 'https://registry.npmjs.org'
-
-      - name: 📋 Generate package-lock.json
-        working-directory: packages/plugin
-        run: npm install --package-lock-only
-        shell: bash
 
       - name: 📦 Publish NPM
         uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
