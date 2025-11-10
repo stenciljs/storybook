@@ -7,6 +7,8 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface MyComponent {
+        "booleanTest": boolean;
+        "complexTest"?: ComplexType;
         /**
           * The first name
          */
@@ -19,6 +21,7 @@ export namespace Components {
           * The middle name
          */
         "middle": string;
+        "numberTest"?: number;
         /**
           * show radio control for < 5 options
          */
@@ -27,12 +30,31 @@ export namespace Components {
           * show select control for >= 5 options
          */
         "selectTest"?: '1' | '2' | '3' | '4' | '5';
+        /**
+          * @default 'hello'
+         */
+        "stringTest"?: string;
     }
     interface MySlotted {
     }
 }
+export interface MyComponentCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMyComponentElement;
+}
 declare global {
+    interface HTMLMyComponentElementEventMap {
+        "evalEvent": void;
+    }
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMyComponentElementEventMap>(type: K, listener: (this: HTMLMyComponentElement, ev: MyComponentCustomEvent<HTMLMyComponentElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMyComponentElementEventMap>(type: K, listener: (this: HTMLMyComponentElement, ev: MyComponentCustomEvent<HTMLMyComponentElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLMyComponentElement: {
         prototype: HTMLMyComponentElement;
@@ -51,6 +73,8 @@ declare global {
 }
 declare namespace LocalJSX {
     interface MyComponent {
+        "booleanTest"?: boolean;
+        "complexTest"?: ComplexType;
         /**
           * The first name
          */
@@ -63,6 +87,8 @@ declare namespace LocalJSX {
           * The middle name
          */
         "middle"?: string;
+        "numberTest"?: number;
+        "onEvalEvent"?: (event: MyComponentCustomEvent<void>) => void;
         /**
           * show radio control for < 5 options
          */
@@ -71,6 +97,10 @@ declare namespace LocalJSX {
           * show select control for >= 5 options
          */
         "selectTest"?: '1' | '2' | '3' | '4' | '5';
+        /**
+          * @default 'hello'
+         */
+        "stringTest"?: string;
     }
     interface MySlotted {
     }

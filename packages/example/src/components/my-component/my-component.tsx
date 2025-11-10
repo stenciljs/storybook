@@ -1,4 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Event, EventEmitter, Prop, h } from '@stencil/core';
 import { format } from '../../utils/utils';
 
 type ComplexType = string;
@@ -34,6 +34,8 @@ export class MyComponent {
   @Prop() numberTest?: number;
   @Prop() stringTest?: string = 'hello';
   @Prop() complexTest?: ComplexType;
+
+  @Event() evalEvent: EventEmitter<void>;
 
   private getText(): string {
     return format(this.first, this.middle, this.last);
