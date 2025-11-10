@@ -11,6 +11,7 @@ export namespace Components {
         "complexTest"?: ComplexType;
         /**
           * The first name
+          * @since 1.0.0
          */
         "first": string;
         /**
@@ -19,6 +20,7 @@ export namespace Components {
         "last": string;
         /**
           * The middle name
+          * @see https://example.com/middle-name
          */
         "middle": string;
         "numberTest"?: number;
@@ -77,6 +79,7 @@ declare namespace LocalJSX {
         "complexTest"?: ComplexType;
         /**
           * The first name
+          * @since 1.0.0
          */
         "first"?: string;
         /**
@@ -85,6 +88,7 @@ declare namespace LocalJSX {
         "last"?: string;
         /**
           * The middle name
+          * @see https://example.com/middle-name
          */
         "middle"?: string;
         "numberTest"?: number;

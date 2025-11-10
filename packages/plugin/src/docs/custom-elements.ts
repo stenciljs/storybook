@@ -13,11 +13,72 @@ import type { ArgTypes } from 'storybook/internal/types';
 import { getCustomElements, isValidComponent, isValidMetaData } from '..';
 import { inferControlType, inferSBType, mapPropOptions } from './infer-type';
 
+interface DocsTag {
+  name: string;
+  text?: string;
+}
+
+/**
+ * Formats docsTags (@deprecated, @see, @since) and appends them to the description
+ */
+const formatDocsTags = (docs: string, docsTags?: DocsTag[]): string => {
+  if (!docsTags || docsTags.length === 0) {
+    return docs;
+  }
+
+  const tagSections: string[] = [];
+  const deprecationSections: string[] = [];
+
+  // Handle @deprecated tags - show at the top with emphasis
+  const deprecatedTags = docsTags.filter((tag) => tag.name === 'deprecated');
+  if (deprecatedTags.length > 0) {
+    deprecatedTags.forEach((tag) => {
+      if (tag.text) {
+        deprecationSections.push(`**⚠️ DEPRECATED:** ${tag.text}`);
+      } else {
+        deprecationSections.push(`**⚠️ DEPRECATED**`);
+      }
+    });
+  }
+
+  // Handle @see tags - create links
+  const seeTags = docsTags.filter((tag) => tag.name === 'see');
+  if (seeTags.length > 0) {
+    const seeLinks = seeTags
+      .map((tag) => {
+        const url = tag.text?.trim();
+        return url ? `[${url}](${url})` : '';
+      })
+      .filter(Boolean)
+      .join(', ');
+    if (seeLinks) {
+      tagSections.push(`**See:** ${seeLinks}`);
+    }
+  }
+
+  // Handle @since tags
+  const sinceTags = docsTags.filter((tag) => tag.name === 'since');
+  if (sinceTags.length > 0) {
+    const sinceText = sinceTags
+      .map((tag) => tag.text)
+      .filter(Boolean)
+      .join(', ');
+    if (sinceText) {
+      tagSections.push(`**Since:** ${sinceText}`);
+    }
+  }
+
+  // Combine all sections - deprecation first, then docs, then other tags
+  const allSections = [...deprecationSections, docs, ...tagSections].filter(Boolean);
+
+  return allSections.join('\n\n');
+};
+
 const mapData = <T extends JsonDocsPart>(data: T[], category: string): ArgTypes =>
   data.reduce<ArgTypes>((acc, item) => {
     acc[item.name] = {
       name: item.name,
-      description: item.docs,
+      description: formatDocsTags(item.docs, (item as any).docsTags as DocsTag[]),
       control: false,
       table: {
         category,
@@ -30,7 +91,7 @@ const mapMethods = (methods: JsonDocsMethod[]): ArgTypes =>
   methods.reduce<ArgTypes>((acc, method) => {
     acc[method.name] = {
       name: method.name,
-      description: method.docs,
+      description: formatDocsTags(method.docs, method.docsTags as DocsTag[]),
       control: null,
       type: { name: 'function' },
       table: {
@@ -53,7 +114,7 @@ const mapEvent = (events: JsonDocsEvent[]): ArgTypes =>
 
     acc[name] = {
       name,
-      description: event.docs,
+      description: formatDocsTags(event.docs, event.docsTags as DocsTag[]),
       control: null,
       table: {
         category: 'events',
@@ -69,7 +130,7 @@ const mapProps = (props: JsonDocsProp[]): ArgTypes =>
   props.reduce<ArgTypes>((acc, prop) => {
     acc[prop.name] = {
       name: prop.attr || prop.name,
-      description: prop.docs,
+      description: formatDocsTags(prop.docs, prop.docsTags as DocsTag[]),
       control: inferControlType(prop),
       table: {
         category: 'properties',
