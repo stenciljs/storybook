@@ -36,6 +36,24 @@ export default config;
 
 See the [Storybook Docs](https://storybook.js.org/docs/7.0/qwik/get-started/introduction) for the best documentation on getting started with Storybook.
 
+## Autodocs
+
+The plugin can automatically generate documentation and argTypes from your Stencil component metadata. In your `.storybook/preview.ts`, import and call `setCustomElementsManifest`:
+
+```tsx
+import { setCustomElementsManifest } from '@stencil/storybook-plugin';
+import customElements from '../dist/custom-elements.json';
+
+setCustomElementsManifest(customElements);
+```
+
+This will automatically populate:
+- Component props documentation
+- ArgTypes with proper controls
+- Events documentation
+- Slots documentation
+- CSS custom properties
+
 ## Usage
 
 A basic story will look like this:
@@ -104,6 +122,75 @@ export const Primary: Story = {
   }
 };
 ```
+
+## Source Code Display
+
+The plugin supports displaying source code in multiple formats:
+
+### Language Options
+
+Set the source language in your story parameters:
+
+```tsx
+export default {
+  parameters: {
+    docs: {
+      source: {
+        language: 'html', // or 'jsx', 'tsx'
+      },
+    },
+  },
+} satisfies Meta<MyComponent>;
+```
+
+**HTML format:**
+```html
+<my-component class="example" first="John"></my-component>
+```
+
+**JSX/TSX format:**
+```jsx
+<MyComponent className="example" first="John" />
+```
+
+When using `jsx` or `tsx`:
+- Custom elements (with hyphens) are converted to PascalCase: `<my-component>` → `<MyComponent>`
+- Standard HTML elements remain lowercase: `<div>`, `<span>`
+- HTML attributes are converted to JSX equivalents: `class` → `className`, `for` → `htmlFor`, `tabindex` → `tabIndex`
+- Long attribute lists automatically wrap to multiple lines (80 character threshold)
+
+### Global Source Format Control
+
+You can add a toolbar control to switch between formats globally:
+
+```tsx
+// .storybook/preview.tsx
+export const globalTypes = {
+  source: {
+    name: 'Source Format',
+    defaultValue: 'html',
+    description: 'Select the source format',
+    toolbar: {
+      items: ['html', 'jsx', 'tsx'],
+      icon: 'markup',
+      showName: true,
+      dynamicTitle: true,
+    },
+  },
+};
+
+export const decorators = [
+  (story, context) => {
+    const sourceLanguage = context.globals.source || 'html';
+    context.parameters.docs = context.parameters.docs || {};
+    context.parameters.docs.source = context.parameters.docs.source || {};
+    context.parameters.docs.source.language = sourceLanguage;
+    return story();
+  },
+];
+```
+
+This adds a "Source Format" dropdown to the Storybook toolbar, allowing you to switch between HTML and JSX/TSX display on the fly.
 
 ### Troubleshooting
 
