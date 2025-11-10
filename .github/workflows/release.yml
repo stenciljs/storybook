@@ -23,29 +23,13 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: Detect pnpm and generate fallback package-lock.json for CI
-        run: |
-          # If this repo uses pnpm (pnpm-lock.yaml) but no package-lock.json or yarn.lock
-          # create a minimal package-lock.json so existing CI steps that only look for
-          # package-lock.json / yarn.lock do not fail. This does not change the repo.
-          if [ -f pnpm-lock.yaml ] && [ ! -f package-lock.json ] && [ ! -f yarn.lock ]; then
-            echo "pnpm-lock.yaml found — creating fallback package-lock.json for CI compatibility"
-            # npm init may be required to ensure package.json metadata for package-lock generation
-            npm init -y >/dev/null 2>&1 || true
-            npm install --package-lock-only >/dev/null 2>&1 || true
-          else
-            echo "No pnpm-only repo detected or lockfile already present — nothing to do"
-          fi
-        shell: bash
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: 🏗️ Setup and Build
         uses: ./.github/actions/build
@@ -62,21 +46,10 @@ jobs:
     outputs:
       dev-version: ${{ steps.generate-dev-version.outputs.DEV_VERSION }}
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Detect pnpm and generate fallback package-lock.json for CI
-        run: |
-          if [ -f pnpm-lock.yaml ] && [ ! -f package-lock.json ] && [ ! -f yarn.lock ]; then
-            echo "pnpm-lock.yaml found — creating fallback package-lock.json for CI compatibility"
-            npm init -y >/dev/null 2>&1 || true
-            npm install --package-lock-only >/dev/null 2>&1 || true
-          else
-            echo "No pnpm-only repo detected or lockfile already present — nothing to do"
-          fi
-        shell: bash
-
-      - name: 🚀 Generate Dev Version
+      - name: Generate Dev Version
         id: generate-dev-version
         working-directory: packages/plugin
         run: |
@@ -100,39 +73,23 @@ jobs:
     needs: [build, get_dev_version]
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       id-token: write
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Detect pnpm and generate fallback package-lock.json for CI
-        run: |
-          if [ -f pnpm-lock.yaml ] && [ ! -f package-lock.json ] && [ ! -f yarn.lock ]; then
-            echo "pnpm-lock.yaml found — creating fallback package-lock.json for CI compatibility"
-            npm init -y >/dev/null 2>&1 || true
-            npm install --package-lock-only >/dev/null 2>&1 || true
-          else
-            echo "No pnpm-only repo detected or lockfile already present — nothing to do"
-          fi
-        shell: bash
-
-      - name: 📥 Download Build Archive
+      - name: Download Build Archive
         uses: stenciljs/.github/actions/download-archive@main
         with:
           path: packages/plugin
 
-      - name: 📋 Generate package-lock.json for plugin
-        working-directory: packages/plugin
-        run: npm install --package-lock-only
-        shell: bash
-
-      - name: 📦 Publish NPM
-        uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
+      - name: Publish NPM
+        uses: stenciljs/.github/actions/publish-npm@main
         with:
           tag: dev
           working-directory: packages/plugin
           version: ${{ needs.get_dev_version.outputs.dev-version }}
+          token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
 
   release_create_stencil_cli:
     if: inputs.devRelease == 'no'
@@ -143,35 +100,21 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      - name: Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 
-      - name: Detect pnpm and generate fallback package-lock.json for CI
-        run: |
-          if [ -f pnpm-lock.yaml ] && [ ! -f package-lock.json ] && [ ! -f yarn.lock ]; then
-            echo "pnpm-lock.yaml found — creating fallback package-lock.json for CI compatibility"
-            npm init -y >/dev/null 2>&1 || true
-            npm install --package-lock-only >/dev/null 2>&1 || true
-          else
-            echo "No pnpm-only repo detected or lockfile already present — nothing to do"
-          fi
-        shell: bash
-
-      - name: 📥 Download Build Archive
+      - name: Download Build Archive
         uses: stenciljs/.github/actions/download-archive@main
         with:
           path: packages/plugin
 
-      - name: 📋 Generate package-lock.json for plugin
-        working-directory: packages/plugin
-        run: npm install --package-lock-only
-        shell: bash
-
-      - name: 📦 Publish NPM
-        uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
+      - uses: stenciljs/.github/actions/publish-npm@main
         with:
           tag: latest
           working-directory: packages/plugin
+          skip-setup: 'yes'
           version: ${{ inputs.releaseType }}
+          token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
+          github-token: ${{ secrets.GH_ADMIN_PAT }}
