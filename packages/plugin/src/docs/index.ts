@@ -1,2 +1,2 @@
-export * from './render-html';
+export * from './render-vnode';
 export * from './source-decorator';

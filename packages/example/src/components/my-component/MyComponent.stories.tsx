@@ -1,4 +1,3 @@
-import { h } from '@stencil/core';
 import type { Meta, StoryObj } from '@stencil/storybook-plugin';
 import type { JSX } from '../../components';
 import { MyComponent } from './my-component';
@@ -19,10 +18,6 @@ export const Primary: Story = {
     first: 'John',
     last: 'Doe',
     middle: 'Michael',
-    onEvalEvent: () => console.log('Eval event triggered'),
-  },
-  render: props => {
-    return <my-component {...props} />;
   },
 };
 
