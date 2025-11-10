@@ -23,13 +23,14 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: ⬇️ Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: 📥 Checkout Code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: 🏗️ Setup and Build
         uses: ./.github/actions/build
@@ -46,10 +47,10 @@ jobs:
     outputs:
       dev-version: ${{ steps.generate-dev-version.outputs.DEV_VERSION }}
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: 📥 Checkout Code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Generate Dev Version
+      - name: 🚀 Generate Dev Version
         id: generate-dev-version
         working-directory: packages/plugin
         run: |
@@ -73,23 +74,23 @@ jobs:
     needs: [build, get_dev_version]
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       id-token: write
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: 📥 Checkout Code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Download Build Archive
+      - name: 📥 Download Build Archive
         uses: stenciljs/.github/actions/download-archive@main
         with:
           path: packages/plugin
 
-      - name: Publish NPM
-        uses: stenciljs/.github/actions/publish-npm@main
+      - name: 📦 Publish NPM
+        uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
         with:
           tag: dev
           working-directory: packages/plugin
           version: ${{ needs.get_dev_version.outputs.dev-version }}
-          token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
 
   release_create_stencil_cli:
     if: inputs.devRelease == 'no'
@@ -100,21 +101,20 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: 📥 Checkout Code
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
 
-      - name: Download Build Archive
+      - name: 📥 Download Build Archive
         uses: stenciljs/.github/actions/download-archive@main
         with:
           path: packages/plugin
 
-      - uses: stenciljs/.github/actions/publish-npm@main
+      - name: 📦 Publish NPM
+        uses: stenciljs/.github/actions/publish-npm@e9945bdf51e97eee158513427ecf7be3d3a80443 # temp fix for trusted publishers
         with:
           tag: latest
           working-directory: packages/plugin
-          skip-setup: 'yes'
           version: ${{ inputs.releaseType }}
-          token: ${{ secrets.NPM_PAT_STENCIL_BOT }}
-          github-token: ${{ secrets.GH_ADMIN_PAT }}
+          github-token: ${{ github.token }}
