@@ -11,6 +11,7 @@ export const parameters: Parameters = {
     source: {
       type: SourceType.DYNAMIC,
       language: 'html',
+      format: 'dedent',
     },
   },
 };

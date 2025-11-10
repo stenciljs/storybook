@@ -2,8 +2,7 @@ import { SourceType } from 'storybook/internal/docs-tools';
 import { emitTransformCode, useEffect } from 'storybook/internal/preview-api';
 import type { AnnotatedStoryFn, Args, DecoratorFunction } from 'storybook/internal/types';
 import type { StencilRenderer } from '../types';
-import { renderHTML } from './render-html';
-import { renderJSX } from './render-jsx';
+import { renderVNode } from './render-vnode';
 
 type StoryFn<TArgs = Args> = AnnotatedStoryFn<StencilRenderer<unknown>, TArgs>;
 
@@ -28,12 +27,12 @@ export const sourceDecorator: DecoratorFunction<StencilRenderer<unknown>> = (sto
 
     switch (context.parameters.docs.source.language) {
       case 'html': {
-        emitTransformCode(renderHTML(renderedForSource), context);
+        emitTransformCode(renderVNode(renderedForSource, 'html'), context);
         break;
       }
       case 'jsx':
       case 'tsx': {
-        emitTransformCode(renderJSX(renderedForSource), context);
+        emitTransformCode(renderVNode(renderedForSource, 'jsx'), context);
         break;
       }
     }
