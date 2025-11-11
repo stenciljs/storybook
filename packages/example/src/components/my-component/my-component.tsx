@@ -11,11 +11,13 @@ type ComplexType = string;
 export class MyComponent {
   /**
    * The first name
+   * @since 1.0.0
    */
   @Prop() first: string;
 
   /**
    * The middle name
+   * @see https://example.com/middle-name
    */
   @Prop() middle: string;
 
@@ -24,7 +26,9 @@ export class MyComponent {
    */
   @Prop() last: string;
 
-  /** show radio control for < 5 options */
+  /**
+   * show radio control for < 5 options
+   */
   @Prop() radioTest?: 'foo' | 'bar' | 'baz';
 
   /** show select control for >= 5 options */
