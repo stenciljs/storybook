@@ -1,0 +1,41 @@
+name: 'Stencil Storybook Dev Release'
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  build_storybook_plugin:
+    name: 🏗️ Build Storybook Plugin
+    uses: ./.github/workflows/build.yml
+
+  get_dev_version:
+    name: 🏷️ Get Dev Build Version
+    runs-on: ubuntu-latest
+    needs: build_storybook_plugin
+    outputs:
+      dev-version: ${{ steps.generate-dev-version.outputs.DEV_VERSION }}
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: 🏷️ Generate Dev Version
+        id: generate-dev-version
+        working-directory: packages/plugin
+        run: |
+          PKG_JSON_VERSION=$(cat package.json | jq -r '.version')
+          GIT_HASH=$(git rev-parse --short HEAD)
+          DEV_VERSION=$PKG_JSON_VERSION-dev.$(date +"%s").$GIT_HASH
+          echo "DEV_VERSION=$DEV_VERSION" >> $GITHUB_OUTPUT
+        shell: bash
+
+  publish_dev:
+    name: 🚀 Publish Dev Build
+    needs: get_dev_version
+    uses: ./.github/workflows/publish-npm.yml
+    with:
+      tag: dev
+      version: ${{ needs.get_dev_version.outputs.dev-version }}
