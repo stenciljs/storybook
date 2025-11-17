@@ -35,9 +35,7 @@ on:
         description: 'Command used to install dependencies. Leave blank to skip.'
         required: false
         type: string
-        default: |
-          corepack enable pnpm
-          pnpm install --frozen-lockfile
+        default: pnpm install --frozen-lockfile
       install-working-directory:
         description: 'Working directory for the install command.'
         required: false
@@ -47,8 +45,7 @@ on:
         description: 'Command used to build the package. Leave blank to skip.'
         required: false
         type: string
-        default: |
-          pnpm --filter @stencil/storybook-plugin build
+        default: pnpm --filter @stencil/storybook-plugin build
       build-working-directory:
         description: 'Working directory for the build command.'
         required: false
@@ -84,6 +81,9 @@ jobs:
       - name: 🔄 Ensure Latest npm
         run: npm install -g npm@latest
         shell: bash
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
 
       - name: 📦 Install Dependencies
         if: ${{ inputs.install-command != '' }}

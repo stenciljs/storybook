@@ -14,13 +14,8 @@ permissions:
   id-token: write
 
 jobs:
-  build_storybook_plugin:
-    name: 🏗️ Build Storybook Plugin
-    uses: ./.github/workflows/build.yml
-
   publish_production:
     name: 🚀 Publish Production Build
-    needs: build_storybook_plugin
     uses: ./.github/workflows/publish-npm.yml
     with:
       tag: latest
