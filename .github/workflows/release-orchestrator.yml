@@ -1,4 +1,4 @@
-name: 'Stencil Storybook Release'
+name: 'Release - Stencil Storybook'
 
 on:
   workflow_dispatch:
