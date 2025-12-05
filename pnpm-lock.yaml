@@ -141,7 +141,7 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(typescript@5.8.3)
       storybook:
-        specifier: ^9.0.5
+        specifier: ^9.0.5 || ^10.0.0
         version: 9.0.5(@testing-library/dom@10.4.0)(prettier@3.5.3)
       unplugin-stencil:
         specifier: ^0.4.1
