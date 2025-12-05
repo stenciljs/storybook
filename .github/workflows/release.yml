@@ -109,7 +109,7 @@ jobs:
         with:
           path: packages/plugin
 
-      - uses: stenciljs/.github/actions/publish-npm@a3235adb75c98c8496aa7f0f619099330d9a1625
+      - uses: stenciljs/.github/actions/publish-npm@main
         with:
           tag: latest
           working-directory: packages/plugin
