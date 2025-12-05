@@ -115,5 +115,3 @@ jobs:
           working-directory: packages/plugin
           version: ${{ inputs.releaseType }}
           github-token: ${{ github.token }}
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
