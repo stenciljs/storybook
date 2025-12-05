@@ -89,8 +89,6 @@ jobs:
           tag: dev
           working-directory: packages/plugin
           version: ${{ needs.get_dev_version.outputs.dev-version }}
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
 
   release_create_stencil_cli:
     if: inputs.devRelease == 'no'
