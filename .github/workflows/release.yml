@@ -89,6 +89,7 @@ jobs:
           tag: dev
           working-directory: packages/plugin
           version: ${{ needs.get_dev_version.outputs.dev-version }}
+          pm: pnpm
 
   release_create_stencil_cli:
     if: inputs.devRelease == 'no'
@@ -115,3 +116,4 @@ jobs:
           working-directory: packages/plugin
           version: ${{ inputs.releaseType }}
           github-token: ${{ github.token }}
+          pm: pnpm
