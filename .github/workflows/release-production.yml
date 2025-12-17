@@ -1,0 +1,41 @@
+name: 'Stencil Storybook Production Release'
+
+on:
+  workflow_call:
+    inputs:
+      bump:
+        description: 'Semver bump to apply (patch, minor, major).'
+        required: true
+        type: string
+        default: patch
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  validate_bump:
+    name: ✅ Validate Bump Input
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔎 Ensure bump is allowed
+        env:
+          BUMP: ${{ inputs.bump }}
+        run: |
+          case "$BUMP" in
+            patch|minor|major)
+              exit 0
+              ;;
+            *)
+              echo "::error::Invalid bump input: '$BUMP'. Allowed values: patch, minor, major."
+              exit 1
+              ;;
+          esac
+
+  publish_production:
+    name: 🚀 Publish Production Build
+    needs: validate_bump
+    uses: ./.github/workflows/publish-npm.yml
+    with:
+      tag: latest
+      version: ${{ inputs.bump }}
