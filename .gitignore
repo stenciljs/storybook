@@ -1,6 +1,10 @@
+.idea
 node_modules
 packages/*/dist
-pnp.*
+package-lock.json
+
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -9,7 +13,6 @@ pnp.*
 !.yarn/versions
 
 # Storybook
-**/storybook-static
 storybook-static
 .vercel
 
