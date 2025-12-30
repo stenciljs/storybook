@@ -1,26 +1,15 @@
-name: Build & Test
+name: Build Storybook Plugin
 
 on:
-  push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - '**'
-
-permissions:
-  contents: read
+  workflow_call:
 
 jobs:
-  build_and_test:
+  build:
+    name: 🏗️ Build Storybook Plugin
     runs-on: ubuntu-latest
-
     steps:
       - name: ⬇️ Checkout Code
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: 🏗️ Setup and Build
         uses: ./.github/actions/build
-
-      - name: 🧪 Test jest
-        run: pnpm test

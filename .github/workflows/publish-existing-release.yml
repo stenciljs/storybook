@@ -1,0 +1,137 @@
+name: 'Publish Existing Release to npm'
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 0.5.9 or v0.5.9)'
+        required: true
+        type: string
+      tag:
+        description: 'npm dist-tag to publish under (e.g., latest, next, dev)'
+        required: true
+        type: string
+        default: 'latest'
+      dry_run:
+        description: 'Dry run (do not actually publish)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: 📦 Publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔍 Normalize Version
+        id: normalize
+        run: |
+          VERSION="${{ inputs.version }}"
+          # Remove 'v' prefix if present
+          VERSION="${VERSION#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+          echo "Normalized version: $VERSION"
+          echo "Git tag: v$VERSION"
+        shell: bash
+
+      - name: 📥 Checkout Code at Release Tag
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          ref: ${{ steps.normalize.outputs.tag }}
+          fetch-depth: 0
+
+      - name: 🟢 Configure Node for Publish
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@stencil'
+
+      - name: 🔎 Verify Package Version
+        run: |
+          EXPECTED="${{ steps.normalize.outputs.version }}"
+          ACTUAL=$(node -e "console.log(require('./packages/plugin/package.json').version)")
+          echo "Expected version: $EXPECTED"
+          echo "Actual version in package.json: $ACTUAL"
+          if [ "$EXPECTED" != "$ACTUAL" ]; then
+            echo "⚠️  Warning: Version mismatch. The tag is v$EXPECTED but package.json has $ACTUAL"
+            echo "This may be expected if version was bumped after tagging."
+          fi
+        shell: bash
+
+      - name: 🔄 Ensure Latest npm
+        run: npm install -g npm@latest
+        shell: bash
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
+
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+        shell: bash
+
+      - name: 🛠️ Build Package
+        run: pnpm --filter @stencil/storybook-plugin build
+        shell: bash
+
+      - name: 🔎 Check if Version Already Published
+        id: check-published
+        run: |
+          VERSION="${{ steps.normalize.outputs.version }}"
+          if npm view "@stencil/storybook-plugin@$VERSION" version 2>/dev/null; then
+            echo "already_published=true" >> $GITHUB_OUTPUT
+            echo "⚠️  Version $VERSION is already published on npm"
+          else
+            echo "already_published=false" >> $GITHUB_OUTPUT
+            echo "✓ Version $VERSION is not yet published"
+          fi
+        shell: bash
+
+      - name: 🚀 Publish to npm
+        if: ${{ steps.check-published.outputs.already_published == 'false' && inputs.dry_run == false }}
+        run: npm publish --tag ${{ inputs.tag }} --provenance
+        shell: bash
+        working-directory: packages/plugin
+
+      - name: 🔍 Dry Run - Would Publish
+        if: ${{ inputs.dry_run == true }}
+        run: |
+          echo "🔍 DRY RUN MODE"
+          echo "Would publish @stencil/storybook-plugin@${{ steps.normalize.outputs.version }}"
+          echo "With tag: ${{ inputs.tag }}"
+          echo ""
+          echo "Package contents:"
+          npm pack --dry-run
+        shell: bash
+        working-directory: packages/plugin
+
+      - name: ⏭️ Skip - Already Published
+        if: ${{ steps.check-published.outputs.already_published == 'true' }}
+        run: |
+          echo "⏭️  Skipping publish - version ${{ steps.normalize.outputs.version }} is already published to npm"
+          echo "If you need to publish under a different tag, unpublish first or use a different version."
+        shell: bash
+
+      - name: ✅ Summary
+        run: |
+          echo "========================================="
+          echo "📦 Publish Workflow Summary"
+          echo "========================================="
+          echo "Version: ${{ steps.normalize.outputs.version }}"
+          echo "Tag: ${{ inputs.tag }}"
+          echo "Dry Run: ${{ inputs.dry_run }}"
+          echo "Already Published: ${{ steps.check-published.outputs.already_published }}"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            echo "Status: Dry run completed"
+          elif [ "${{ steps.check-published.outputs.already_published }}" = "true" ]; then
+            echo "Status: Skipped (already published)"
+          else
+            echo "Status: Published successfully ✅"
+          fi
+          echo "========================================="
+        shell: bash
