@@ -17,6 +17,7 @@ export default defineConfig({
     'vite', // May contain native dependencies
   ],
   outDir: './dist',
+  fixedExtension: false,
   format: ['esm', 'cjs'],
   target: 'es2020',
   platform: 'node',

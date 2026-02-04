@@ -21,7 +21,7 @@
     "framework"
   ],
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -42,15 +42,15 @@
       "import": "./dist/preset.js",
       "require": "./dist/preset.cjs"
     },
-    "./preview": {
-      "types": "./dist/preview.d.ts",
-      "import": "./dist/preview.js",
-      "require": "./dist/preview.cjs"
+    "./entry-preview": {
+      "types": "./dist/entry-preview.d.ts",
+      "import": "./dist/entry-preview.js",
+      "require": "./dist/entry-preview.cjs"
     },
-    "./dist/preview.js": {
-      "types": "./dist/preview.d.ts",
-      "import": "./dist/preview.js",
-      "require": "./dist/preview.cjs"
+    "./dist/entry-preview.js": {
+      "types": "./dist/entry-preview.d.ts",
+      "import": "./dist/entry-preview.js",
+      "require": "./dist/entry-preview.cjs"
     },
     "./node": {
       "types": "./dist/node/index.d.ts",
@@ -73,15 +73,15 @@
     "unplugin-stencil": "^0.4.1"
   },
   "peerDependencies": {
-    "@stencil/core": "^4.30.0",
+    "@stencil/core": "^4.42.0",
     "storybook": "^9.0.8 || ^10.0.0"
   },
   "devDependencies": {
-    "@stencil/core": "^4.33.1",
-    "@types/node": "^22.15.3",
-    "tsdown": "^0.12.7",
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "@stencil/core": "^4.42.0",
+    "@types/node": "^25.2.0",
+    "tsdown": "^0.20.1",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.1"
   },
   "engines": {
     "node": ">=20"

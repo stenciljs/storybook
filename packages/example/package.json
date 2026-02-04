@@ -11,12 +11,13 @@
   "unpkg": "dist/example/example.esm.js",
   "exports": {
     ".": {
-      "import": "./dist/example/example.esm.js",
-      "require": "./dist/example/example.cjs.js"
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs.js"
     },
     "./my-component": {
-      "import": "./dist/components/my-component.js",
-      "types": "./dist/components/my-component.d.ts"
+      "types": "./dist/components/my-component.d.ts",
+      "import": "./dist/components/my-component.js"
     },
     "./loader": {
       "types": "./loader/index.d.ts",

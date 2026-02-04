@@ -108,8 +108,21 @@ declare namespace LocalJSX {
     }
     interface MySlotted {
     }
+
+    interface MyComponentAttributes {
+        "first": string;
+        "middle": string;
+        "last": string;
+        "radioTest": 'foo' | 'bar' | 'baz';
+        "selectTest": '1' | '2' | '3' | '4' | '5';
+        "booleanTest": boolean;
+        "numberTest": number;
+        "stringTest": string;
+        "complexTest": ComplexType;
+    }
+
     interface IntrinsicElements {
-        "my-component": MyComponent;
+        "my-component": Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `attr:${K}`]?: MyComponentAttributes[K] } & { [K in keyof MyComponent & keyof MyComponentAttributes as `prop:${K}`]?: MyComponent[K] };
         "my-slotted": MySlotted;
     }
 }
@@ -117,8 +130,8 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
-            "my-slotted": LocalJSX.MySlotted & JSXBase.HTMLAttributes<HTMLMySlottedElement>;
+            "my-component": LocalJSX.IntrinsicElements["my-component"] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "my-slotted": LocalJSX.IntrinsicElements["my-slotted"] & JSXBase.HTMLAttributes<HTMLMySlottedElement>;
         }
     }
 }

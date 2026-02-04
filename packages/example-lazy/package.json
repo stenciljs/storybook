@@ -11,12 +11,13 @@
   "unpkg": "dist/example-lazy/example-lazy.esm.js",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/example-lazy/example-lazy.esm.js",
       "require": "./dist/example-lazy/example-lazy.cjs.js"
     },
     "./my-component": {
-      "import": "./dist/components/my-component.js",
-      "types": "./dist/components/my-component.d.ts"
+      "types": "./dist/components/my-component.d.ts",
+      "import": "./dist/components/my-component.js"
     },
     "./loader": {
       "types": "./loader/index.d.ts",
