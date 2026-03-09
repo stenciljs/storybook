@@ -20,7 +20,7 @@
     "build-storybook.example": "pnpm --filter example build-storybook",
     "build-storybook.example-lazy": "pnpm --filter example-lazy build-storybook",
     "dev": "run-s build.plugin dev.start",
-    "dev.start": "run-p dev.example dev.example-lazy",
+    "dev.start": "run-p dev.plugin dev.example dev.example-lazy",
     "dev.plugin": "pnpm --filter @stencil/storybook-plugin watch",
     "dev.example": "pnpm --filter example run storybook",
     "dev.example-lazy": "pnpm --filter example-lazy run storybook",
