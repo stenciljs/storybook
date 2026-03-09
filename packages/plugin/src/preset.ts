@@ -17,7 +17,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const renderer = join(__dirname, 'entry-preview.js');
 
 export const core: StorybookConfig['core'] = {
-  builder: getAbsolutePath('@storybook/builder-vite'),
+  builder: join(getAbsolutePath('@storybook/builder-vite'), 'dist', 'index.js'),
   renderer,
 };
 

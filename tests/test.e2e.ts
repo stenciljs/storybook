@@ -31,14 +31,7 @@ describe('StencilJS Storybook', () => {
     await browser.switchFrame(() => Boolean(document.querySelector('my-component')));
 
     await expect($('my-component')).toBeExisting();
-    await expect($('my-component')).toMatchInlineSnapshot(`
-          "<my-component class="hydrated">
-            <template shadowrootmode="open">
-              <style>:host { display: block; }</style>
-              <div>Hello, World! I'm John Michael Doe</div>
-            </template>
-          </my-component>"
-        `);
+    await expect($('my-component')).toMatchSnapshot();
   });
 
   it('update the component when I update the props', async () => {
@@ -47,14 +40,7 @@ describe('StencilJS Storybook', () => {
     await setPropInput('last', 'Smith');
 
     await browser.switchFrame(() => Boolean(document.querySelector('my-component')));
-    await expect($('my-component')).toMatchInlineSnapshot(`
-          "<my-component class="hydrated">
-            <template shadowrootmode="open">
-              <style>:host { display: block; }</style>
-              <div>Hello, World! I'm Jane Doe Smith</div>
-            </template>
-          </my-component>"
-        `);
+    await expect($('my-component')).toMatchSnapshot();
   });
 
   it('should render the component with slots as strings', async () => {
@@ -63,22 +49,7 @@ describe('StencilJS Storybook', () => {
     await browser.switchFrame(() => Boolean(document.querySelector('my-slotted')));
 
     await expect($('my-slotted')).toBeExisting();
-    await expect($('my-slotted')).toMatchInlineSnapshot(`
-          "<my-slotted class="hydrated">
-            default
-            <span slot="another">another</span>
-            <template shadowrootmode="open">
-              <style>:host { display: block; }</style>
-              <div>
-                <slot></slot>
-                <hr />
-                <div style="background: pink;">
-                  <slot name="another"></slot>
-                </div>
-              </div>
-            </template>
-          </my-slotted>"
-        `);
+    await expect($('my-slotted')).toMatchSnapshot();
   });
 
   it('should render the component with slots as elements', async () => {
@@ -87,22 +58,7 @@ describe('StencilJS Storybook', () => {
     await browser.switchFrame(() => Boolean(document.querySelector('my-slotted')));
 
     await expect($('my-slotted')).toBeExisting();
-    await expect($('my-slotted')).toMatchInlineSnapshot(`
-          "<my-slotted class="hydrated">
-            <div>default</div>
-            <div slot="another">another</div>
-            <template shadowrootmode="open">
-              <style>:host { display: block; }</style>
-              <div>
-                <slot></slot>
-                <hr />
-                <div style="background: pink;">
-                  <slot name="another"></slot>
-                </div>
-              </div>
-            </template>
-          </my-slotted>"
-        `);
+    await expect($('my-slotted')).toMatchSnapshot();
   });
 
   it('should render the component with slots as fragments', async () => {
@@ -111,25 +67,6 @@ describe('StencilJS Storybook', () => {
     await browser.switchFrame(() => Boolean(document.querySelector('my-slotted')));
 
     await expect($('my-slotted')).toBeExisting();
-    await expect($('my-slotted')).toMatchInlineSnapshot(`
-          "<my-slotted class="hydrated">
-            <h1>hello</h1>
-            <h2>world</h2>
-            <span slot="another">
-              <h1>hello</h1>
-              <h2>world</h2>
-            </span>
-            <template shadowrootmode="open">
-              <style>:host { display: block; }</style>
-              <div>
-                <slot></slot>
-                <hr />
-                <div style="background: pink;">
-                  <slot name="another"></slot>
-                </div>
-              </div>
-            </template>
-          </my-slotted>"
-        `);
+    await expect($('my-slotted')).toMatchSnapshot();
   });
 });

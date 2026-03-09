@@ -21,7 +21,7 @@ export default defineConfig({
   target: 'es2020',
   platform: 'node',
   sourcemap: true,
-  clean: true,
+  clean: false,
   dts: {
     sourcemap: true,
   },
