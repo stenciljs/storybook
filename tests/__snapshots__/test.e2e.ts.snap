@@ -1,0 +1,74 @@
+// Snapshot v1
+
+exports[`StencilJS Storybook > should render the component 1`] = `
+"<my-component class="hydrated">
+  <template shadowrootmode="open">
+    <style>:host { display: block; }</style>
+    <div>Hello, World! I'm John Michael Doe</div>
+  </template>
+</my-component>"
+`;
+
+exports[`StencilJS Storybook > should render the component with slots as elements 1`] = `
+"<my-slotted class="hydrated">
+  <div>default</div>
+  <div slot="another">another</div>
+  <template shadowrootmode="open">
+    <style>:host { display: block; }</style>
+    <div>
+      <slot></slot>
+      <hr />
+      <div style="background: pink;">
+        <slot name="another"></slot>
+      </div>
+    </div>
+  </template>
+</my-slotted>"
+`;
+
+exports[`StencilJS Storybook > should render the component with slots as fragments 1`] = `
+"<my-slotted class="hydrated">
+  <h1>hello</h1>
+  <h2>world</h2>
+  <span slot="another">
+    <h1>hello</h1>
+    <h2>world</h2>
+  </span>
+  <template shadowrootmode="open">
+    <style>:host { display: block; }</style>
+    <div>
+      <slot></slot>
+      <hr />
+      <div style="background: pink;">
+        <slot name="another"></slot>
+      </div>
+    </div>
+  </template>
+</my-slotted>"
+`;
+
+exports[`StencilJS Storybook > should render the component with slots as strings 1`] = `
+"<my-slotted class="hydrated">
+  default
+  <span slot="another">another</span>
+  <template shadowrootmode="open">
+    <style>:host { display: block; }</style>
+    <div>
+      <slot></slot>
+      <hr />
+      <div style="background: pink;">
+        <slot name="another"></slot>
+      </div>
+    </div>
+  </template>
+</my-slotted>"
+`;
+
+exports[`StencilJS Storybook > update the component when I update the props 1`] = `
+"<my-component class="hydrated">
+  <template shadowrootmode="open">
+    <style>:host { display: block; }</style>
+    <div>Hello, World! I'm Jane Doe Smith</div>
+  </template>
+</my-component>"
+`;

@@ -163,6 +163,7 @@ export const config: WebdriverIO.Config = {
     storybookProcess = cp.spawn('pnpm', ['dev.example'], {
       stdio: 'inherit',
       cwd: __dirname,
+      shell: true,
     });
   },
   /**
@@ -205,12 +206,16 @@ export const config: WebdriverIO.Config = {
   before: function () {
     return browser.waitUntil(
       async () => {
-        await browser.url('/');
-        return (await browser.getTitle()).includes('Storybook');
+        try {
+          await browser.url('/');
+          return (await browser.getTitle()).includes('Storybook');
+        } catch {
+          return false;
+        }
       },
       {
-        timeout: 10000,
-        interval: 1000,
+        timeout: 120000,
+        interval: 2000,
         timeoutMsg: 'Failed to start Storybook instance',
       },
     );
