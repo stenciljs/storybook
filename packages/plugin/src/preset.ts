@@ -8,6 +8,7 @@ import stencil from 'unplugin-stencil/vite';
 import { fileURLToPath } from 'url';
 import { mergeConfig } from 'vite';
 import { StorybookConfig } from './types';
+import { stencilStylesPlugin } from './vite-plugin-stencil-styles';
 
 const require = createRequire(import.meta.url);
 const getAbsolutePath = <I extends string>(input: I): I => dirname(require.resolve(join(input, 'package.json'))) as any;
@@ -30,6 +31,7 @@ export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, { c
       stencil({
         rootPath: defaultConfig.root,
       }),
+      stencilStylesPlugin(),
     ],
   });
   if (configType === 'DEVELOPMENT') {
