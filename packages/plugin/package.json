@@ -61,7 +61,8 @@
   },
   "scripts": {
     "watch": "tsdown --watch",
-    "build": "tsdown"
+    "build": "tsdown",
+    "test": "vitest run"
   },
   "dependencies": {
     "@storybook/builder-vite": "^10.0.0",
@@ -80,7 +81,8 @@
     "@types/node": "^22.15.3",
     "tsdown": "^0.12.7",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^4.1.6"
   },
   "engines": {
     "node": ">=20"
