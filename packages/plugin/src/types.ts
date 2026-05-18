@@ -87,6 +87,17 @@ export type StorybookConfig = Omit<StorybookConfigBase, 'framework'> & {
 } & StorybookConfigVite;
 
 /**
+ * Re-export all storybook types so that types inlined into our bundled .d.ts
+ * (e.g. PlayFunctionContext, PlayFunction, Parameters, ArgTypes, Args) are
+ * nameable by consumers. Without these re-exports, consumer code that
+ * transitively references those types via story re-exports trips TS4023
+ * ("...cannot be named") errors. Conflicting names (StoryContext,
+ * StorybookConfig) are shadowed by our explicit exports above.
+ */
+export type * from 'storybook/internal/types';
+export type * from '@storybook/builder-vite';
+
+/**
  * Extend the JSX namespace to include StencilJSX.IntrinsicElements, StencilJSX.Element, and StencilJSX.ElementClass.
  * This is necessary to allow the use of Stencil components in Storybook.
  * Without we get are getting type errors.
