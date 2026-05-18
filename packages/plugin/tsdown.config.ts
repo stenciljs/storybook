@@ -24,7 +24,14 @@ export default defineConfig({
   clean: true,
   dts: {
     sourcemap: true,
-    resolve: true,
+    /**
+     * Inline types from storybook and @storybook/* packages so consumer
+     * workspaces resolve them locally from our bundled .d.ts. @stencil/core
+     * stays external — the consumer always has it installed, and bundling
+     * it would duplicate the `declare global { namespace jest { ... } }`
+     * augmentation, breaking @vitest/expect's JestAssertion inheritance.
+     */
+    resolve: [/^storybook(\/|$)/, /^@storybook\//],
   },
   tsconfig: './tsconfig.json',
 });
