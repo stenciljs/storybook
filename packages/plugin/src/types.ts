@@ -2,7 +2,6 @@ import { JSX as StencilJSX, VNode } from '@stencil/core';
 import { StorybookConfigVite } from '@storybook/builder-vite';
 import type {
   AnnotatedStoryFn,
-  Args,
   ComponentAnnotations,
   DecoratorFunction,
   StoryContext as GenericStoryContext,
@@ -10,7 +9,6 @@ import type {
   ProjectAnnotations,
   StoryAnnotations,
   StorybookConfig as StorybookConfigBase,
-  StrictArgs,
   WebRenderer,
 } from 'storybook/internal/types';
 
@@ -64,25 +62,25 @@ export type Preview = ProjectAnnotations<StencilRenderer<unknown>>;
  *
  * @see [Default export](https://storybook.js.org/docs/formats/component-story-format/#default-export)
  */
-export type Meta<TArgs = Args> = ComponentAnnotations<StencilRenderer<TArgs>, TArgs>;
+export type Meta<TArgs = Record<string, unknown>> = ComponentAnnotations<StencilRenderer<TArgs>, TArgs>;
 
 /**
  * Story function that represents a CSFv2 component example.
  *
  * @see [Named Story exports](https://storybook.js.org/docs/formats/component-story-format/#named-story-exports)
  */
-export type StoryFn<TArgs = Args> = AnnotatedStoryFn<StencilRenderer<TArgs>, TArgs>;
+export type StoryFn<TArgs = Record<string, unknown>> = AnnotatedStoryFn<StencilRenderer<TArgs>, TArgs>;
 
 /**
  * Story function that represents a CSFv3 component example.
  *
  * @see [Named Story exports](https://storybook.js.org/docs/formats/component-story-format/#named-story-exports)
  */
-export type StoryObj<TArgs = Args> = StoryAnnotations<StencilRenderer<TArgs>, TArgs>;
+export type StoryObj<TArgs = Record<string, unknown>> = StoryAnnotations<StencilRenderer<TArgs>, TArgs>;
 
-export type Decorator<TArgs = StrictArgs> = DecoratorFunction<StencilRenderer<TArgs>, TArgs>;
-export type Loader<TArgs = StrictArgs> = LoaderFunction<StencilRenderer<TArgs>, TArgs>;
-export type StoryContext<TArgs = StrictArgs> = GenericStoryContext<StencilRenderer<TArgs>, TArgs>;
+export type Decorator<TArgs = Record<string, unknown>> = DecoratorFunction<StencilRenderer<TArgs>, TArgs>;
+export type Loader<TArgs = Record<string, unknown>> = LoaderFunction<StencilRenderer<TArgs>, TArgs>;
+export type StoryContext<TArgs = Record<string, unknown>> = GenericStoryContext<StencilRenderer<TArgs>, TArgs>;
 
 export type StorybookConfig = Omit<StorybookConfigBase, 'framework'> & {
   framework: '@stencil/storybook-plugin' | { name: '@stencil/storybook-plugin' };

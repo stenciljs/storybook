@@ -122,18 +122,9 @@ importers:
 
   packages/plugin:
     dependencies:
-      '@storybook/addon-actions':
-        specifier: ^9.0.8
-        version: 9.0.8
-      '@storybook/builder-vite':
-        specifier: ^9.0.8
-        version: 9.0.8(storybook@9.0.5(@testing-library/dom@10.4.0)(prettier@3.5.3))(vite@6.3.5(@types/node@22.15.3)(jiti@2.4.2)(tsx@4.19.3))
       '@storybook/global':
         specifier: ^5.0.0
         version: 5.0.0
-      '@storybook/html':
-        specifier: ^9.0.8
-        version: 9.0.8(storybook@9.0.5(@testing-library/dom@10.4.0)(prettier@3.5.3))
       preact-render-to-string:
         specifier: ^6.5.13
         version: 6.5.13(preact@10.26.5)
@@ -141,7 +132,7 @@ importers:
         specifier: ^2.4.0
         version: 2.4.0(typescript@5.8.3)
       storybook:
-        specifier: ^9.0.5
+        specifier: ^9.0.5 || ^10.0.0
         version: 9.0.5(@testing-library/dom@10.4.0)(prettier@3.5.3)
       unplugin-stencil:
         specifier: ^0.4.1
@@ -150,6 +141,15 @@ importers:
       '@stencil/core':
         specifier: ^4.33.1
         version: 4.33.1
+      '@storybook/addon-actions':
+        specifier: ^9.0.8
+        version: 9.0.8
+      '@storybook/builder-vite':
+        specifier: ^9.0.8
+        version: 9.0.8(storybook@9.0.5(@testing-library/dom@10.4.0)(prettier@3.5.3))(vite@6.3.5(@types/node@22.15.3)(jiti@2.4.2)(tsx@4.19.3))
+      '@storybook/html':
+        specifier: ^9.0.8
+        version: 9.0.8(storybook@9.0.5(@testing-library/dom@10.4.0)(prettier@3.5.3))
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
