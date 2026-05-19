@@ -52,7 +52,7 @@ export const config: WebdriverIO.Config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 1,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -98,7 +98,7 @@ export const config: WebdriverIO.Config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: 'http://localhost:6006',
+  baseUrl: 'http://localhost:6007',
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -160,9 +160,10 @@ export const config: WebdriverIO.Config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    */
   onPrepare: function () {
-    storybookProcess = cp.spawn('pnpm', ['dev.example'], {
+    process.env.STENCIL_HMR_PACKAGE = 'example-lazy';
+    storybookProcess = cp.spawn('pnpm', ['dev.example-lazy'], {
       stdio: 'inherit',
-      cwd: __dirname,
+      cwd: path.resolve(__dirname, '..'),
       shell: true,
     });
   },
