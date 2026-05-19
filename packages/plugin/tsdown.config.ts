@@ -1,5 +1,10 @@
 import { defineConfig } from 'tsdown';
 
+// In watch mode tsdown cleans dist before the first build, which races with
+// Storybook startup. Skip cleaning when watching so the previous build stays
+// in place until the new one is ready.
+const watching = process.argv.includes('--watch') || process.argv.includes('-w');
+
 export default defineConfig({
   entry: [
     './src/index.ts',
@@ -21,7 +26,7 @@ export default defineConfig({
   target: 'es2020',
   platform: 'node',
   sourcemap: true,
-  clean: true,
+  clean: !watching,
   dts: {
     sourcemap: true,
   },

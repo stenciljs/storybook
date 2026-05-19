@@ -15,11 +15,16 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
       `Stencil component not found. If you are not lazy loading your components with \`defineCustomElements()\` in preview.ts, pass a constructor value for component in your story \`component: MyComponent\``,
     );
   } else if (typeof component !== 'string' && !customElements.getName(component)) {
-    throw new Error(
-      `Stencil component not found. If you are lazy loading your components with \`defineCustomElements()\` in preview.ts, pass a string value for component in your story \`component: 'my-component'\``,
-    );
+    // After HMR the module re-evaluates and produces a new class reference, so
+    // getName returns null even though the tag is still registered under component.is.
+    if (!(component as any).is || !customElements.get((component as any).is)) {
+      throw new Error(
+        `Stencil component not found. If you are lazy loading your components with \`defineCustomElements()\` in preview.ts, pass a string value for component in your story \`component: 'my-component'\``,
+      );
+    }
   }
-  const cmpName = typeof component === 'string' ? component : customElements.getName(component);
+  const cmpName =
+    typeof component === 'string' ? component : (customElements.getName(component) ?? (component as any).is);
 
   const children: any[] = Object.entries<VNode>(parameters.slots || []).map(([key, value]) => {
     // if the parameter key is 'default' don't give it a slot name so it renders just as a child

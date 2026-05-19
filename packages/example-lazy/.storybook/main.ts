@@ -2,12 +2,7 @@ import type { StorybookConfig } from '@stencil/storybook-plugin';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
-  staticDirs: [
-    {
-      from: '../dist/esm',
-      to: 'assets',
-    },
-  ],
+  staticDirs: ['../dist/esm'],
   addons: ['@storybook/addon-links', '@storybook/addon-docs'],
   core: {
     disableTelemetry: true,
