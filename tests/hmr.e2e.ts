@@ -19,6 +19,9 @@ const COMPONENT_PATH = path.resolve(
 );
 
 const ORIGINAL_RENDER = `    return <div>Hello, World! I'm {this.getText()}</div>;`;
+// Matches any prior HMR mutation of the render line so we can self-heal a file
+// left dirty by a previous run that died before its cleanup hook fired.
+const RENDER_LINE_PATTERN = /^ {4}return <div>Hello, [^!]+! I'm \{this\.getText\(\)\}<\/div>;$/m;
 
 function makeUpdatedRender(token: string) {
   return `    return <div>Hello, ${token}! I'm {this.getText()}</div>;`;
@@ -29,6 +32,16 @@ async function readMyComponentText() {
   await browser.switchFrame(() => Boolean(document.querySelector('my-component')));
   const el = await $('my-component');
   await el.waitForExist({ timeout: 15000 });
+  // The lazy loader places <my-component> in the DOM immediately and hydrates
+  // it asynchronously from `dist/esm/*.entry.js`. Wait for the canonical
+  // `hydrated` class before reading text so we don't see an empty shadow root.
+  await browser.waitUntil(
+    async () => {
+      const cls = await $('my-component').getAttribute('class');
+      return typeof cls === 'string' && cls.split(/\s+/).includes('hydrated');
+    },
+    { timeout: 15000, interval: 200, timeoutMsg: 'my-component never reached the `hydrated` state' },
+  );
   return browser.execute(() => {
     const host = document.querySelector('my-component');
     const root = host?.shadowRoot ?? host;
@@ -40,16 +53,36 @@ describe(`StencilJS Storybook HMR (${PACKAGE})`, () => {
   let originalSource: string | undefined;
 
   before(async () => {
-    originalSource = fs.readFileSync(COMPONENT_PATH, 'utf-8');
-    if (!originalSource.includes(ORIGINAL_RENDER)) {
-      throw new Error(
-        `HMR test expected ${COMPONENT_PATH} to contain the canonical render line. Update the test or restore the file.`,
-      );
+    const onDisk = fs.readFileSync(COMPONENT_PATH, 'utf-8');
+
+    if (onDisk.includes(ORIGINAL_RENDER)) {
+      originalSource = onDisk;
+    } else {
+      // A previous run may have died before its `after` hook restored the
+      // file. Heal the canonical render line so the suite can proceed.
+      const healed = onDisk.replace(RENDER_LINE_PATTERN, ORIGINAL_RENDER);
+      if (!healed.includes(ORIGINAL_RENDER)) {
+        throw new Error(`HMR test could not self-heal ${COMPONENT_PATH}; restore the canonical render line manually.`);
+      }
+      // eslint-disable-next-line no-console
+      console.warn(`[hmr.e2e] Detected leftover mutation in ${COMPONENT_PATH}; self-healing to canonical render line.`);
+      fs.writeFileSync(COMPONENT_PATH, healed, 'utf-8');
+      originalSource = healed;
     }
 
     await browser.url(`/?path=/story/mycomponent--primary`);
-    // give Storybook a moment to mount the iframe
-    await browser.pause(3000);
+    const iframe = $('#storybook-preview-iframe');
+    await iframe.waitForExist({ timeout: 30000 });
+    // Storybook flips this to "true" only once the preview iframe has booted
+    // and a story is rendered. Without this we can switch into a still-empty
+    // iframe and time out waiting for <my-component>.
+    await browser.waitUntil(
+      async () => (await iframe.getAttribute('data-is-loaded')) === 'true',
+      { timeout: 60000, interval: 250, timeoutMsg: 'Storybook preview iframe never reached data-is-loaded=true' },
+    );
+    await browser.switchFrame(iframe);
+    await $('my-component').waitForExist({ timeout: 30000 });
+    await browser.switchFrame(null);
   });
 
   afterEach(async () => {
