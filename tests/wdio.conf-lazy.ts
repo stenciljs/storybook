@@ -6,6 +6,7 @@ import { browser } from '@wdio/globals';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 let storybookProcess: cp.ChildProcess | undefined = undefined;
+let tearingDown = false;
 
 export const config: WebdriverIO.Config = {
   //
@@ -98,7 +99,7 @@ export const config: WebdriverIO.Config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: 'http://localhost:6006',
+  baseUrl: 'http://localhost:6007',
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -126,7 +127,7 @@ export const config: WebdriverIO.Config = {
 
   //
   // The number of times to retry the entire specfile when it fails as a whole
-  specFileRetries: 1,
+  specFileRetries: 0,
   //
   // Delay in seconds between the spec file retry attempts
   // specFileRetriesDelay: 0,
@@ -160,10 +161,21 @@ export const config: WebdriverIO.Config = {
    * @param {Array.<Object>} capabilities list of capabilities details
    */
   onPrepare: function () {
-    storybookProcess = cp.spawn('pnpm', ['dev.example'], {
-      stdio: 'inherit',
-      cwd: __dirname,
-      shell: true,
+    storybookProcess = cp.spawn('pnpm', ['dev.example-lazy'], {
+      stdio: ['inherit', 'pipe', 'inherit'],
+      cwd: path.resolve(__dirname, '..'),
+      detached: true,
+    });
+    // Swallow EPIPE on the piped stream — pnpm can keep writing for a few ms
+    // after we SIGTERM it and after the parent's stdout has closed.
+    storybookProcess.stdout?.on('error', () => {});
+    storybookProcess.on('error', () => {});
+    storybookProcess.stdout?.on('data', (chunk: Buffer) => {
+      const text = chunk.toString();
+      // Once we initiate teardown, pnpm prints "ELIFECYCLE Command failed."
+      // (on stdout) because we just SIGTERM'd its child. Hide that line.
+      if (tearingDown && /ELIFECYCLE/.test(text)) return;
+      process.stdout.write(text);
     });
   },
   /**
@@ -304,7 +316,23 @@ export const config: WebdriverIO.Config = {
    * @param {<Object>} results object containing test results
    */
   onComplete: function () {
-    storybookProcess?.kill();
+    const child = storybookProcess;
+    if (!child?.pid) return;
+    tearingDown = true;
+    try {
+      // Kill the whole process group so pnpm + storybook + vite all exit;
+      // a plain `kill()` only signals the shell wrapper and CI hangs.
+      process.kill(-child.pid, 'SIGTERM');
+    } catch {
+      child.kill('SIGTERM');
+    }
+    // Wait for pnpm to actually exit before wdio returns, so the parent
+    // doesn't close our stdout pipe while pnpm is still writing to it.
+    return new Promise<void>((resolve) => {
+      if (child.exitCode !== null || child.signalCode !== null) return resolve();
+      child.once('exit', () => resolve());
+      setTimeout(() => resolve(), 5000).unref();
+    });
   },
   /**
    * Gets executed when a refresh happens.
