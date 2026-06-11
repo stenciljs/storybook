@@ -64,12 +64,12 @@
     "build": "tsdown"
   },
   "dependencies": {
+    "@stencil-community/unplugin-stencil": "^0.5.2",
     "@storybook/builder-vite": "^10.0.0",
     "@storybook/global": "^5.0.0",
     "@storybook/html": "^10.0.0",
     "preact-render-to-string": "^6.5.13",
-    "react-docgen-typescript": "^2.4.0",
-    "unplugin-stencil": "^0.4.1"
+    "react-docgen-typescript": "^2.4.0"
   },
   "peerDependencies": {
     "@stencil/core": "^4.30.0",

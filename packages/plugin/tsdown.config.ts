@@ -20,6 +20,13 @@ export default defineConfig({
     'fsevents', // macOS file watching native module
     'esbuild', // Contains native binaries
     'vite', // May contain native dependencies
+    // Stencil packages ship their own ESM/CJS builds with native-ish Node
+    // interop (e.g. `@stencil/core/sys/node`'s default export). Bundling them
+    // mangles that interop and makes `nodeApi` undefined at runtime, so always
+    // resolve them from node_modules instead of inlining. Match subpath
+    // imports too (e.g. `@stencil-community/unplugin-stencil/vite`).
+    /^@stencil\/core(\/.*)?$/,
+    /^@stencil-community\/unplugin-stencil(\/.*)?$/,
   ],
   outDir: './dist',
   format: ['esm', 'cjs'],
