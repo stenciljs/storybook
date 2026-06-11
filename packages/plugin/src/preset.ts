@@ -46,6 +46,13 @@ export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, opt
           external: ['@stencil/core'],
         },
       },
+      // Pre-bundle the deps Storybook/Stencil otherwise discover lazily on the
+      // first preview load. Without this Vite runs a dep re-optimization mid-
+      // session ("optimized dependencies changed. reloading") that tears down
+      // the iframe right as the first story renders.
+      optimizeDeps: {
+        include: ['storybook/internal/docs-tools', '@stencil/core', '@stencil/core/internal/client'],
+      },
       // Don't let Vite watch this plugin's own `dist/`. `tsdown --watch`
       // rewrites those files during plugin development; if Vite picks the
       // change up it re-optimizes deps, bumping the React chunk hash and
