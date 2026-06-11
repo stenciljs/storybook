@@ -17,6 +17,16 @@ const COMPONENT_PATH = path.resolve(
   'my-component',
   'my-component.tsx',
 );
+const STYLE_PATH = path.resolve(
+  __dirname,
+  '..',
+  'packages',
+  PACKAGE,
+  'src',
+  'components',
+  'my-component',
+  'my-component.css',
+);
 
 const ORIGINAL_RENDER = `    return <div>Hello, World! I'm {this.getText()}</div>;`;
 // Matches any prior HMR mutation of the render line so we can self-heal a file
@@ -49,11 +59,31 @@ async function readMyComponentText() {
   });
 }
 
+async function readHostDisplay() {
+  await browser.switchFrame(null);
+  await browser.switchFrame(() => Boolean(document.querySelector('my-component')));
+  const el = await $('my-component');
+  await el.waitForExist({ timeout: 15000 });
+  await browser.waitUntil(
+    async () => {
+      const cls = await $('my-component').getAttribute('class');
+      return typeof cls === 'string' && cls.split(/\s+/).includes('hydrated');
+    },
+    { timeout: 15000, interval: 200, timeoutMsg: 'my-component never reached the `hydrated` state' },
+  );
+  return browser.execute(() => {
+    const host = document.querySelector('my-component');
+    return host ? getComputedStyle(host).display : '';
+  });
+}
+
 describe(`StencilJS Storybook HMR (${PACKAGE})`, () => {
   let originalSource: string | undefined;
+  let originalStyle: string | undefined;
 
   before(async () => {
     const onDisk = fs.readFileSync(COMPONENT_PATH, 'utf-8');
+    originalStyle = fs.readFileSync(STYLE_PATH, 'utf-8');
 
     if (onDisk.includes(ORIGINAL_RENDER)) {
       originalSource = onDisk;
@@ -76,10 +106,11 @@ describe(`StencilJS Storybook HMR (${PACKAGE})`, () => {
     // Storybook flips this to "true" only once the preview iframe has booted
     // and a story is rendered. Without this we can switch into a still-empty
     // iframe and time out waiting for <my-component>.
-    await browser.waitUntil(
-      async () => (await iframe.getAttribute('data-is-loaded')) === 'true',
-      { timeout: 60000, interval: 250, timeoutMsg: 'Storybook preview iframe never reached data-is-loaded=true' },
-    );
+    await browser.waitUntil(async () => (await iframe.getAttribute('data-is-loaded')) === 'true', {
+      timeout: 60000,
+      interval: 250,
+      timeoutMsg: 'Storybook preview iframe never reached data-is-loaded=true',
+    });
     await browser.switchFrame(iframe);
     await $('my-component').waitForExist({ timeout: 30000 });
     await browser.switchFrame(null);
@@ -92,6 +123,9 @@ describe(`StencilJS Storybook HMR (${PACKAGE})`, () => {
   after(() => {
     if (originalSource !== undefined) {
       fs.writeFileSync(COMPONENT_PATH, originalSource, 'utf-8');
+    }
+    if (originalStyle !== undefined) {
+      fs.writeFileSync(STYLE_PATH, originalStyle, 'utf-8');
     }
   });
 
@@ -144,6 +178,64 @@ describe(`StencilJS Storybook HMR (${PACKAGE})`, () => {
         timeout: 60000,
         interval: 1000,
         timeoutMsg: 'Component did not return to the original render after restoring the file',
+      },
+    );
+  });
+
+  it('reloads the preview iframe when the component stylesheet changes', async () => {
+    // Baseline: the canonical stylesheet sets `:host { display: block }`.
+    await browser.waitUntil(
+      async () => {
+        try {
+          return (await readHostDisplay()) === 'block';
+        } catch {
+          return false;
+        }
+      },
+      { timeout: 30000, interval: 1000, timeoutMsg: 'Host did not start with display: block' },
+    );
+
+    const updatedStyle = (originalStyle as string).replace('display: block;', 'display: inline-block;');
+    if (updatedStyle === originalStyle) {
+      throw new Error('Failed to produce an updated stylesheet for style HMR test.');
+    }
+
+    fs.writeFileSync(STYLE_PATH, updatedStyle, 'utf-8');
+
+    try {
+      await browser.waitUntil(
+        async () => {
+          try {
+            return (await readHostDisplay()) === 'inline-block';
+          } catch {
+            return false;
+          }
+        },
+        {
+          // Style edits re-route through the dependent component, which re-runs
+          // the Stencil compiler, so allow extra time.
+          timeout: 60000,
+          interval: 1000,
+          timeoutMsg: 'Host never picked up the edited stylesheet (display: inline-block)',
+        },
+      );
+    } finally {
+      fs.writeFileSync(STYLE_PATH, originalStyle as string, 'utf-8');
+    }
+
+    // After restoring the stylesheet the preview should reload back to block.
+    await browser.waitUntil(
+      async () => {
+        try {
+          return (await readHostDisplay()) === 'block';
+        } catch {
+          return false;
+        }
+      },
+      {
+        timeout: 60000,
+        interval: 1000,
+        timeoutMsg: 'Host did not return to display: block after restoring the stylesheet',
       },
     );
   });
