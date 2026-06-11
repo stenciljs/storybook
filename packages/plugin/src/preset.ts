@@ -27,7 +27,6 @@ export const core: StorybookConfig['core'] = {
 };
 
 export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, options) => {
-  const { configType } = options;
   const config = mergeConfig(defaultConfig, {
     build: {
       target: 'es2020',
@@ -38,12 +37,8 @@ export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, opt
       }),
     ],
   });
-  if (configType === 'DEVELOPMENT') {
-    // Resolve the absolute `staticDirs` directories. For external-build / lazy
-    // consumers these hold a prebuilt Stencil bundle (e.g.
-    // `staticDirs: ['../dist/esm']` fed by a separate `stencil build --watch`).
-    // They're served as static assets, so Vite never tracks them as modules and
-    // HMR never fires on a rebuild. The reload plugin watches them directly.
+  if (options.configType === 'DEVELOPMENT') {
+    // Watch the externally-built Stencil output served via `staticDirs`.
     const staticDirs = await resolveStaticDirs(options);
     return mergeConfig(config, {
       build: {
@@ -69,12 +64,8 @@ export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, opt
 };
 
 /**
- * Resolve the absolute directories declared via Storybook `staticDirs`.
- *
- * For external-build / lazy consumers these point at a prebuilt Stencil bundle
- * (e.g. `staticDirs: ['../dist/esm']`) produced by a separate
- * `stencil build --watch`. `staticDirs` entries are relative to the Storybook
- * config dir; we resolve them so the reload plugin can watch them directly.
+ * Resolve Storybook `staticDirs` to absolute paths. Entries are relative to the
+ * config dir and may be a string or `{ from, to }`.
  */
 async function resolveStaticDirs(options: {
   configDir?: string;
@@ -93,7 +84,6 @@ async function resolveStaticDirs(options: {
 
   const dirs = new Set<string>();
   for (const entry of staticDirs) {
-    // `staticDirs` is `(string | { from: string; to: string })[]`.
     const from = typeof entry === 'string' ? entry : entry && (entry as { from?: string }).from;
     if (typeof from !== 'string' || from.length === 0) continue;
     dirs.add(resolve(configDir, from));
@@ -121,15 +111,12 @@ async function resolveStaticDirs(options: {
  *   above pick up the rebuild.
  * - Global style: the same package resolves `stencil.config#globalStyle`; when
  *   it changes we touch every known component `.tsx`.
- * - External build: consumers that run `stencil build --watch` separately and
- *   serve the prebuilt output via `staticDirs: ['../dist/esm']` never import a
- *   component `.tsx` into Vite's graph, so unplugin-stencil never compiles and
- *   the paths above can't fire. For those we watch the `staticDirs` `*.js`
- *   files directly and reload when the external Stencil rebuild rewrites them.
- *   See `watchStaticDirs`.
+ * - External build: consumers running `stencil build --watch` separately serve
+ *   prebuilt output via `staticDirs` and never import the `.tsx` into Vite's
+ *   graph, so the paths above can't fire. We watch those dirs and reload when
+ *   their `*.js` files change.
  *
- * @param staticDirs absolute Storybook `staticDirs` directories to watch for
- *   externally-built output.
+ * @param staticDirs absolute `staticDirs` to watch for externally-built output.
  */
 function stencilPreviewReloadPlugin(staticDirs: string[] = []): Plugin {
   let devServer: ViteDevServer | undefined;
@@ -169,14 +156,13 @@ function stencilPreviewReloadPlugin(staticDirs: string[] = []): Plugin {
     }
   };
 
-  // Absolute `staticDirs`, normalized with a trailing separator so prefix
-  // matches don't treat `dist/esmx` as inside `dist/esm`.
+  // Normalize with a trailing separator so `dist/esmx` isn't matched as
+  // inside `dist/esm`.
   const staticDirPrefixes = staticDirs.map((dir) => (dir.endsWith(sep) ? dir : `${dir}${sep}`));
 
   const isInStaticDir = (file: string): boolean => staticDirPrefixes.some((prefix) => file.startsWith(prefix));
 
-  // A single external `stencil build --watch` rebuild rewrites many chunks at
-  // once; debounce so we reload once per rebuild instead of once per file.
+  // One external rebuild rewrites many chunks; debounce to a single reload.
   let staticReloadTimer: ReturnType<typeof setTimeout> | undefined;
   const scheduleStaticReload = (server: ViteDevServer): void => {
     if (staticReloadTimer) clearTimeout(staticReloadTimer);
@@ -193,11 +179,8 @@ function stencilPreviewReloadPlugin(staticDirs: string[] = []): Plugin {
     configureServer(server) {
       devServer = server;
 
-      // External-build / lazy consumers serve a prebuilt Stencil bundle from
-      // `staticDirs` (fed by a separate `stencil build --watch`). That output
-      // lives outside Vite's root and isn't in the module graph, so Vite won't
-      // watch it on its own — register the dirs explicitly so chunk rewrites
-      // emit `change` events we can react to.
+      // `staticDirs` live outside Vite's root, so register them explicitly to
+      // get `change` events when an external rebuild rewrites chunks.
       if (staticDirPrefixes.length > 0) {
         server.watcher.add(staticDirs);
       }
@@ -213,11 +196,9 @@ function stencilPreviewReloadPlugin(staticDirs: string[] = []): Plugin {
       });
 
       server.watcher.on('change', async (file: string) => {
-        // External build: a watched `staticDirs` JS file (e.g. a rebuilt
-        // `dist/esm/*.entry.js`) changed. The component .tsx was never in
-        // Vite's graph, so the eager/lazy paths below can't fire — reload
-        // directly (debounced, since one rebuild rewrites many chunks). Skip
-        // while a lazy in-graph rebuild is pending so we don't double-reload.
+        // External build: a watched static-dir chunk changed. Reload directly
+        // (the `.tsx` isn't in the graph), but not while a lazy rebuild is
+        // pending, which reloads via `buildFinished` above.
         if (file.endsWith('.js') && isInStaticDir(file)) {
           if (!lazyBuildPending) scheduleStaticReload(server);
           return;
