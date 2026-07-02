@@ -12,14 +12,14 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
   }
   if (typeof component === 'string' && !customElements.get(component)) {
     throw new Error(
-      `Stencil component not found. If you are not lazy loading your components with \`defineCustomElements()\` in preview.ts, pass a constructor value for component in your story \`component: MyComponent\``,
+      `Stencil component <${component}> is not registered. Make sure it is imported in your story file or in preview.ts.`,
     );
   } else if (typeof component !== 'string' && !customElements.getName(component)) {
     // After HMR the module re-evaluates and produces a new class reference, so
     // getName returns null even though the tag is still registered under component.is.
     if (!(component as any).is || !customElements.get((component as any).is)) {
       throw new Error(
-        `Stencil component not found. If you are lazy loading your components with \`defineCustomElements()\` in preview.ts, pass a string value for component in your story \`component: 'my-component'\``,
+        `Stencil component is not registered. Make sure the component class is imported in your story file.`,
       );
     }
   }
@@ -56,10 +56,7 @@ export function renderToCanvas(
   const vdom = storyFn();
   showMain();
 
-  /**
-   * If the component is not automatically registered after import, register it here
-   */
-  if (storyContext.component && storyContext.component.is && !customElements.get(storyContext.component.is)) {
+  if (storyContext.component?.is && !customElements.get(storyContext.component.is)) {
     customElements.define(storyContext.component.is, storyContext.component);
   }
 

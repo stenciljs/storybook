@@ -8,9 +8,9 @@
       "dom",
       "es2020"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "module": "esnext",
-    "target": "es2020",
+    "target": "es2022",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,

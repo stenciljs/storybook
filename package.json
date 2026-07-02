@@ -15,18 +15,14 @@
     "build": "run-s build.*",
     "build.plugin": "pnpm --filter @stencil/storybook-plugin build",
     "build.example": "pnpm --filter example build",
-    "build.example-lazy": "pnpm --filter example-lazy build",
     "build-storybook": "run-s build-storybook.*",
     "build-storybook.example": "pnpm --filter example build-storybook",
-    "build-storybook.example-lazy": "pnpm --filter example-lazy build-storybook",
     "dev": "run-s build.plugin dev.start",
-    "dev.start": "run-p dev.plugin dev.example dev.example-lazy",
+    "dev.start": "run-p dev.plugin dev.example",
     "dev.plugin": "pnpm --filter @stencil/storybook-plugin watch",
     "dev.example": "pnpm --filter example run storybook",
-    "dev.example-lazy": "pnpm --filter example-lazy run storybook",
     "test": "run-s test.*",
     "test.example": "wdio run ./tests/wdio.conf.ts",
-    "test.example-lazy": "wdio run ./tests/wdio.conf-lazy.ts",
     "prettier": "npm run prettier.base -- --write",
     "prettier.base": "prettier --cache \"./({packages,tests}/**/*.{ts,tsx,js,jsx})|.github/(**/)?*.(yml|yaml)|*.js\"",
     "prettier.dry-run": "npm run prettier.base -- --list-different"
@@ -43,6 +39,15 @@
     "npm-run-all2": "^7.0.2",
     "typescript": "~5.8.3",
     "webdriverio": "^9.12.7"
+  },
+  "pnpm": {
+    "overrides": {
+      "@stencil/cli": "file:../../stenciljs/packages/cli",
+      "@stencil/dev-server": "file:../../stenciljs/packages/dev-server",
+      "@stencil/mock-doc": "file:../../stenciljs/packages/mock-doc",
+      "@stencil/templates": "file:../../stenciljs/packages/templates",
+      "typescript": ">4.0.0 <7.0.0"
+    }
   },
   "packageManager": "pnpm@10.10.0",
   "prettier": "@ionic/prettier-config",
