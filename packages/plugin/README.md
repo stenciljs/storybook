@@ -1,175 +1,109 @@
-# StencilJS Storybook Plugin
+# @stencil/storybook-plugin
 
-> This is still early and work in progress, don't use it yet!
+Storybook framework plugin for StencilJS. Provides a zero-config integration with full HMR, automatic argTypes from component metadata, and controls out of the box.
 
 ## Setup
 
-In an existing StencilJS project, run:
+In your Stencil project, install Storybook and the plugin:
 
 ```sh
-npx storybook@next init
+npm install --save-dev storybook @stencil/storybook-plugin
 ```
 
-to setup a new Storybook project. Select any preset available, e.g. Lit and finish the setup process. After, install the StencilJS preset.
-
-```sh
-npm i --save-dev @stencil/storybook-plugin
-```
-
-Last, update the `.storybook/main.ts` file as following:
+Configure `.storybook/main.ts`:
 
 ```ts
-const config = {
-  stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-  ],
+import type { StorybookConfig } from '@stencil/storybook-plugin';
+
+const config: StorybookConfig = {
+  stories: ['../src/**/*.stories.@(ts|tsx)'],
+  addons: ['@storybook/addon-essentials'],
   framework: {
-    name: "@stencil/storybook-plugin"
-  }
+    name: '@stencil/storybook-plugin',
+  },
 };
 
 export default config;
 ```
 
-See the [Storybook Docs](https://storybook.js.org/docs/7.0/qwik/get-started/introduction) for the best documentation on getting started with Storybook.
+That's it. The plugin automatically:
+- Transpiles Stencil components on the fly via `@stencil/unplugin`
+- Generates a Custom Elements Manifest from your component decorators
+- Populates argTypes (props, events, slots, CSS parts/properties) in the docs panel
+- Enables HMR for component changes
 
-## Autodocs
+## Writing Stories
 
-The plugin can automatically generate documentation and argTypes from your Stencil component metadata. In your `.storybook/preview.ts`, import and call `setCustomElementsManifest`:
-
-```tsx
-import { setCustomElementsManifest } from '@stencil/storybook-plugin';
-import customElements from '../dist/custom-elements.json';
-
-setCustomElementsManifest(customElements);
-```
-
-This will automatically populate:
-- Component props documentation
-- ArgTypes with proper controls
-- Events documentation
-- Slots documentation
-- CSS custom properties
-
-## Usage
-
-A basic story will look like this:
+Import your component class directly — no separate registration step needed:
 
 ```tsx
 import type { Meta, StoryObj } from '@stencil/storybook-plugin';
-import { h } from '@stencil/core';
-
 import { MyComponent } from './my-component';
 
-const meta = {
+const meta: Meta<MyComponent> = {
   title: 'MyComponent',
   component: MyComponent,
-  parameters: {
-    layout: 'centered',
-  },
-  argTypes: {
-    first: { control: 'text' },
-    last: { control: 'text' },
-    middle: { control: 'text' },
-  },
-  args: { first: 'John', last: 'Doe', middle: 'Michael' },
-} satisfies Meta<MyComponent>;
+  parameters: { layout: 'centered' },
+};
 
 export default meta;
 type Story = StoryObj<MyComponent>;
 
 export const Primary: Story = {
-  args: {
-    first: 'John',
-    last: 'Doe',
-    middle: 'Michael',
-  },
-  render: (props) => {
-    return <my-component {...props} />;
-  }
+  args: { first: 'John', last: 'Doe' },
 };
 ```
 
-If you are using slots in your component, pass them as parameters to the story object like this:
+### Slots
+
+Pass slot content via `parameters.slots`:
 
 ```tsx
-import type { Meta, StoryObj } from '@stencil/storybook-plugin';
-import { h } from '@stencil/core';
-
-import { MySlotted } from './my-slotted';
-
-const meta = {
-  title: 'MySlotted',
-  component: MySlotted,
-  parameters: {
-    layout: 'centered',
-  },
-} satisfies Meta<MySlotted>;
-
-export default meta;
-type Story = StoryObj<MySlotted>;
-
-export const Primary: Story = {
-  args: {},
+export const WithSlot: Story = {
   parameters: {
     slots: {
       default: 'Hello World',
-      another: <div>another</div>
+      footer: <span>Footer content</span>,
     },
-  }
+  },
 };
 ```
 
+## Autodocs
+
+The docs panel is populated automatically from your `@Component`, `@Prop`, `@Event`, `@Method`, and `@Slot` decorators — including JSDoc comments and tags such as `@since`, `@see`, and `@deprecated`.
+
+No manual CEM setup required.
+
 ## Source Code Display
 
-The plugin supports displaying source code in multiple formats:
-
-### Language Options
-
-Set the source language in your story parameters:
+Control the source snippet language via story parameters:
 
 ```tsx
 export default {
   parameters: {
     docs: {
-      source: {
-        language: 'html', // or 'jsx', 'tsx'
-      },
+      source: { language: 'html' }, // 'html' | 'jsx' | 'tsx'
     },
   },
 } satisfies Meta<MyComponent>;
 ```
 
-**HTML format:**
+**HTML** (default):
 ```html
-<my-component class="example" first="John"></my-component>
+<my-component first="John"></my-component>
 ```
 
-**JSX/TSX format:**
-```jsx
-<MyComponent className="example" first="John" />
-```
+**JSX/TSX**: custom element tag names are converted to PascalCase, HTML attributes to their JSX equivalents (`class` → `className`, etc.), and long attribute lists are wrapped automatically.
 
-When using `jsx` or `tsx`:
-- Custom elements (with hyphens) are converted to PascalCase: `<my-component>` → `<MyComponent>`
-- Standard HTML elements remain lowercase: `<div>`, `<span>`
-- HTML attributes are converted to JSX equivalents: `class` → `className`, `for` → `htmlFor`, `tabindex` → `tabIndex`
-- Long attribute lists automatically wrap to multiple lines (80 character threshold)
+### Global source format toolbar
 
-### Global Source Format Control
-
-You can add a toolbar control to switch between formats globally:
-
-```tsx
-// .storybook/preview.tsx
+```ts
+// .storybook/preview.ts
 export const globalTypes = {
   source: {
     name: 'Source Format',
     defaultValue: 'html',
-    description: 'Select the source format',
     toolbar: {
       items: ['html', 'jsx', 'tsx'],
       icon: 'markup',
@@ -178,34 +112,4 @@ export const globalTypes = {
     },
   },
 };
-
-export const decorators = [
-  (story, context) => {
-    const sourceLanguage = context.globals.source || 'html';
-    context.parameters.docs = context.parameters.docs || {};
-    context.parameters.docs.source = context.parameters.docs.source || {};
-    context.parameters.docs.source.language = sourceLanguage;
-    return story();
-  },
-];
 ```
-
-This adds a "Source Format" dropdown to the Storybook toolbar, allowing you to switch between HTML and JSX/TSX display on the fly.
-
-### Troubleshooting
-
-If you encounter any issues with the story rendering, please check the following:
-
-- If your `customElementsExportBehavior` is set to a value that lazy loads components, ensure that you are using `defineCustomElements()` in `preview.ts`. You should also define your component as a string in your story file: `component: 'my-component'` as it does not yet exist in the custom element registry.
-- If your `customElementsExportBehavior` is set to a value like `auto-define-custom-elements` or `default`, do not include `defineCustomElements()` in `preview.ts` and use the constructor as the component value in your story file: `component: MyComponent`.
-- Check the console for any error messages.
-
-## Limitations
-
-This is early development and we are still seeing some limitations we want to see fixed:
-
-- Story is completely reloaded when component is changed (no hot module replacement)
-- There is no automation yet for easily scaffolding storybook in a Stencil project.
-- Stories are run in dev mode - no SSR, or serialization happens
-
-Please get involved and support the project with code contributions. Thanks!
