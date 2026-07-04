@@ -6,17 +6,12 @@ settings:
 
 catalogs:
   default:
+    '@stencil/cli':
+      specifier: ^5.0.0 || >=5.0.0-alpha.0 <5.0.0-next.0
+      version: 5.0.0-alpha.17
     '@stencil/core':
       specifier: ^5.0.0 || >=5.0.0-alpha.0 <5.0.0-next.0
       version: 5.0.0-alpha.17
-
-overrides:
-  '@stencil/cli': file:../../stenciljs/packages/cli
-  '@stencil/dev-server': file:../../stenciljs/packages/dev-server
-  '@stencil/mock-doc': file:../../stenciljs/packages/mock-doc
-  '@stencil/templates': file:../../stenciljs/packages/templates
-  '@stencil/storybook-plugin': workspace:*
-  typescript: '>4.0.0 <7.0.0'
 
 importers:
 
@@ -50,8 +45,8 @@ importers:
         specifier: ^7.0.2
         version: 7.0.2
       typescript:
-        specifier: '>4.0.0 <7.0.0'
-        version: 6.0.3
+        specifier: ~5.8.3
+        version: 5.8.3
       webdriverio:
         specifier: ^9.12.7
         version: 9.29.1
@@ -108,8 +103,8 @@ importers:
         version: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7)
     devDependencies:
       '@stencil/cli':
-        specifier: file:../../../../stenciljs/packages/cli
-        version: file:../../stenciljs/packages/cli(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
+        specifier: 'catalog:'
+        version: 5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
       '@stencil/core':
         specifier: 'catalog:'
         version: 5.0.0-alpha.17(rollup@4.62.2)
@@ -123,7 +118,7 @@ importers:
         specifier: ^0.22.3
         version: 0.22.3(oxc-resolver@11.23.0)(tsx@4.22.4)(typescript@6.0.3)
       typescript:
-        specifier: '>4.0.0 <7.0.0'
+        specifier: ^6.0.3
         version: 6.0.3
       vite:
         specifier: ^8.1.3
@@ -132,11 +127,11 @@ importers:
   packages/wizard-playground:
     devDependencies:
       '@stencil/cli':
-        specifier: file:../../../../stenciljs/packages/cli
-        version: file:../../stenciljs/packages/cli(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))
+        specifier: 'catalog:'
+        version: 5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
       '@stencil/core':
-        specifier: file:../../../../stenciljs/packages/core
-        version: file:../../stenciljs/packages/core(rollup@4.62.2)
+        specifier: 'catalog:'
+        version: 5.0.0-alpha.17(rollup@4.62.2)
 
 packages:
 
@@ -1115,8 +1110,8 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@stencil/cli@file:../../stenciljs/packages/cli':
-    resolution: {directory: ../../stenciljs/packages/cli, type: directory}
+  '@stencil/cli@5.0.0-alpha.17':
+    resolution: {integrity: sha512-f1QkdaN2ORY+f7fgJ1oWRHSnwUn5+t92pgMknqsj5L6ULehi6K8BCLfyMaK9nbY6R7+UrvrejR2EMwxkFFR+Ag==}
     hasBin: true
     peerDependencies:
       '@stencil/core': ^5.0.0-0
@@ -1125,20 +1120,16 @@ packages:
     resolution: {integrity: sha512-sqTy9KMq5JKsJmQmviqHd72SzY+y1CsaIYUnzu/xwuw68eta1Hw8IAr5geDdlihTLm3IB3bcPoUp4ypVIUe8Og==}
     hasBin: true
 
-  '@stencil/core@file:../../stenciljs/packages/core':
-    resolution: {directory: ../../stenciljs/packages/core, type: directory}
-    hasBin: true
-
-  '@stencil/dev-server@file:../../stenciljs/packages/dev-server':
-    resolution: {directory: ../../stenciljs/packages/dev-server, type: directory}
+  '@stencil/dev-server@5.0.0-alpha.17':
+    resolution: {integrity: sha512-/G7K8xjT3lNZKTF1HXyfm1L/YJ6fipMKB7lF4mkzL7khJlpHM+Hu02J5B02DwP7ytUDO9uloxTmJNgsNWdJdRw==}
     peerDependencies:
       '@stencil/core': ^5.0.0-0
 
-  '@stencil/mock-doc@file:../../stenciljs/packages/mock-doc':
-    resolution: {directory: ../../stenciljs/packages/mock-doc, type: directory}
+  '@stencil/mock-doc@5.0.0-alpha.17':
+    resolution: {integrity: sha512-gah3RJAipOd9Prug5l1LszQ4ueCz83QeIjIOWAO7M8WjohxJYld+G+vSCFRCwnjkfK1OKloiJSqVvJikUaC6PA==}
 
-  '@stencil/templates@file:../../stenciljs/packages/templates':
-    resolution: {directory: ../../stenciljs/packages/templates, type: directory}
+  '@stencil/templates@5.0.0-alpha.17':
+    resolution: {integrity: sha512-AdYO5NmEL6ew97GJAvgBwQI9/F2KsMFUksQIVRJ+J6Tua6gpvoeR++yOxwAN/HEyRma9sjKoTqW6ubGMRBjnRQ==}
 
   '@stencil/unplugin@5.0.0-alpha.17':
     resolution: {integrity: sha512-XZ/5PjoMOcZPUG93pcJezuAIMidkRYDiW0C09ANL5gvvYKcoafykNXwier8hSKuEZMhCpKQZ38SN4touPuvtUw==}
@@ -1149,7 +1140,7 @@ packages:
       postcss: ^8.0.0
       postcss-load-config: ^4.0.0 || ^5.0.0 || ^6.0.0
       sass: ^1.0.0
-      typescript: '>4.0.0 <7.0.0'
+      typescript: '>=5.0.0'
     peerDependenciesMeta:
       less:
         optional: true
@@ -2863,7 +2854,7 @@ packages:
   react-docgen-typescript@2.4.0:
     resolution: {integrity: sha512-ZtAp5XTO5HRzQctjPU0ybY0RRCQO19X/8fxn3w7y2VVTUbGHDKULPTL4ky3vB05euSgG5NpALhEhDPvQ56wvXg==}
     peerDependencies:
-      typescript: '>4.0.0 <7.0.0'
+      typescript: '>= 4.3.x'
 
   react-dom@19.2.7:
     resolution: {integrity: sha512-t0BRVXvbiE/o20Hfw669rLbMCDWtYZLvmJigy2f0MxsXF+71pxhR3xOkspmsO8h3ZlNzyibAmtCa3l4lYKk6gQ==}
@@ -2954,7 +2945,7 @@ packages:
       '@ts-macro/tsc': ^0.3.6
       '@typescript/native-preview': '>=7.0.0-dev.20260325.1'
       rolldown: ^1.0.0
-      typescript: '>4.0.0 <7.0.0'
+      typescript: ^5.0.0 || ^6.0.0
       vue-tsc: ~3.2.0 || ~3.3.0
     peerDependenciesMeta:
       '@ts-macro/tsc':
@@ -3236,7 +3227,7 @@ packages:
       '@vitejs/devtools': '*'
       publint: ^0.3.8
       tsx: '*'
-      typescript: '>4.0.0 <7.0.0'
+      typescript: ^5.0.0 || ^6.0.0
       unplugin-unused: ^0.5.0
       unrun: '*'
     peerDependenciesMeta:
@@ -3278,6 +3269,11 @@ packages:
   type-fest@4.41.0:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
+
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
 
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
@@ -4275,25 +4271,12 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@stencil/cli@file:../../stenciljs/packages/cli(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))':
+  '@stencil/cli@5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))':
     dependencies:
       '@clack/prompts': 1.6.0
       '@stencil/core': 5.0.0-alpha.17(rollup@4.62.2)
-      '@stencil/dev-server': file:../../stenciljs/packages/dev-server(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
-      '@stencil/templates': file:../../stenciljs/packages/templates
-      nypm: 0.3.12
-      std-env: 3.10.0
-      typescript: 6.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@stencil/cli@file:../../stenciljs/packages/cli(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))':
-    dependencies:
-      '@clack/prompts': 1.6.0
-      '@stencil/core': file:../../stenciljs/packages/core(rollup@4.62.2)
-      '@stencil/dev-server': file:../../stenciljs/packages/dev-server(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))
-      '@stencil/templates': file:../../stenciljs/packages/templates
+      '@stencil/dev-server': 5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
+      '@stencil/templates': 5.0.0-alpha.17
       nypm: 0.3.12
       std-env: 3.10.0
       typescript: 6.0.3
@@ -4306,9 +4289,9 @@ snapshots:
       '@parcel/watcher': 2.5.6
       '@preact/signals-core': 1.14.3
       '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
-      '@stencil/cli': file:../../stenciljs/packages/cli(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
-      '@stencil/dev-server': file:../../stenciljs/packages/dev-server(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
-      '@stencil/mock-doc': file:../../stenciljs/packages/mock-doc
+      '@stencil/cli': 5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
+      '@stencil/dev-server': 5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
+      '@stencil/mock-doc': 5.0.0-alpha.17
       browserslist: 4.28.4
       chalk: 5.6.2
       css-what: 7.0.0
@@ -4330,36 +4313,7 @@ snapshots:
       - rollup
       - utf-8-validate
 
-  '@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2)':
-    dependencies:
-      '@parcel/watcher': 2.5.6
-      '@preact/signals-core': 1.14.3
-      '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
-      '@stencil/cli': file:../../stenciljs/packages/cli(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))
-      '@stencil/dev-server': file:../../stenciljs/packages/dev-server(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))
-      '@stencil/mock-doc': file:../../stenciljs/packages/mock-doc
-      browserslist: 4.28.4
-      chalk: 5.6.2
-      css-what: 7.0.0
-      jiti: 2.7.0
-      lightningcss: 1.32.0
-      magic-string: 0.30.21
-      picomatch: 4.0.4
-      postcss: 8.5.16
-      postcss-safe-parser: 7.0.1(postcss@8.5.16)
-      postcss-selector-parser: 7.1.4
-      resolve: 1.22.12
-      rolldown: 1.1.4
-      semver: 7.8.5
-      terser: 5.48.0
-      tinyglobby: 0.2.17
-      typescript: 6.0.3
-    transitivePeerDependencies:
-      - bufferutil
-      - rollup
-      - utf-8-validate
-
-  '@stencil/dev-server@file:../../stenciljs/packages/dev-server(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))':
+  '@stencil/dev-server@5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))':
     dependencies:
       '@stencil/core': 5.0.0-alpha.17(rollup@4.62.2)
       launch-editor: 2.14.1
@@ -4369,22 +4323,12 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@stencil/dev-server@file:../../stenciljs/packages/dev-server(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))':
-    dependencies:
-      '@stencil/core': file:../../stenciljs/packages/core(rollup@4.62.2)
-      launch-editor: 2.14.1
-      open: 11.0.0
-      ws: 8.21.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  '@stencil/mock-doc@file:../../stenciljs/packages/mock-doc':
+  '@stencil/mock-doc@5.0.0-alpha.17':
     dependencies:
       nwsapi: 2.2.24
       parse5: 8.0.1
 
-  '@stencil/templates@file:../../stenciljs/packages/templates': {}
+  '@stencil/templates@5.0.0-alpha.17': {}
 
   '@stencil/unplugin@5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))':
     dependencies:
@@ -6729,6 +6673,8 @@ snapshots:
   type-fest@4.26.0: {}
 
   type-fest@4.41.0: {}
+
+  typescript@5.8.3: {}
 
   typescript@6.0.3: {}
 

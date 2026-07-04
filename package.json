@@ -40,16 +40,6 @@
     "typescript": "~5.8.3",
     "webdriverio": "^9.12.7"
   },
-  "pnpm": {
-    "overrides": {
-      "@stencil/cli": "file:../../stenciljs/packages/cli",
-      "@stencil/dev-server": "file:../../stenciljs/packages/dev-server",
-      "@stencil/mock-doc": "file:../../stenciljs/packages/mock-doc",
-      "@stencil/templates": "file:../../stenciljs/packages/templates",
-      "@stencil/storybook-plugin": "workspace:*",
-      "typescript": ">4.0.0 <7.0.0"
-    }
-  },
   "packageManager": "pnpm@10.10.0",
   "prettier": "@ionic/prettier-config",
   "volta": {

@@ -9,7 +9,7 @@
     "generate": "STENCIL_WIZARD_DEV=../plugin/dist/wizard.mjs stencil generate"
   },
   "devDependencies": {
-    "@stencil/cli": "file:../../../../stenciljs/packages/cli",
-    "@stencil/core": "file:../../../../stenciljs/packages/core"
+    "@stencil/cli": "catalog:",
+    "@stencil/core": "catalog:"
   }
 }
