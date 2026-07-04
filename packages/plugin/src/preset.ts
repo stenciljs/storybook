@@ -15,7 +15,7 @@ export const core: StorybookConfig['core'] = {
 
 export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, { configType }) => {
   const config = mergeConfig(defaultConfig, {
-    build: { target: 'es2020' },
+    build: { target: 'es2022' },
     plugins: [unpluginStencil.vite({ docs: true })],
   });
 

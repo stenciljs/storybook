@@ -41,7 +41,7 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@stencil/core": "file:../../../../stenciljs/packages/core",
+    "@stencil/core": "catalog:",
     "@stencil/storybook-plugin": "workspace:*",
     "@storybook/addon-docs": "^10.2.17",
     "@storybook/addon-links": "^10.2.17",

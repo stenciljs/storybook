@@ -9,6 +9,7 @@ overrides:
   '@stencil/dev-server': file:../../stenciljs/packages/dev-server
   '@stencil/mock-doc': file:../../stenciljs/packages/mock-doc
   '@stencil/templates': file:../../stenciljs/packages/templates
+  '@stencil/storybook-plugin': workspace:*
   typescript: '>4.0.0 <7.0.0'
 
 importers:
@@ -100,6 +101,9 @@ importers:
         specifier: ^10.0.0
         version: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7)
     devDependencies:
+      '@stencil/cli':
+        specifier: file:../../../../stenciljs/packages/cli
+        version: file:../../stenciljs/packages/cli(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))
       '@stencil/core':
         specifier: file:../../../../stenciljs/packages/core
         version: file:../../stenciljs/packages/core(rollup@4.62.2)
@@ -118,6 +122,27 @@ importers:
       vite:
         specifier: ^8.1.3
         version: 8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4)
+
+  packages/wizard-playground:
+    devDependencies:
+      '@stencil/cli':
+        specifier: file:../../../../stenciljs/packages/cli
+        version: file:../../stenciljs/packages/cli(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))
+      '@stencil/core':
+        specifier: file:../../../../stenciljs/packages/core
+        version: file:../../stenciljs/packages/core(rollup@4.62.2)
+      '@stencil/storybook-plugin':
+        specifier: workspace:*
+        version: link:../plugin
+      '@storybook/addon-docs':
+        specifier: ^10.4.6
+        version: 10.4.6(@types/react@19.2.17)(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
+      '@storybook/addon-links':
+        specifier: ^10.4.6
+        version: 10.4.6(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))
+      storybook:
+        specifier: ^10.4.6
+        version: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7)
 
 packages:
 
@@ -4337,6 +4362,25 @@ snapshots:
     dependencies:
       '@mdx-js/react': 3.1.1(@types/react@19.2.17)(react@19.2.7)
       '@storybook/csf-plugin': 10.4.6(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@22.20.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
+      '@storybook/icons': 2.1.0(react@19.2.7)
+      '@storybook/react-dom-shim': 10.4.6(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))
+      react: 19.2.7
+      react-dom: 19.2.7(react@19.2.7)
+      storybook: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7)
+      ts-dedent: 2.3.0
+    optionalDependencies:
+      '@types/react': 19.2.17
+    transitivePeerDependencies:
+      - '@types/react-dom'
+      - esbuild
+      - rollup
+      - vite
+      - webpack
+
+  '@storybook/addon-docs@10.4.6(@types/react@19.2.17)(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))':
+    dependencies:
+      '@mdx-js/react': 3.1.1(@types/react@19.2.17)(react@19.2.7)
+      '@storybook/csf-plugin': 10.4.6(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
       '@storybook/icons': 2.1.0(react@19.2.7)
       '@storybook/react-dom-shim': 10.4.6(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))
       react: 19.2.7

@@ -46,6 +46,7 @@
       "@stencil/dev-server": "file:../../stenciljs/packages/dev-server",
       "@stencil/mock-doc": "file:../../stenciljs/packages/mock-doc",
       "@stencil/templates": "file:../../stenciljs/packages/templates",
+      "@stencil/storybook-plugin": "workspace:*",
       "typescript": ">4.0.0 <7.0.0"
     }
   },

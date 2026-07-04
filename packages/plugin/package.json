@@ -45,14 +45,21 @@
       "types": "./dist/node/index.d.mts",
       "import": "./dist/node/index.mjs"
     },
+    "./wizard": {
+      "types": "./dist/wizard.d.mts",
+      "import": "./dist/wizard.mjs"
+    },
     "./package.json": "./package.json"
+  },
+  "stencil": {
+    "wizard": "./dist/wizard.mjs"
   },
   "scripts": {
     "watch": "tsdown --watch",
     "build": "tsdown"
   },
   "dependencies": {
-    "@stencil/unplugin": "file:../../../../stenciljs/packages/unplugin",
+    "@stencil/unplugin": "^5.0.0 || >=5.0.0-alpha.0 <5.0.0-next.0",
     "@storybook/builder-vite": "^10.4.6",
     "@storybook/global": "^5.0.0",
     "@storybook/html": "^10.4.6",
@@ -60,11 +67,12 @@
     "react-docgen-typescript": "^2.4.0"
   },
   "peerDependencies": {
-    "@stencil/core": "^5.0.0 || >=5.0.0-alpha.0 <5.0.0-next.0",
+    "@stencil/core": "catalog:",
     "storybook": "^10.0.0"
   },
   "devDependencies": {
-    "@stencil/core": "file:../../../../stenciljs/packages/core",
+    "@stencil/cli": "catalog:",
+    "@stencil/core": "catalog:",
     "@types/node": "^26.1.0",
     "custom-elements-manifest": "^2.1.0",
     "tsdown": "^0.22.3",

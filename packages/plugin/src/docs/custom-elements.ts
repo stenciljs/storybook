@@ -11,6 +11,14 @@ interface Tag {
   text?: string;
 }
 
+// Stencil marks optional props as `string | undefined`; strip the redundant
+// `undefined` arm so it doesn't appear as a noisy type chip in the docs table.
+const cleanTypeText = (text: string | undefined) =>
+  text
+    ?.replace(/undefined\s*\|\s*/g, '')
+    .replace(/\s*\|\s*undefined/g, '')
+    .trim() || undefined;
+
 const withTags = (description: string | undefined, tags: Tag[] | undefined): string | undefined => {
   if (!tags?.length) return description;
   const formatted = tags
@@ -30,17 +38,12 @@ const findDeclaration = (tagName: string, cem: Package): CustomElement | undefin
 };
 
 const toEventActionName = (eventName: string): string => {
-  const camel = eventName.replace(/(-|_|:|\.|\s)+(.)?/g, (_, _sep, chr: string) =>
-    chr ? chr.toUpperCase() : '',
-  );
+  const camel = eventName.replace(/(-|_|:|\.|\s)+(.)?/g, (_, _sep, chr: string) => (chr ? chr.toUpperCase() : ''));
   const lowerFirst = camel.replace(/^([A-Z])/, (m) => m.toLowerCase());
   return `on${lowerFirst.charAt(0).toUpperCase() + lowerFirst.slice(1)}`;
 };
 
-const mapNamedItems = (
-  items: Array<{ name: string; description?: string }>,
-  category: string,
-): ArgTypes =>
+const mapNamedItems = (items: Array<{ name: string; description?: string }>, category: string): ArgTypes =>
   items.reduce<ArgTypes>((acc, item) => {
     acc[item.name] = { name: item.name, description: item.description, control: false, table: { category } };
     return acc;
@@ -56,7 +59,7 @@ const mapFields = (members: CustomElement['members']): ArgTypes =>
         control: inferControlType(field),
         table: {
           category: 'properties',
-          type: { summary: field.type?.text },
+          type: { summary: cleanTypeText(field.type?.text) },
           defaultValue: { summary: field.default },
         },
         options: parseLiteralValues(field.type?.text ?? ''),
@@ -89,7 +92,7 @@ const mapEvents = (events: CustomElement['events']): ArgTypes =>
       name,
       description: withTags(event.description, (event as typeof event & { tags?: Tag[] }).tags),
       control: null,
-      table: { category: 'events', type: { summary: event.type?.text } },
+      table: { category: 'events', type: { summary: cleanTypeText(event.type?.text) } },
       type: { name: 'function' },
     };
     return acc;
@@ -123,5 +126,5 @@ export const extractComponentDescription = (component: any): string | undefined 
   const tagName = typeof component === 'string' ? component : component?.is;
   if (!isValidComponent(tagName) || !isValidMetaData(cem)) return undefined;
   const decl = findDeclaration(tagName, cem);
-  return withTags(decl?.description, (decl as (typeof decl) & { tags?: Tag[] })?.tags);
+  return withTags(decl?.description, (decl as typeof decl & { tags?: Tag[] })?.tags);
 };

@@ -15,6 +15,7 @@ export default defineConfig({
     './src/entry-preview-argtypes.ts',
     './src/docs/index.ts',
     './src/node/index.ts',
+    './src/wizard.ts',
   ],
   deps: {
     neverBundle: [
@@ -28,7 +29,7 @@ export default defineConfig({
   },
   outDir: './dist',
   format: ['esm'],
-  target: 'es2020',
+  target: 'es2022',
   platform: 'node',
   sourcemap: true,
   clean: !watching,
