@@ -4,6 +4,12 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@stencil/core':
+      specifier: ^5.0.0 || >=5.0.0-alpha.0 <5.0.0-next.0
+      version: 5.0.0-alpha.17
+
 overrides:
   '@stencil/cli': file:../../stenciljs/packages/cli
   '@stencil/dev-server': file:../../stenciljs/packages/dev-server
@@ -53,8 +59,8 @@ importers:
   packages/example:
     devDependencies:
       '@stencil/core':
-        specifier: file:../../../../stenciljs/packages/core
-        version: file:../../stenciljs/packages/core(rollup@4.62.2)
+        specifier: 'catalog:'
+        version: 5.0.0-alpha.17(rollup@4.62.2)
       '@stencil/storybook-plugin':
         specifier: workspace:*
         version: link:../plugin
@@ -80,8 +86,8 @@ importers:
   packages/plugin:
     dependencies:
       '@stencil/unplugin':
-        specifier: file:../../../../stenciljs/packages/unplugin
-        version: file:../../stenciljs/packages/unplugin(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
+        specifier: ^5.0.0 || >=5.0.0-alpha.0 <5.0.0-next.0
+        version: 5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
       '@storybook/builder-vite':
         specifier: ^10.4.6
         version: 10.4.6(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
@@ -103,10 +109,10 @@ importers:
     devDependencies:
       '@stencil/cli':
         specifier: file:../../../../stenciljs/packages/cli
-        version: file:../../stenciljs/packages/cli(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))
+        version: file:../../stenciljs/packages/cli(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
       '@stencil/core':
-        specifier: file:../../../../stenciljs/packages/core
-        version: file:../../stenciljs/packages/core(rollup@4.62.2)
+        specifier: 'catalog:'
+        version: 5.0.0-alpha.17(rollup@4.62.2)
       '@types/node':
         specifier: ^26.1.0
         version: 26.1.0
@@ -131,18 +137,6 @@ importers:
       '@stencil/core':
         specifier: file:../../../../stenciljs/packages/core
         version: file:../../stenciljs/packages/core(rollup@4.62.2)
-      '@stencil/storybook-plugin':
-        specifier: workspace:*
-        version: link:../plugin
-      '@storybook/addon-docs':
-        specifier: ^10.4.6
-        version: 10.4.6(@types/react@19.2.17)(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
-      '@storybook/addon-links':
-        specifier: ^10.4.6
-        version: 10.4.6(@types/react@19.2.17)(react@19.2.7)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))
-      storybook:
-        specifier: ^10.4.6
-        version: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7)
 
 packages:
 
@@ -1127,6 +1121,10 @@ packages:
     peerDependencies:
       '@stencil/core': ^5.0.0-0
 
+  '@stencil/core@5.0.0-alpha.17':
+    resolution: {integrity: sha512-sqTy9KMq5JKsJmQmviqHd72SzY+y1CsaIYUnzu/xwuw68eta1Hw8IAr5geDdlihTLm3IB3bcPoUp4ypVIUe8Og==}
+    hasBin: true
+
   '@stencil/core@file:../../stenciljs/packages/core':
     resolution: {directory: ../../stenciljs/packages/core, type: directory}
     hasBin: true
@@ -1142,8 +1140,8 @@ packages:
   '@stencil/templates@file:../../stenciljs/packages/templates':
     resolution: {directory: ../../stenciljs/packages/templates, type: directory}
 
-  '@stencil/unplugin@file:../../stenciljs/packages/unplugin':
-    resolution: {directory: ../../stenciljs/packages/unplugin, type: directory}
+  '@stencil/unplugin@5.0.0-alpha.17':
+    resolution: {integrity: sha512-XZ/5PjoMOcZPUG93pcJezuAIMidkRYDiW0C09ANL5gvvYKcoafykNXwier8hSKuEZMhCpKQZ38SN4touPuvtUw==}
     peerDependencies:
       '@stencil/core': ^5.0.0-0
       less: ^4.0.0
@@ -4277,6 +4275,19 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
+  '@stencil/cli@file:../../stenciljs/packages/cli(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))':
+    dependencies:
+      '@clack/prompts': 1.6.0
+      '@stencil/core': 5.0.0-alpha.17(rollup@4.62.2)
+      '@stencil/dev-server': file:../../stenciljs/packages/dev-server(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
+      '@stencil/templates': file:../../stenciljs/packages/templates
+      nypm: 0.3.12
+      std-env: 3.10.0
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@stencil/cli@file:../../stenciljs/packages/cli(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))':
     dependencies:
       '@clack/prompts': 1.6.0
@@ -4288,6 +4299,35 @@ snapshots:
       typescript: 6.0.3
     transitivePeerDependencies:
       - bufferutil
+      - utf-8-validate
+
+  '@stencil/core@5.0.0-alpha.17(rollup@4.62.2)':
+    dependencies:
+      '@parcel/watcher': 2.5.6
+      '@preact/signals-core': 1.14.3
+      '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
+      '@stencil/cli': file:../../stenciljs/packages/cli(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
+      '@stencil/dev-server': file:../../stenciljs/packages/dev-server(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))
+      '@stencil/mock-doc': file:../../stenciljs/packages/mock-doc
+      browserslist: 4.28.4
+      chalk: 5.6.2
+      css-what: 7.0.0
+      jiti: 2.7.0
+      lightningcss: 1.32.0
+      magic-string: 0.30.21
+      picomatch: 4.0.4
+      postcss: 8.5.16
+      postcss-safe-parser: 7.0.1(postcss@8.5.16)
+      postcss-selector-parser: 7.1.4
+      resolve: 1.22.12
+      rolldown: 1.1.4
+      semver: 7.8.5
+      terser: 5.48.0
+      tinyglobby: 0.2.17
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - bufferutil
+      - rollup
       - utf-8-validate
 
   '@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2)':
@@ -4319,6 +4359,16 @@ snapshots:
       - rollup
       - utf-8-validate
 
+  '@stencil/dev-server@file:../../stenciljs/packages/dev-server(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))':
+    dependencies:
+      '@stencil/core': 5.0.0-alpha.17(rollup@4.62.2)
+      launch-editor: 2.14.1
+      open: 11.0.0
+      ws: 8.21.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+
   '@stencil/dev-server@file:../../stenciljs/packages/dev-server(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))':
     dependencies:
       '@stencil/core': file:../../stenciljs/packages/core(rollup@4.62.2)
@@ -4336,10 +4386,10 @@ snapshots:
 
   '@stencil/templates@file:../../stenciljs/packages/templates': {}
 
-  '@stencil/unplugin@file:../../stenciljs/packages/unplugin(@stencil/core@file:../../stenciljs/packages/core(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))':
+  '@stencil/unplugin@5.0.0-alpha.17(@stencil/core@5.0.0-alpha.17(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))':
     dependencies:
       '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
-      '@stencil/core': file:../../stenciljs/packages/core(rollup@4.62.2)
+      '@stencil/core': 5.0.0-alpha.17(rollup@4.62.2)
       jiti: 2.7.0
       local-pkg: 1.2.1
       typescript: 6.0.3
@@ -4362,25 +4412,6 @@ snapshots:
     dependencies:
       '@mdx-js/react': 3.1.1(@types/react@19.2.17)(react@19.2.7)
       '@storybook/csf-plugin': 10.4.6(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@22.20.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
-      '@storybook/icons': 2.1.0(react@19.2.7)
-      '@storybook/react-dom-shim': 10.4.6(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))
-      react: 19.2.7
-      react-dom: 19.2.7(react@19.2.7)
-      storybook: 10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7)
-      ts-dedent: 2.3.0
-    optionalDependencies:
-      '@types/react': 19.2.17
-    transitivePeerDependencies:
-      - '@types/react-dom'
-      - esbuild
-      - rollup
-      - vite
-      - webpack
-
-  '@storybook/addon-docs@10.4.6(@types/react@19.2.17)(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))':
-    dependencies:
-      '@mdx-js/react': 3.1.1(@types/react@19.2.17)(react@19.2.7)
-      '@storybook/csf-plugin': 10.4.6(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
       '@storybook/icons': 2.1.0(react@19.2.7)
       '@storybook/react-dom-shim': 10.4.6(@types/react@19.2.17)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))
       react: 19.2.7
