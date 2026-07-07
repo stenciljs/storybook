@@ -1,4 +1,10 @@
-import type { ClassField, ClassMethod, CustomElement, Package } from 'custom-elements-manifest';
+import type {
+  ClassMethod,
+  CustomElement,
+  CustomElementDeclaration,
+  CustomElementField,
+  Package,
+} from 'custom-elements-manifest';
 import { logger } from 'storybook/internal/client-logger';
 import type { ArgTypes } from 'storybook/internal/types';
 
@@ -19,18 +25,30 @@ const cleanTypeText = (text: string | undefined) =>
     .replace(/\s*\|\s*undefined/g, '')
     .trim() || undefined;
 
-const withTags = (description: string | undefined, tags: Tag[] | undefined): string | undefined => {
-  if (!tags?.length) return description;
-  const formatted = tags
-    .map(({ name, text }) => `**${name.charAt(0).toUpperCase() + name.slice(1)}:** ${text ?? ''}`.trimEnd())
-    .join('\n\n');
-  return description ? `${description}\n\n${formatted}` : formatted;
+const withTags = (
+  description: string | undefined,
+  tags: Tag[] | undefined,
+  deprecated?: boolean | string,
+): string | undefined => {
+  const sections: string[] = [];
+  if (deprecated !== undefined && deprecated !== false) {
+    sections.push(typeof deprecated === 'string' ? `**⚠️ Deprecated:** ${deprecated}` : '**⚠️ Deprecated**');
+  }
+  if (description) sections.push(description);
+  if (tags?.length) {
+    sections.push(
+      tags
+        .map(({ name, text }) => `**${name.charAt(0).toUpperCase() + name.slice(1)}:** ${text ?? ''}`.trimEnd())
+        .join('\n\n'),
+    );
+  }
+  return sections.length > 0 ? sections.join('\n\n') : undefined;
 };
 
-const findDeclaration = (tagName: string, cem: Package): CustomElement | undefined => {
+const findDeclaration = (tagName: string, cem: Package): CustomElementDeclaration | undefined => {
   for (const mod of cem.modules) {
     const found = (mod.declarations ?? []).find(
-      (d): d is CustomElement => 'customElement' in d && (d as CustomElement).tagName === tagName,
+      (d): d is CustomElementDeclaration => 'customElement' in d && (d as CustomElementDeclaration).tagName === tagName,
     );
     if (found) return found;
   }
@@ -51,11 +69,15 @@ const mapNamedItems = (items: Array<{ name: string; description?: string }>, cat
 
 const mapFields = (members: CustomElement['members']): ArgTypes =>
   (members ?? [])
-    .filter((m): m is ClassField => m.kind === 'field')
+    .filter((m): m is CustomElementField => m.kind === 'field')
     .reduce<ArgTypes>((acc, field) => {
       acc[field.name] = {
         name: field.attribute ?? field.name,
-        description: withTags(field.description, (field as ClassField & { tags?: Tag[] }).tags),
+        description: withTags(
+          field.description,
+          (field as CustomElementField & { tags?: Tag[] }).tags,
+          field.deprecated,
+        ),
         control: inferControlType(field),
         table: {
           category: 'properties',
@@ -74,8 +96,8 @@ const mapMethods = (members: CustomElement['members']): ArgTypes =>
     .reduce<ArgTypes>((acc, method) => {
       acc[method.name] = {
         name: method.name,
-        description: withTags(method.description, (method as ClassMethod & { tags?: Tag[] }).tags),
-        control: null,
+        description: withTags(method.description, (method as ClassMethod & { tags?: Tag[] }).tags, method.deprecated),
+        control: false,
         type: { name: 'function' },
         table: {
           category: 'methods',
@@ -90,8 +112,8 @@ const mapEvents = (events: CustomElement['events']): ArgTypes =>
     const name = toEventActionName(event.name);
     acc[name] = {
       name,
-      description: withTags(event.description, (event as typeof event & { tags?: Tag[] }).tags),
-      control: null,
+      description: withTags(event.description, (event as typeof event & { tags?: Tag[] }).tags, event.deprecated),
+      control: false,
       table: { category: 'events', type: { summary: cleanTypeText(event.type?.text) } },
       type: { name: 'function' },
     };
@@ -126,5 +148,5 @@ export const extractComponentDescription = (component: any): string | undefined 
   const tagName = typeof component === 'string' ? component : component?.is;
   if (!isValidComponent(tagName) || !isValidMetaData(cem)) return undefined;
   const decl = findDeclaration(tagName, cem);
-  return withTags(decl?.description, (decl as typeof decl & { tags?: Tag[] })?.tags);
+  return withTags(decl?.description, (decl as typeof decl & { tags?: Tag[] })?.tags, decl?.deprecated);
 };

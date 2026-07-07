@@ -42,7 +42,7 @@ export const inferControlType = (field: ClassField): InputType['control'] => {
     case 'function | undefined':
     case 'void':
     case 'void | undefined':
-      return null;
+      return false;
     default: {
       const values = parseLiteralValues(typeText);
       if (values.length === 0) return { type: 'object' };

@@ -25,6 +25,7 @@ export default defineConfig({
       'virtual:stencil-docs', // resolved at runtime by Vite, not at build time
       /^@stencil\/core(\/.*)?$/,
       /^@stencil\/unplugin(\/.*)?$/,
+      /^@stencil\/cli(\/.*)?$/,
     ],
   },
   outDir: './dist',
