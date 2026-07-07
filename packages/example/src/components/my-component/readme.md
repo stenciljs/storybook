@@ -5,6 +5,10 @@
 <!-- Auto Generated Below -->
 
 
+## Overview
+
+A simple component that takes in a first and last name and renders "Hello, World! I'm {first} {last}"
+
 ## Properties
 
 | Property                   | Attribute      | Description                          | Type                                           | Default     |

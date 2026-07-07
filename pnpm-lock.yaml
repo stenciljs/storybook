@@ -7,11 +7,11 @@ settings:
 catalogs:
   default:
     '@stencil/cli':
-      specifier: ^5.0.0 || >=5.0.0-alpha.18 <5.0.0-next.0
-      version: 5.0.0-alpha.18
+      specifier: ^5.0.0 || >=5.0.0-alpha.19 <5.0.0-next.0
+      version: 5.0.0-alpha.19
     '@stencil/core':
-      specifier: ^5.0.0 || >=5.0.0-alpha.18 <5.0.0-next.0
-      version: 5.0.0-alpha.18
+      specifier: ^5.0.0 || >=5.0.0-alpha.19 <5.0.0-next.0
+      version: 5.0.0-alpha.19
 
 importers:
 
@@ -55,7 +55,7 @@ importers:
     devDependencies:
       '@stencil/core':
         specifier: 'catalog:'
-        version: 5.0.0-alpha.18(rollup@4.62.2)
+        version: 5.0.0-alpha.19(rollup@4.62.2)
       '@stencil/storybook-plugin':
         specifier: workspace:*
         version: link:../plugin
@@ -81,8 +81,8 @@ importers:
   packages/plugin:
     dependencies:
       '@stencil/unplugin':
-        specifier: ^5.0.0 || >=5.0.0-alpha.18 <5.0.0-next.0
-        version: 5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
+        specifier: ^5.0.0 || >=5.0.0-alpha.19 <5.0.0-next.0
+        version: 5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
       '@storybook/builder-vite':
         specifier: ^10.4.6
         version: 10.4.6(esbuild@0.28.1)(rollup@4.62.2)(storybook@10.4.6(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@3.9.4)(react@19.2.7))(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))
@@ -104,10 +104,10 @@ importers:
     devDependencies:
       '@stencil/cli':
         specifier: 'catalog:'
-        version: 5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))
+        version: 5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))
       '@stencil/core':
         specifier: 'catalog:'
-        version: 5.0.0-alpha.18(rollup@4.62.2)
+        version: 5.0.0-alpha.19(rollup@4.62.2)
       '@types/node':
         specifier: ^26.1.0
         version: 26.1.0
@@ -128,10 +128,10 @@ importers:
     devDependencies:
       '@stencil/cli':
         specifier: 'catalog:'
-        version: 5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))
+        version: 5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))
       '@stencil/core':
         specifier: 'catalog:'
-        version: 5.0.0-alpha.18(rollup@4.62.2)
+        version: 5.0.0-alpha.19(rollup@4.62.2)
 
 packages:
 
@@ -1110,29 +1110,29 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@stencil/cli@5.0.0-alpha.18':
-    resolution: {integrity: sha512-pKam3xGWAo1rLMETjEgDlwAihnoByodcPMUdwLIr7dDF4kDV13WAGht+qBIq1++xFMNqaC1GpjkSdUFtLmYeJg==}
+  '@stencil/cli@5.0.0-alpha.19':
+    resolution: {integrity: sha512-tcgadbU0afcILLZB70YO2AJFKJEQqqJcPYR2Uc7a/EGupNpiI/PC75iQSlEq2qYHu8cLFRTjHsPcK7GCT+ktFQ==}
     hasBin: true
     peerDependencies:
       '@stencil/core': ^5.0.0-0
 
-  '@stencil/core@5.0.0-alpha.18':
-    resolution: {integrity: sha512-7JwUsB6ol/WTeXkSXFJnMvf4y70Ssb+ZKFJaWZ3bNFYR3CaDW+RlGGbb60sUPKrYEitqV3qIgU0aMPHucxVLvA==}
+  '@stencil/core@5.0.0-alpha.19':
+    resolution: {integrity: sha512-49E9ZOVTjwfZHayE+f1WSqWYIuGKam44OuuEvT3f9Pnlj3cFgx+bLnw1MYXj3sijE9/z5gYJcd1jhgw2AdWVyA==}
     hasBin: true
 
-  '@stencil/dev-server@5.0.0-alpha.18':
-    resolution: {integrity: sha512-EBbwc1WYteVd8i67Ln9QGrSqz9dACi8T50aq6zJ6drzHfZglKdyWEdSHhv2q41GT2HVWqWLKeKoY8bsIt0NU5w==}
+  '@stencil/dev-server@5.0.0-alpha.19':
+    resolution: {integrity: sha512-LTCBuYuZkPU106kxC+j10AtQgzFp1jMmTFNohYZabGD7ED/aIJSYrDt7C7+nTBjlMwF4YgJNBQpD0r6z3uPdKw==}
     peerDependencies:
       '@stencil/core': ^5.0.0-0
 
-  '@stencil/mock-doc@5.0.0-alpha.18':
-    resolution: {integrity: sha512-SL6NFprMnQBqYzKj6YJdFoq0C0tC44RfJ0iKaQ5X0PLFTRTlkacVhcxZ/WYK836mgb8B1q1W56HsW5iWHuNJyA==}
+  '@stencil/mock-doc@5.0.0-alpha.19':
+    resolution: {integrity: sha512-TJEhxuTnM3xR2flYH0irneBF2dvd0Q2etWmyHcuyDqlM5pfU/6f+47bGqofNPGiP7aEvjiAJ+tSBNXGwtb18fw==}
 
-  '@stencil/templates@5.0.0-alpha.18':
-    resolution: {integrity: sha512-/A7pZvmceTpoydNf0Rf4wl+2xK8u7yRv7H/G9hbKeOU6xw3xBbMzUSRu9f6RBNiGDkfUk4dGUGTdXxE2ip3UaA==}
+  '@stencil/templates@5.0.0-alpha.19':
+    resolution: {integrity: sha512-bZpOx5RUlq46QOAnZPx7YdtH2nCVAPLzeDRUA9s7pLpfx2khqux67S4APN7f2QdJo+DjPF8RSbkXbx3vAEmCpQ==}
 
-  '@stencil/unplugin@5.0.0-alpha.18':
-    resolution: {integrity: sha512-gf/Cbn5EPe1QOCYTV/l0nx+C0kSUUmcYhFgBhyfIAyALsP2T1gUGrvispP88ywjJwaru87ETiv02tPMcVPMbNg==}
+  '@stencil/unplugin@5.0.0-alpha.19':
+    resolution: {integrity: sha512-ctdI7NQu+OlqSw/yOtwsZXhttLoa4MJo5UYXN0g2aSTsm5pcZFBErPMt+/niSL2KJrLnltq8wcauVDOfcNjUmA==}
     peerDependencies:
       '@stencil/core': ^5.0.0-0
       less: ^4.0.0
@@ -4271,12 +4271,12 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@stencil/cli@5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))':
+  '@stencil/cli@5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))':
     dependencies:
       '@clack/prompts': 1.6.0
-      '@stencil/core': 5.0.0-alpha.18(rollup@4.62.2)
-      '@stencil/dev-server': 5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))
-      '@stencil/templates': 5.0.0-alpha.18
+      '@stencil/core': 5.0.0-alpha.19(rollup@4.62.2)
+      '@stencil/dev-server': 5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))
+      '@stencil/templates': 5.0.0-alpha.19
       nypm: 0.3.12
       std-env: 3.10.0
       typescript: 6.0.3
@@ -4284,14 +4284,14 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@stencil/core@5.0.0-alpha.18(rollup@4.62.2)':
+  '@stencil/core@5.0.0-alpha.19(rollup@4.62.2)':
     dependencies:
       '@parcel/watcher': 2.5.6
       '@preact/signals-core': 1.14.3
       '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
-      '@stencil/cli': 5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))
-      '@stencil/dev-server': 5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))
-      '@stencil/mock-doc': 5.0.0-alpha.18
+      '@stencil/cli': 5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))
+      '@stencil/dev-server': 5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))
+      '@stencil/mock-doc': 5.0.0-alpha.19
       browserslist: 4.28.4
       chalk: 5.6.2
       css-what: 7.0.0
@@ -4313,9 +4313,9 @@ snapshots:
       - rollup
       - utf-8-validate
 
-  '@stencil/dev-server@5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))':
+  '@stencil/dev-server@5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))':
     dependencies:
-      '@stencil/core': 5.0.0-alpha.18(rollup@4.62.2)
+      '@stencil/core': 5.0.0-alpha.19(rollup@4.62.2)
       launch-editor: 2.14.1
       open: 11.0.0
       ws: 8.21.0
@@ -4323,17 +4323,17 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@stencil/mock-doc@5.0.0-alpha.18':
+  '@stencil/mock-doc@5.0.0-alpha.19':
     dependencies:
       nwsapi: 2.2.24
       parse5: 8.0.1
 
-  '@stencil/templates@5.0.0-alpha.18': {}
+  '@stencil/templates@5.0.0-alpha.19': {}
 
-  '@stencil/unplugin@5.0.0-alpha.18(@stencil/core@5.0.0-alpha.18(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))':
+  '@stencil/unplugin@5.0.0-alpha.19(@stencil/core@5.0.0-alpha.19(rollup@4.62.2))(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.16)(rolldown@1.1.4)(rollup@4.62.2)(typescript@6.0.3)(vite@8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(terser@5.48.0)(tsx@4.22.4))':
     dependencies:
       '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
-      '@stencil/core': 5.0.0-alpha.18(rollup@4.62.2)
+      '@stencil/core': 5.0.0-alpha.19(rollup@4.62.2)
       jiti: 2.7.0
       local-pkg: 1.2.1
       typescript: 6.0.3
