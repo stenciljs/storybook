@@ -17,6 +17,11 @@ export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, { c
   const config = mergeConfig(defaultConfig, {
     build: { target: 'es2022' },
     plugins: [unpluginStencil.vite({ docs: true })],
+    // Vite's dev-mode JSX transform injects React DevTools' `__self`/`__source` metadata into every
+    // JSX element regardless of jsxFactory. Stencil's `h()` doesn't strip these, so they leak into the
+    // DOM as a literal `__source="[object Object]"` attribute on story-authored slot content.
+    esbuild: { jsxDev: false },
+    oxc: { jsx: { development: false } },
   });
 
   if (configType === 'DEVELOPMENT') {
