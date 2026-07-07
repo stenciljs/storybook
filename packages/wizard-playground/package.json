@@ -11,5 +11,8 @@
   "devDependencies": {
     "@stencil/cli": "catalog:",
     "@stencil/core": "catalog:"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }

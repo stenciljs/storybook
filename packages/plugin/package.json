@@ -59,7 +59,7 @@
     "build": "tsdown"
   },
   "dependencies": {
-    "@stencil/unplugin": "^5.0.0 || >=5.0.0-alpha.0 <5.0.0-next.0",
+    "@stencil/unplugin": "^5.0.0 || >=5.0.0-alpha.18 <5.0.0-next.0",
     "@storybook/builder-vite": "^10.4.6",
     "@storybook/global": "^5.0.0",
     "@storybook/html": "^10.4.6",
@@ -84,5 +84,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "volta": {
+    "extends": "../../package.json"
   }
 }
