@@ -12,7 +12,7 @@ on:
           - dev
           - production
       bump:
-        description: 'Semver bump for production releases.'
+        description: 'Semver bump to apply (patch, minor, major). For dev releases this only affects the computed prerelease version, not the committed package.json.'
         required: false
         type: choice
         default: patch
@@ -30,6 +30,8 @@ jobs:
     if: ${{ inputs.channel == 'dev' }}
     uses: ./.github/workflows/release-dev.yml
     secrets: inherit
+    with:
+      bump: ${{ inputs.bump }}
 
   run-production:
     if: ${{ inputs.channel == 'production' }}
