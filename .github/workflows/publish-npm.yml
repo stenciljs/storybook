@@ -123,14 +123,22 @@ jobs:
         shell: bash
 
       - name: 📝 Commit Version Changes
+        # Dev builds compute an ephemeral timestamped prerelease version that
+        # should never be persisted to package.json on the branch - only real
+        # releases get their version bump committed back.
+        if: ${{ inputs.tag != 'dev' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           if [ "${{ inputs.package-directory }}" = "." ]; then
-            git add package.json package-lock.json
+            PKG_JSON="package.json"
+            PKG_LOCK="package-lock.json"
           else
-            git add ${{ inputs.package-directory }}/package.json ${{ inputs.package-directory }}/package-lock.json 2>/dev/null || true
+            PKG_JSON="${{ inputs.package-directory }}/package.json"
+            PKG_LOCK="${{ inputs.package-directory }}/package-lock.json"
           fi
+          git add "$PKG_JSON"
+          [ -f "$PKG_LOCK" ] && git add "$PKG_LOCK"
           # Only commit if there are changes
           if ! git diff --staged --quiet; then
             git commit -m "chore: bump version to ${{ steps.get-version.outputs.VERSION }}"
@@ -165,15 +173,11 @@ jobs:
         shell: bash
 
       - name: 📤 Push Changes and Tag
+        # Dev builds never commit (see above), so there's nothing to push.
+        if: ${{ inputs.tag != 'dev' }}
         run: |
-          # Push the commit to the current branch
           git push origin HEAD
-          # Push the tag (only for non-dev builds)
-          if [ "${{ inputs.tag }}" != "dev" ]; then
-            git push origin "v${{ steps.get-version.outputs.VERSION }}"
-          else
-            echo "Skipping tag push for dev build"
-          fi
+          git push origin "v${{ steps.get-version.outputs.VERSION }}"
         shell: bash
 
       - name: 🚀 Publish to npm
