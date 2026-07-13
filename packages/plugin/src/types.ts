@@ -22,16 +22,7 @@ interface DevJSX {
 }
 
 type JSXChildren =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | Function
-  | RegExp
-  | JSXChildren[]
-  | Promise<JSXChildren>
-  | VNode;
+  string | number | boolean | null | undefined | Function | RegExp | JSXChildren[] | Promise<JSXChildren> | VNode;
 
 type ComponentChildren<PROPS> = PROPS extends {
   children: any;

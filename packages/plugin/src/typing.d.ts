@@ -6,3 +6,9 @@ interface ImportMeta {
     on(event: string, cb: (...args: any[]) => void): void;
   };
 }
+
+declare module 'virtual:stencil-docs' {
+  import type { Package } from 'custom-elements-manifest';
+  const docs: Package;
+  export default docs;
+}

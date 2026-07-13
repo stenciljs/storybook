@@ -1,0 +1,18 @@
+{
+  "name": "wizard-playground",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "init": "STENCIL_WIZARD_DEV=../plugin/dist/wizard.mjs stencil init",
+    "add": "STENCIL_WIZARD_DEV=../plugin/dist/wizard.mjs stencil init",
+    "generate": "STENCIL_WIZARD_DEV=../plugin/dist/wizard.mjs stencil generate"
+  },
+  "devDependencies": {
+    "@stencil/cli": "catalog:",
+    "@stencil/core": "catalog:"
+  },
+  "volta": {
+    "extends": "../../package.json"
+  }
+}

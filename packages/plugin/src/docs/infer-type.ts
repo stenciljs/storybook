@@ -1,24 +1,31 @@
-import type { JsonDocsProp } from '@stencil/core/internal';
+import type { ClassField } from 'custom-elements-manifest';
 import type { InputType, SBScalarType, SBType } from 'storybook/internal/types';
 
-export const inferSBType = (prop: JsonDocsProp): SBType => {
-  const scalarTypes: SBScalarType['name'][] = ['string', 'number', 'boolean', 'symbol'];
-  if (prop.type.toLowerCase() in scalarTypes) {
-    return { name: prop.type.toLowerCase(), raw: prop.type, required: prop.required } as SBScalarType;
+/** Extract string/number literal values from a union type string, e.g. `"'sm' | 'md' | 'lg'"`. */
+export const parseLiteralValues = (typeText: string): string[] => {
+  const values: string[] = [];
+  for (const m of typeText.matchAll(/'([^']*)'|"([^"]*)"/g)) values.push(m[1] ?? m[2] ?? '');
+  if (values.length === 0) {
+    for (const m of typeText.matchAll(/(?<![.\w])-?\d+(?:\.\d+)?(?![.\w])/g)) values.push(m[0]);
   }
-
-  if (/^\(.*\)\s*=>\s*.*$/.test(prop.type)) {
-    return { name: 'function', raw: prop.type, required: prop.required };
-  }
-
-  return { name: 'other', value: prop.type, raw: prop.type, required: prop.required };
+  return values.filter(Boolean);
 };
 
-export const mapPropOptions = (prop: JsonDocsProp) =>
-  prop.values.filter((value) => ['string', 'number'].includes(value.type)).map(({ value }) => value);
+export const inferSBType = (field: ClassField): SBType => {
+  const typeText = field.type?.text ?? '';
+  const scalarTypes: SBScalarType['name'][] = ['string', 'number', 'boolean', 'symbol'];
+  if ((scalarTypes as string[]).includes(typeText.toLowerCase())) {
+    return { name: typeText.toLowerCase() as SBScalarType['name'], raw: typeText };
+  }
+  if (/^\(.*\)\s*=>\s*.*$/.test(typeText)) {
+    return { name: 'function', raw: typeText };
+  }
+  return { name: 'other', value: typeText, raw: typeText };
+};
 
-export const inferControlType = (prop: JsonDocsProp): InputType['control'] => {
-  switch (prop.type) {
+export const inferControlType = (field: ClassField): InputType['control'] => {
+  const typeText = field.type?.text ?? '';
+  switch (typeText) {
     case 'string':
     case 'string | undefined':
       return { type: 'text' };
@@ -35,16 +42,11 @@ export const inferControlType = (prop: JsonDocsProp): InputType['control'] => {
     case 'function | undefined':
     case 'void':
     case 'void | undefined':
-      return null;
-    default:
-      const values = mapPropOptions(prop);
-
-      if (values.length === 0) {
-        return { type: 'object' };
-      }
-      if (values.length < 5) {
-        return { type: 'radio' };
-      }
-      return { type: 'select' };
+      return false;
+    default: {
+      const values = parseLiteralValues(typeText);
+      if (values.length === 0) return { type: 'object' };
+      return { type: values.length < 5 ? 'radio' : 'select' };
+    }
   }
 };

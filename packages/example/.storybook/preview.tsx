@@ -1,7 +1,4 @@
-import { setCustomElementsManifest, type Preview } from '@stencil/storybook-plugin';
-import customElements from '../dist/custom-elements.json';
-
-setCustomElementsManifest(customElements);
+import type { Preview } from '@stencil/storybook-plugin';
 
 export const parameters: Preview['parameters'] = {
   actions: { argTypesRegex: '^on[A-Z].*' },
