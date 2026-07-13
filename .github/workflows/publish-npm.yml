@@ -180,7 +180,23 @@ jobs:
           git push origin "v${{ steps.get-version.outputs.VERSION }}"
         shell: bash
 
+      - name: 📦 Pack Tarball
+        # pnpm pack resolves workspace:/catalog: protocol refs (e.g.
+        # "@stencil/core": "catalog:") into real semver ranges. npm publish
+        # doesn't understand those protocols and would publish them verbatim,
+        # breaking peer dependency resolution for consumers.
+        id: pack
+        run: |
+          PACK_JSON=$(pnpm pack --json --pack-destination "$RUNNER_TEMP")
+          TARBALL=$(node -e "console.log(JSON.parse(process.argv[1]).filename)" "$PACK_JSON")
+          echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+        shell: bash
+        working-directory: ${{ inputs.package-directory }}
+
       - name: 🚀 Publish to npm
-        run: npm publish --tag ${{ inputs.tag }} --provenance
+        # Publish the pnpm-packed tarball (not the raw directory) so the
+        # trusted-publishing/provenance handshake still goes through npm's
+        # own CLI, which is the proven-working auth path.
+        run: npm publish "${{ steps.pack.outputs.tarball }}" --tag ${{ inputs.tag }} --provenance
         shell: bash
         working-directory: ${{ inputs.package-directory }}
