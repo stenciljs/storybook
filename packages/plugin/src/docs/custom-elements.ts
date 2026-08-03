@@ -137,7 +137,7 @@ const mapProps = (props: JsonDocsProp[]): ArgTypes =>
         type: { summary: prop.complexType?.original },
         defaultValue: { summary: prop.default },
       },
-      options: mapPropOptions(prop),
+      options: mapPropOptions(prop).length > 0 ? mapPropOptions(prop) : undefined,
       type: inferSBType(prop),
     };
 
