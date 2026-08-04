@@ -24,7 +24,7 @@
     "dev.plugin": "pnpm --filter @stencil/storybook-plugin watch",
     "dev.example": "pnpm --filter example run storybook",
     "dev.example-lazy": "pnpm --filter example-lazy run storybook",
-    "test": "run-s test.*",
+    "test": "run-s build test.*",
     "test.example": "wdio run ./tests/wdio.conf.ts",
     "test.example-lazy": "wdio run ./tests/wdio.conf-lazy.ts",
     "prettier": "npm run prettier.base -- --write",
