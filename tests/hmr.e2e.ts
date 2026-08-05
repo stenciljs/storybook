@@ -37,9 +37,20 @@ function makeUpdatedRender(token: string) {
   return `    return <div>Hello, ${token}! I'm {this.getText()}</div>;`;
 }
 
-async function readMyComponentText() {
+async function switchToPreviewIframe() {
   await browser.switchFrame(null);
-  await browser.switchFrame(() => Boolean(document.querySelector('my-component')));
+  const iframe = $('#storybook-preview-iframe');
+  await iframe.waitForExist({ timeout: 15000 });
+  await browser.waitUntil(async () => (await iframe.getAttribute('data-is-loaded')) === 'true', {
+    timeout: 30000,
+    interval: 250,
+    timeoutMsg: 'Storybook preview iframe never reached data-is-loaded=true',
+  });
+  await browser.switchFrame(iframe);
+}
+
+async function readMyComponentText() {
+  await switchToPreviewIframe();
   const el = await $('my-component');
   await el.waitForExist({ timeout: 15000 });
   // The lazy loader places <my-component> in the DOM immediately and hydrates
@@ -60,8 +71,7 @@ async function readMyComponentText() {
 }
 
 async function readHostDisplay() {
-  await browser.switchFrame(null);
-  await browser.switchFrame(() => Boolean(document.querySelector('my-component')));
+  await switchToPreviewIframe();
   const el = await $('my-component');
   await el.waitForExist({ timeout: 15000 });
   await browser.waitUntil(
@@ -101,17 +111,7 @@ describe(`StencilJS Storybook HMR (${PACKAGE})`, () => {
     }
 
     await browser.url(`/?path=/story/mycomponent--primary`);
-    const iframe = $('#storybook-preview-iframe');
-    await iframe.waitForExist({ timeout: 30000 });
-    // Storybook flips this to "true" only once the preview iframe has booted
-    // and a story is rendered. Without this we can switch into a still-empty
-    // iframe and time out waiting for <my-component>.
-    await browser.waitUntil(async () => (await iframe.getAttribute('data-is-loaded')) === 'true', {
-      timeout: 60000,
-      interval: 250,
-      timeoutMsg: 'Storybook preview iframe never reached data-is-loaded=true',
-    });
-    await browser.switchFrame(iframe);
+    await switchToPreviewIframe();
     await $('my-component').waitForExist({ timeout: 30000 });
     await browser.switchFrame(null);
   });
