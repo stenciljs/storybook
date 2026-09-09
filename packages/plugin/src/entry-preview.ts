@@ -8,7 +8,7 @@ export { render, renderToCanvas } from './render';
 export const argTypesEnhancers: ArgTypesEnhancer[] = [enhanceArgTypes];
 
 // Reload the iframe when a Stencil component .tsx is rebuilt — see preset.ts.
-if (import.meta.hot) {
+if (import.meta.hot && !import.meta.env.VITEST) {
   import.meta.hot.on('stencil:reload', () => {
     location.reload();
   });

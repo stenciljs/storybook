@@ -144,7 +144,7 @@ export const config: WebdriverIO.Config = {
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: 'bdd',
-    timeout: 60000,
+    timeout: 120000,
   },
 
   //
@@ -216,8 +216,8 @@ export const config: WebdriverIO.Config = {
    * @param {Array.<String>} specs        List of spec file paths that are to be run
    * @param {object}         browser      instance of created browser/device session
    */
-  before: function () {
-    return browser.waitUntil(
+  before: async function () {
+    await browser.waitUntil(
       async () => {
         try {
           await browser.url('/');
@@ -232,6 +232,25 @@ export const config: WebdriverIO.Config = {
         timeoutMsg: 'Failed to start Storybook instance',
       },
     );
+
+    await browser.url('/?path=/story/mycomponent--primary');
+    await browser.waitUntil(
+      async () => {
+        try {
+          await browser.switchFrame(null);
+          await browser.switchFrame(() => Boolean(document.querySelector('my-component')));
+          return true;
+        } catch {
+          return false;
+        }
+      },
+      {
+        timeout: 120000,
+        interval: 2000,
+        timeoutMsg: 'Storybook preview never rendered my-component',
+      },
+    );
+    await browser.switchFrame(null);
   },
   /**
    * Runs before a WebdriverIO command gets executed.
