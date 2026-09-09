@@ -111,8 +111,23 @@ describe(`StencilJS Storybook HMR (${PACKAGE})`, () => {
     }
 
     await browser.url(`/?path=/story/mycomponent--primary`);
-    await switchToPreviewIframe();
-    await $('my-component').waitForExist({ timeout: 30000 });
+    // Cold CI runs hit Vite dep-optimization reloads right after data-is-loaded;
+    // retry through iframe reloads until the story actually renders.
+    await browser.waitUntil(
+      async () => {
+        try {
+          await switchToPreviewIframe();
+          return await $('my-component').isExisting();
+        } catch {
+          return false;
+        }
+      },
+      {
+        timeout: 60000,
+        interval: 1000,
+        timeoutMsg: 'my-component never appeared in preview iframe',
+      },
+    );
     await browser.switchFrame(null);
   });
 
