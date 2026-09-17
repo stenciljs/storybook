@@ -21,6 +21,9 @@ const renderer = join(__dirname, 'entry-preview.js');
 
 const UNPLUGIN_STENCIL_NAME = '@stencil-community/unplugin-stencil';
 
+const isVitest =
+  process.env.VITEST === 'true' || process.env.VITEST === '1' || process.env.VITEST === '';
+
 export const core: StorybookConfig['core'] = {
   builder: join(getAbsolutePath('@storybook/builder-vite'), 'dist', 'index.js'),
   renderer,
@@ -54,7 +57,7 @@ export const viteFinal: StorybookConfig['viteFinal'] = async (defaultConfig, { c
           ignored: [join(__dirname, '**')],
         },
       },
-      plugins: [stencilPreviewReloadPlugin()],
+      plugins: isVitest ? [] : [stencilPreviewReloadPlugin()],
     });
   }
 
