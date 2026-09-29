@@ -153,19 +153,19 @@ jobs:
         run: |
           TAG_NAME="v${{ steps.get-version.outputs.VERSION }}"
           echo "Checking for existing tag: $TAG_NAME"
-          
+
           # Check if tag exists locally
           if git rev-parse "$TAG_NAME" >/dev/null 2>&1; then
             echo "Tag $TAG_NAME already exists locally, skipping creation"
             exit 0
           fi
-          
+
           # Check if tag exists remotely
           if git ls-remote --tags origin "$TAG_NAME" | grep -q "$TAG_NAME"; then
             echo "Tag $TAG_NAME already exists on remote, skipping creation"
             exit 0
           fi
-          
+
           # Create the tag
           echo "Creating annotated tag $TAG_NAME"
           git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
@@ -180,7 +180,23 @@ jobs:
           git push origin "v${{ steps.get-version.outputs.VERSION }}"
         shell: bash
 
+      - name: 📦 Pack Tarball
+        # pnpm pack resolves workspace:/catalog: protocol refs (e.g.
+        # "@stencil/core": "catalog:") into real semver ranges. npm publish
+        # doesn't understand those protocols and would publish them verbatim,
+        # breaking peer dependency resolution for consumers.
+        id: pack
+        run: |
+          PACK_JSON=$(pnpm pack --json --pack-destination "$RUNNER_TEMP")
+          TARBALL=$(node -e "console.log(JSON.parse(process.argv[1]).filename)" "$PACK_JSON")
+          echo "tarball=$TARBALL" >> "$GITHUB_OUTPUT"
+        shell: bash
+        working-directory: ${{ inputs.package-directory }}
+
       - name: 🚀 Publish to npm
-        run: npm publish --tag ${{ inputs.tag }} --provenance
+        # Publish the pnpm-packed tarball (not the raw directory) so the
+        # trusted-publishing/provenance handshake still goes through npm's
+        # own CLI, which is the proven-working auth path.
+        run: npm publish "${{ steps.pack.outputs.tarball }}" --tag ${{ inputs.tag }} --provenance
         shell: bash
         working-directory: ${{ inputs.package-directory }}

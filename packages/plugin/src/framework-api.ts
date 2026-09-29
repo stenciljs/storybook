@@ -1,5 +1,5 @@
 import { global } from '@storybook/global';
-import type { JsonDocs } from '@stencil/core/internal';
+import type { Package } from 'custom-elements-manifest';
 
 export function isValidComponent(tagName: string) {
   if (!tagName) {
@@ -11,16 +11,17 @@ export function isValidComponent(tagName: string) {
   throw new Error('Provided component needs to be a string. e.g. component: "my-element"');
 }
 
-export function isValidMetaData(customElements: JsonDocs) {
-  if (!customElements) {
+export function isValidMetaData(cem: unknown): cem is Package {
+  if (!cem) {
     return false;
   }
-
-  if (customElements.components && Array.isArray(customElements.components)) {
+  const candidate = cem as Package;
+  if (candidate.modules && Array.isArray(candidate.modules)) {
     return true;
   }
-  
-  throw new Error(`You need to setup valid meta data in your stencil.config.js via docs-json output target.`);
+  throw new Error(
+    'Invalid Custom Elements Manifest. Ensure @stencil/unplugin is configured and docs are enabled in your Storybook preset.',
+  );
 }
 
 /** @param customElements `any` for now as spec is not super stable yet */
@@ -28,10 +29,10 @@ export function setCustomElements(customElements: any) {
   global.__STORYBOOK_CUSTOM_ELEMENTS__ = customElements;
 }
 
-export function setCustomElementsManifest(customElements: any) {
-  global.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__ = customElements;
+export function setCustomElementsManifest(cem: Package) {
+  global.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__ = cem;
 }
 
-export function getCustomElements() {
-  return global.__STORYBOOK_CUSTOM_ELEMENTS__ || global.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__;
+export function getCustomElements(): Package | undefined {
+  return global.__STORYBOOK_CUSTOM_ELEMENTS__ ?? global.__STORYBOOK_CUSTOM_ELEMENTS_MANIFEST__;
 }

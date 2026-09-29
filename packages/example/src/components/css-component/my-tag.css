@@ -1,0 +1,24 @@
+/**
+ * @component
+ * A custom tag component.
+ *
+ * @attr {boolean} dismissible - Whether the badge can be closed.
+ * @prop --badge-color: The badge's text color.
+ * @slot - The badge's label.
+ */
+my-tag {
+  display: inline-block;
+  
+  /** The badge's padding. */
+  --badge-padding: 4px;
+
+  color: var(--badge-color, black);
+  padding: var(--badge-padding);
+
+  &[variant='danger'] {
+    color: red;
+  }
+  &[variant='success'] {
+    color: green;
+  }
+}

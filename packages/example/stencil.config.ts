@@ -4,11 +4,11 @@ export const config: Config = {
   namespace: 'example',
   outputTargets: [
     {
-      type: 'dist',
-      esmLoaderPath: '../loader',
+      type: 'loader-bundle',
+      loaderPath: '../../loader',
     },
     {
-      type: 'dist-custom-elements',
+      type: 'standalone',
       customElementsExportBehavior: 'auto-define-custom-elements',
       externalRuntime: true,
     },

@@ -9,3 +9,14 @@ interface ImportMeta {
     VITEST?: boolean;
   };
 }
+
+declare module 'virtual:stencil-docs' {
+  import type { Package } from 'custom-elements-manifest';
+  const docs: Package;
+  export default docs;
+}
+
+// Stencil's generated global stylesheets, resolved by @stencil/unplugin
+declare module 'stencil-hydrate';
+declare module 'stencil-component-globals';
+declare module 'stencil-css-components';

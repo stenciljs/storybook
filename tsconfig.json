@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "incremental": false,
     "noImplicitAny": true,
     "experimentalDecorators": true,

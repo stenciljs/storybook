@@ -7,7 +7,7 @@ import { Component, h } from '@stencil/core';
 @Component({
   tag: 'my-slotted',
   styleUrl: 'my-slotted.css',
-  shadow: true,
+  encapsulation: { type: 'shadow' },
 })
 export class MySlotted {
   render() {
