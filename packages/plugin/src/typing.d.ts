@@ -5,6 +5,9 @@ interface ImportMeta {
   hot?: {
     on(event: string, cb: (...args: any[]) => void): void;
   };
+  env: {
+    VITEST?: boolean;
+  };
 }
 
 declare module 'virtual:stencil-docs' {
