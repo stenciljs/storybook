@@ -41,6 +41,16 @@ export namespace Components {
     stringTest?: string;
   }
   interface MySlotted {}
+  /**
+   * A custom tag component.
+   */
+  interface MyTag {
+    /**
+     * Whether the badge can be closed.
+     */
+    dismissible?: boolean;
+    variant?: 'danger' | 'success' | (string & {});
+  }
 }
 export interface MyComponentCustomEvent<T> extends CustomEvent<T> {
   detail: T;
@@ -88,16 +98,22 @@ declare global {
     prototype: HTMLMySlottedElement;
     new (): HTMLMySlottedElement;
   };
+  /**
+   * A custom tag component.
+   */
+  interface HTMLMyTagElement extends Components.MyTag, HTMLStencilElement {}
+  var HTMLMyTagElement: {
+    prototype: HTMLMyTagElement;
+    new (): HTMLMyTagElement;
+  };
   interface HTMLElementTagNameMap {
     'my-component': HTMLMyComponentElement;
     'my-slotted': HTMLMySlottedElement;
+    'my-tag': HTMLMyTagElement;
   }
 }
 declare namespace LocalJSX {
-  type OneOf<K extends string, PropT, AttrT = PropT> =
-    | ({ [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never })
-    | ({ [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never })
-    | ({ [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never });
+  type OneOf<K extends string, PropT, AttrT = PropT> = ({ [P in K]: PropT } & { [P in `attr:${K}`]?: never }) | ({ [P in `attr:${K}`]: AttrT } & { [P in K]?: never });
 
   /**
    * A simple component that takes in a first and last name and renders "Hello, World! I'm {first} {last}"
@@ -135,6 +151,16 @@ declare namespace LocalJSX {
     stringTest?: string;
   }
   interface MySlotted {}
+  /**
+   * A custom tag component.
+   */
+  interface MyTag {
+    /**
+     * Whether the badge can be closed.
+     */
+    dismissible?: boolean;
+    variant?: 'danger' | 'success' | (string & {});
+  }
 
   interface MyComponentAttributes {
     first: string;
@@ -147,6 +173,10 @@ declare namespace LocalJSX {
     stringTest: string;
     complexTest: ComplexType;
   }
+  interface MyTagAttributes {
+    dismissible: boolean;
+    variant: string;
+  }
 
   interface IntrinsicElements {
     'my-component': Omit<MyComponent, keyof MyComponentAttributes> & { [K in keyof MyComponent & keyof MyComponentAttributes]?: MyComponent[K] } & {
@@ -156,6 +186,9 @@ declare namespace LocalJSX {
       OneOf<'last', MyComponent['last'], MyComponentAttributes['last']> &
       OneOf<'booleanTest', MyComponent['booleanTest'], MyComponentAttributes['booleanTest']>;
     'my-slotted': MySlotted;
+    'my-tag': Omit<MyTag, keyof MyTagAttributes> & { [K in keyof MyTag & keyof MyTagAttributes]?: MyTag[K] } & {
+      [K in keyof MyTag & keyof MyTagAttributes as `attr:${K}`]?: MyTagAttributes[K];
+    } & { [K in keyof MyTag & keyof MyTagAttributes as `prop:${K}`]?: MyTag[K] };
   }
 }
 export { LocalJSX as JSX };
@@ -167,6 +200,10 @@ declare module '@stencil/core' {
        */
       'my-component': LocalJSX.IntrinsicElements['my-component'] & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
       'my-slotted': LocalJSX.IntrinsicElements['my-slotted'] & JSXBase.HTMLAttributes<HTMLMySlottedElement>;
+      /**
+       * A custom tag component.
+       */
+      'my-tag': LocalJSX.IntrinsicElements['my-tag'] & JSXBase.HTMLAttributes<HTMLMyTagElement>;
     }
   }
 }

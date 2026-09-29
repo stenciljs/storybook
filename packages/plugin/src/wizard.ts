@@ -1,4 +1,4 @@
-import type { StencilWizardPlugin, WizardContext } from '@stencil/cli';
+import type { GeneratedComponentInfo, StencilWizardPlugin, WizardContext } from '@stencil/cli';
 import { access, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -66,26 +66,55 @@ function toPascalCase(tagName: string): string {
   return tagName.replace(/(^|-)([a-z])/g, (_, __, c: string) => c.toUpperCase());
 }
 
-async function generateExampleStories(srcDir: string): Promise<void> {
+// A CSS-only component is a `@component`-marked rule in a stylesheet - no JS class
+const CSS_ONLY_STYLE_EXTENSIONS = ['css', 'scss', 'sass', 'less'];
+// the tag a `@component` doc comment is attached to, e.g. `/** @component ... */ my-tag {`
+const CSS_ONLY_TAG_RE = /@component\b[\s\S]*?\*\/\s*([a-z][a-z0-9]*-[a-z0-9-]*)\s*[{,]/;
+
+/**
+ * @param componentDir a component's directory
+ * @param name the directory's name
+ * @returns the component's tag name and whether it's CSS-only, or `undefined` if there's none
+ */
+async function findComponent(
+  componentDir: string,
+  name: string,
+): Promise<{ tagName: string; cssOnly: boolean } | undefined> {
+  const componentFile = join(componentDir, `${name}.tsx`);
+  if (await fileExists(componentFile)) {
+    const source = await readFile(componentFile, 'utf8');
+    if (!source.includes('@Component')) return undefined;
+    const tagMatch = source.match(/tag:\s*['"]([^'"]+)['"]/);
+    return { tagName: tagMatch?.[1] ?? name, cssOnly: false };
+  }
+  for (const ext of CSS_ONLY_STYLE_EXTENSIONS) {
+    const styleFile = join(componentDir, `${name}.${ext}`);
+    if (!(await fileExists(styleFile))) continue;
+    const source = await readFile(styleFile, 'utf8');
+    if (!source.includes('@component')) continue;
+    return { tagName: source.match(CSS_ONLY_TAG_RE)?.[1] ?? name, cssOnly: true };
+  }
+  return undefined;
+}
+
+export async function generateExampleStories(srcDir: string): Promise<void> {
   const componentsDir = join(srcDir, 'components');
   const entries = await readdir(componentsDir, { withFileTypes: true }).catch(() => []);
 
   for (const entry of entries) {
     if (!entry.isDirectory()) continue;
-    const componentFile = join(componentsDir, entry.name, `${entry.name}.tsx`);
-    if (!(await fileExists(componentFile))) continue;
+    const componentDir = join(componentsDir, entry.name);
+    const component = await findComponent(componentDir, entry.name);
+    if (!component) continue;
 
-    const source = await readFile(componentFile, 'utf8');
-    if (!source.includes('@Component')) continue;
-
-    const tagMatch = source.match(/tag:\s*['"]([^'"]+)['"]/);
-    const tagName = tagMatch?.[1] ?? entry.name;
-    const className = toPascalCase(tagName);
-
-    const storiesFile = join(componentsDir, entry.name, `${tagName}.stories.tsx`);
+    const storiesFile = join(componentDir, `${component.tagName}.stories.tsx`);
     if (await fileExists(storiesFile)) continue;
 
-    await writeFile(storiesFile, storiesTemplate(tagName, className), 'utf8');
+    await writeFile(
+      storiesFile,
+      storiesTemplate(component.tagName, toPascalCase(component.tagName), { cssOnly: component.cssOnly }),
+      'utf8',
+    );
   }
 }
 
@@ -99,20 +128,33 @@ async function updatePackageJsonScripts(rootDir: string): Promise<void> {
   await writeFile(pkgPath, JSON.stringify(pkg, null, 2) + '\n', 'utf8');
 }
 
-function storiesTemplate(tagName: string, className: string): string {
-  return `import type { Meta, StoryObj } from '@stencil/storybook-plugin';
-import { ${className} } from './${tagName}';
+/**
+ * A story file for a component. Typed by tag name (`Meta<'my-tag'>`) - resolved from the project's
+ * `components.d.ts` once it has the tag, and loosely typed until then.
+ * @param tagName the component's tag name
+ * @param className the PascalCase form of `tagName`
+ * @param component what's being generated - a CSS-only component has no JS class to import, so
+ * the story refers to it by tag name
+ * @returns the story file's content
+ */
+function storiesTemplate(tagName: string, className: string, component?: GeneratedComponentInfo): string {
+  const cssOnly = component?.cssOnly ?? false;
+  const imports = cssOnly
+    ? `import type { Meta, StoryObj } from '@stencil/storybook-plugin';`
+    : `import type { Meta, StoryObj } from '@stencil/storybook-plugin';
+import { ${className} } from './${tagName}';`;
+  return `${imports}
 
 const meta = {
   title: '${className}',
-  component: ${className},
+  component: ${cssOnly ? `'${tagName}'` : className},
   parameters: {
     layout: 'centered',
   },
-} satisfies Meta;
+} satisfies Meta<'${tagName}'>;
 
 export default meta;
-type Story = StoryObj;
+type Story = StoryObj<'${tagName}'>;
 
 export const Primary: Story = {
   args: {},

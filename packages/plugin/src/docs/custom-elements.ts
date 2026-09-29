@@ -55,15 +55,90 @@ const findDeclaration = (tagName: string, cem: Package): CustomElementDeclaratio
   return undefined;
 };
 
+/**
+ * A CSS-only component (a `@component`-marked rule in a `.css` file) has no JS class, so it's
+ * never registered with `customElements`. The CEM has no flag for it, but its module is the `.css`
+ * file that defines it.
+ * @param tagName the custom element's tag name
+ * @returns whether the CEM declares `tagName` as a CSS-only component
+ */
+export const isCssOnlyComponent = (tagName: string): boolean => {
+  const cem = getCustomElements() as Package;
+  if (!isValidMetaData(cem)) return false;
+  return cem.modules.some(
+    (mod) =>
+      mod.path.endsWith('.css') &&
+      (mod.declarations ?? []).some((d) => (d as CustomElementDeclaration).tagName === tagName),
+  );
+};
+
 const toEventActionName = (eventName: string): string => {
   const camel = eventName.replace(/(-|_|:|\.|\s)+(.)?/g, (_, _sep, chr: string) => (chr ? chr.toUpperCase() : ''));
   const lowerFirst = camel.replace(/^([A-Z])/, (m) => m.toLowerCase());
   return `on${lowerFirst.charAt(0).toUpperCase() + lowerFirst.slice(1)}`;
 };
 
-const mapNamedItems = (items: Array<{ name: string; description?: string }>, category: string): ArgTypes =>
-  items.reduce<ArgTypes>((acc, item) => {
-    acc[item.name] = { name: item.name, description: item.description, control: false, table: { category } };
+/**
+ * Arg-key prefixes for slot/part argTypes - like Stencil's own `attr:`/`prop:` JSX prefixes, so they
+ * can't collide with a prop of the same name (or, for the default slot, be an empty key).
+ */
+export const SLOT_ARG_PREFIX = 'slot:';
+export const PART_ARG_PREFIX = 'part:';
+
+/**
+ * @param name a slot's name - `''` for the default slot
+ * @returns its arg key, e.g. `slot:default`, `slot:label`
+ */
+export const slotArgKey = (name: string): string => `${SLOT_ARG_PREFIX}${name || 'default'}`;
+
+const mapSlots = (slots: CustomElement['slots']): ArgTypes =>
+  (slots ?? []).reduce<ArgTypes>((acc, slot) => {
+    acc[slotArgKey(slot.name)] = {
+      name: slot.name || 'default',
+      description: slot.description,
+      control: { type: 'text' },
+      table: { category: 'slots', type: { summary: 'string | VNode' } },
+    };
+    return acc;
+  }, {});
+
+const mapParts = (parts: CustomElement['cssParts']): ArgTypes =>
+  (parts ?? []).reduce<ArgTypes>((acc, part) => {
+    acc[`${PART_ARG_PREFIX}${part.name}`] = {
+      name: part.name,
+      description: part.description,
+      control: false,
+      table: { category: 'parts' },
+    };
+    return acc;
+  }, {});
+
+// valid `color` values a colour picker can't represent or round-trip
+const NON_PICKABLE_COLOR_RE = /var\(|^(inherit|initial|unset|revert|revert-layer|currentcolor)$/i;
+
+/**
+ * @param value a CSS custom property's documented default
+ * @returns whether it's a concrete colour - so a colour picker suits the property
+ */
+const isColorValue = (value: string | undefined): boolean =>
+  !!value &&
+  !NON_PICKABLE_COLOR_RE.test(value.trim()) &&
+  typeof globalThis.CSS?.supports === 'function' &&
+  CSS.supports('color', value);
+
+// CSS custom property names always start with `--`, so they can't collide with any other arg
+const mapCssProperties = (props: CustomElement['cssProperties']): ArgTypes =>
+  (props ?? []).reduce<ArgTypes>((acc, prop) => {
+    acc[prop.name] = {
+      name: prop.name,
+      description: prop.description,
+      control: { type: prop.syntax === '<color>' || isColorValue(prop.default) ? 'color' : 'text' },
+      table: {
+        category: 'styles',
+        type: { summary: prop.syntax },
+        defaultValue: { summary: prop.default },
+      },
+    };
     return acc;
   }, {});
 
@@ -131,9 +206,9 @@ export const extractArgTypesFromElements = (tagName: string, cem: Package): ArgT
     ...mapFields(decl.members),
     ...mapEvents(decl.events),
     ...mapMethods(decl.members),
-    ...mapNamedItems(decl.slots ?? [], 'slots'),
-    ...mapNamedItems(decl.cssParts ?? [], 'parts'),
-    ...mapNamedItems(decl.cssProperties ?? [], 'styles'),
+    ...mapSlots(decl.slots),
+    ...mapParts(decl.cssParts),
+    ...mapCssProperties(decl.cssProperties),
   };
 };
 

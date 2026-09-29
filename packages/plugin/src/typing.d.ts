@@ -12,3 +12,8 @@ declare module 'virtual:stencil-docs' {
   const docs: Package;
   export default docs;
 }
+
+// Stencil's generated global stylesheets, resolved by @stencil/unplugin
+declare module 'stencil-hydrate';
+declare module 'stencil-component-globals';
+declare module 'stencil-css-components';

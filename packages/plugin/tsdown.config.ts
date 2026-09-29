@@ -13,6 +13,7 @@ export default defineConfig({
     './src/entry-preview-auto-docs.ts',
     './src/entry-preview-docs.ts',
     './src/entry-preview-argtypes.ts',
+    './src/entry-preview-styles.ts',
     './src/docs/index.ts',
     './src/node/index.ts',
     './src/wizard.ts',
@@ -23,6 +24,7 @@ export default defineConfig({
       'esbuild',
       'vite',
       'virtual:stencil-docs', // resolved at runtime by Vite, not at build time
+      /^stencil-(hydrate|component-globals|css-components)$/, // ditto, via @stencil/unplugin
       /^@stencil\/core(\/.*)?$/,
       /^@stencil\/unplugin(\/.*)?$/,
       /^@stencil\/cli(\/.*)?$/,
