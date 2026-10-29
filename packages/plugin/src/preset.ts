@@ -8,8 +8,7 @@ import { StorybookConfig } from './types';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const renderer = join(__dirname, 'entry-preview.mjs');
 
-const isVitest =
-  process.env.VITEST === 'true' || process.env.VITEST === '1' || process.env.VITEST === '';
+const isVitest = process.env.VITEST === 'true' || process.env.VITEST === '1' || process.env.VITEST === '';
 
 export const core: StorybookConfig['core'] = {
   builder: '@storybook/builder-vite',
