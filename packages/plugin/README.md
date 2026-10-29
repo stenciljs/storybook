@@ -7,7 +7,13 @@ Storybook framework plugin for StencilJS. Provides a zero-config integration wit
 In your Stencil project, install Storybook and the plugin:
 
 ```sh
-npm install --save-dev storybook @stencil/storybook-plugin
+npm install --save-dev storybook @storybook/addon-docs @stencil/storybook-plugin
+```
+
+Or let the wizard do the install and write the config below for you:
+
+```sh
+stencil add @stencil/storybook-plugin
 ```
 
 Configure `.storybook/main.ts`:
@@ -16,8 +22,8 @@ Configure `.storybook/main.ts`:
 import type { StorybookConfig } from '@stencil/storybook-plugin';
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.stories.@(ts|tsx)'],
-  addons: ['@storybook/addon-essentials'],
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  addons: ['@storybook/addon-docs'],
   framework: {
     name: '@stencil/storybook-plugin',
   },
@@ -52,6 +58,16 @@ type Story = StoryObj<MyComponent>;
 export const Primary: Story = {
   args: { first: 'John', last: 'Doe' },
 };
+```
+
+### Components that use other components
+
+Importing a component registers that component only. If it renders other components from your library, import their files in the story as well:
+
+```tsx
+import { MyCard } from './my-card';
+// my-card renders a my-button
+import '../my-button/my-button';
 ```
 
 ### Slots

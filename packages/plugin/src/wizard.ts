@@ -50,6 +50,8 @@ const STORYBOOK_TSCONFIG = JSON.stringify(
     },
     exclude: ['../**/*.spec.ts', '../**/*.test.ts', '../**/*.spec.tsx', '../**/*.test.tsx'],
     include: [
+      // types story args by tag name (`Meta<'my-tag'>`)
+      '../src/components.d.ts',
       '../src/**/*.stories.ts',
       '../src/**/*.stories.tsx',
       '../src/**/*.stories.mdx',
