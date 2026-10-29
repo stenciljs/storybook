@@ -16,6 +16,10 @@ export const config: WebdriverIO.Config = {
   // WebdriverIO supports running e2e tests as well as unit and component tests.
   runner: 'local',
   tsConfigPath: './tsconfig.json',
+  // On Linux CI wdio wraps workers in `xvfb-run`, which breaks the worker's
+  // IPC channel (`write EINVAL` on the first process.send). Chrome runs
+  // `--headless` on CI so no virtual display is needed.
+  autoXvfb: false,
 
   //
   // ==================
