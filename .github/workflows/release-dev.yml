@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       bump:
-        description: 'Optional semver bump (patch, minor, major) to apply to the base version before computing the dev prerelease. Leave blank to use the current package.json version as-is.'
+        description: 'Optional semver bump (patch, minor, major) to apply to the base version before computing the dev prerelease. Leave blank or "none" to use the current package.json version as-is.'
         required: false
         type: string
         default: ''
@@ -31,7 +31,7 @@ jobs:
         run: |
           # Bump is applied only to this ephemeral checkout to compute the
           # dev version string - it is never committed back to the repo.
-          if [ -n "$BUMP" ]; then
+          if [ -n "$BUMP" ] && [ "$BUMP" != "none" ]; then
             npm version --no-git-tag-version --allow-same-version "$BUMP"
           fi
           PKG_JSON_VERSION=$(cat package.json | jq -r '.version')

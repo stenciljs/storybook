@@ -8,6 +8,10 @@
     {
       "name": "Christian Bromann",
       "email": "christian.bromann@outsystems.com"
+    },
+    {
+      "name": "John Jenkins",
+      "email": "johnljenkins@hotmail.com"
     }
   ],
   "private": true,
@@ -15,18 +19,15 @@
     "build": "run-s build.*",
     "build.plugin": "pnpm --filter @stencil/storybook-plugin build",
     "build.example": "pnpm --filter example build",
-    "build.example-lazy": "pnpm --filter example-lazy build",
     "build-storybook": "run-s build-storybook.*",
     "build-storybook.example": "pnpm --filter example build-storybook",
-    "build-storybook.example-lazy": "pnpm --filter example-lazy build-storybook",
     "dev": "run-s build.plugin dev.start",
-    "dev.start": "run-p dev.plugin dev.example dev.example-lazy",
+    "dev.start": "run-p dev.plugin dev.example",
     "dev.plugin": "pnpm --filter @stencil/storybook-plugin watch",
     "dev.example": "pnpm --filter example run storybook",
-    "dev.example-lazy": "pnpm --filter example-lazy run storybook",
     "test": "run-s test.*",
+    "test.plugin": "pnpm --filter @stencil/storybook-plugin test",
     "test.example": "wdio run ./tests/wdio.conf.ts",
-    "test.example-lazy": "wdio run ./tests/wdio.conf-lazy.ts",
     "prettier": "npm run prettier.base -- --write",
     "prettier.base": "prettier --cache \"./({packages,tests}/**/*.{ts,tsx,js,jsx})|.github/(**/)?*.(yml|yaml)|*.js\"",
     "prettier.dry-run": "npm run prettier.base -- --list-different"
@@ -34,20 +35,20 @@
   "devDependencies": {
     "@ionic/prettier-config": "4.0.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.15.3",
-    "@wdio/cli": "^9.12.7",
-    "@wdio/globals": "^9.12.7",
-    "@wdio/local-runner": "^9.12.7",
-    "@wdio/mocha-framework": "^9.12.6",
-    "@wdio/spec-reporter": "^9.12.6",
+    "@types/node": "^22.20.4",
+    "@wdio/cli": "^9.32.0",
+    "@wdio/globals": "^9.31.3",
+    "@wdio/local-runner": "^9.32.0",
+    "@wdio/mocha-framework": "^9.32.0",
+    "@wdio/spec-reporter": "^9.32.0",
     "npm-run-all2": "^7.0.2",
     "typescript": "~5.8.3",
-    "webdriverio": "^9.12.7"
+    "webdriverio": "^9.32.0"
   },
   "packageManager": "pnpm@10.10.0",
   "prettier": "@ionic/prettier-config",
   "volta": {
-    "node": "22.2.0",
+    "node": "24.11.1",
     "npm": "10.8.1"
   }
 }

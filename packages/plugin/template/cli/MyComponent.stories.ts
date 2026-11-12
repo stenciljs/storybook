@@ -14,10 +14,10 @@ const meta = {
     middle: { control: 'text' },
   },
   args: { first: 'John', last: 'Doe', middle: 'Michael' },
-} satisfies Meta<MyComponent>;
+} satisfies Meta<'my-component'>;
 
 export default meta;
-type Story = StoryObj<MyComponent>;
+type Story = StoryObj<'my-component'>;
 
 export const Primary: Story = {
   args: {

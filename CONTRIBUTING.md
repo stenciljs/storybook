@@ -83,8 +83,7 @@ This is a monorepo containing the following packages:
 ```
 packages/
 ├── plugin/           # @stencil/storybook-plugin - Core Storybook integration
-├── example/          # example - Basic StencilJS project with Storybook
-└── example-lazy/     # example-lazy - Lazy-loaded StencilJS components
+└── example/          # example - StencilJS project with Storybook
 ```
 
 ### Key Files and Directories
@@ -108,12 +107,10 @@ packages/
    pnpm dev.plugin
    ```
 
-3. **Test Your Changes** using the example projects:
+3. **Test Your Changes** using the example project:
    ```bash
    # In another terminal
    pnpm dev.example
-   # or
-   pnpm dev.example-lazy
    ```
 
 4. **View Storybook** at `http://localhost:6006`
@@ -144,12 +141,7 @@ pnpm prettier.dry-run
 ### Running Tests
 
 ```bash
-# Run all tests
-pnpm test-all
-
-# Run specific test suites
-pnpm test              # Standard example tests
-pnpm test.example-lazy # Lazy-loaded example tests
+pnpm test
 ```
 
 ### Test Structure

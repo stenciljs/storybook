@@ -22,16 +22,7 @@ interface DevJSX {
 }
 
 type JSXChildren =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | Function
-  | RegExp
-  | JSXChildren[]
-  | Promise<JSXChildren>
-  | VNode;
+  string | number | boolean | null | undefined | Function | RegExp | JSXChildren[] | Promise<JSXChildren> | VNode;
 
 type ComponentChildren<PROPS> = PROPS extends {
   children: any;
@@ -59,26 +50,50 @@ export interface StencilRenderer<T> extends WebRenderer {
 }
 
 export type Preview = ProjectAnnotations<StencilRenderer<unknown>>;
+
+/**
+ * Args every Stencil story accepts on top of the element's own: slot content (`slot:default`,
+ * `slot:<name>`) and CSS custom properties (`--badge-color`) - see `splitStoryArgs`.
+ */
+export type StencilStoryArgs = {
+  [slot: `slot:${string}`]: string | VNode | undefined;
+  [cssProp: `--${string}`]: string | undefined;
+};
+
+/**
+ * A tag name (e.g. `Meta<'my-tag'>`) resolves to that element's JSX props, from the project's
+ * `components.d.ts` - kept current by `@stencil/unplugin` while Storybook runs, CSS-only
+ * components included; a tag it doesn't have yet gets loose `Args`. Anything else is used as the
+ * args type as-is. Either way, plus
+ * {@link StencilStoryArgs}.
+ */
+type ArgsFor<T> = (T extends keyof StencilJSX.IntrinsicElements
+  ? StencilJSX.IntrinsicElements[T]
+  : // a tag `components.d.ts` doesn't have yet (e.g. a just-generated story) - loose until it does
+    T extends string
+    ? Args
+    : T) &
+  StencilStoryArgs;
 /**
  * Metadata to configure the stories for a component.
  *
  * @see [Default export](https://storybook.js.org/docs/formats/component-story-format/#default-export)
  */
-export type Meta<TArgs = Args> = ComponentAnnotations<StencilRenderer<TArgs>, TArgs>;
+export type Meta<TArgs = Args> = ComponentAnnotations<StencilRenderer<ArgsFor<TArgs>>, ArgsFor<TArgs>>;
 
 /**
  * Story function that represents a CSFv2 component example.
  *
  * @see [Named Story exports](https://storybook.js.org/docs/formats/component-story-format/#named-story-exports)
  */
-export type StoryFn<TArgs = Args> = AnnotatedStoryFn<StencilRenderer<TArgs>, TArgs>;
+export type StoryFn<TArgs = Args> = AnnotatedStoryFn<StencilRenderer<ArgsFor<TArgs>>, ArgsFor<TArgs>>;
 
 /**
  * Story function that represents a CSFv3 component example.
  *
  * @see [Named Story exports](https://storybook.js.org/docs/formats/component-story-format/#named-story-exports)
  */
-export type StoryObj<TArgs = Args> = StoryAnnotations<StencilRenderer<TArgs>, TArgs>;
+export type StoryObj<TArgs = Args> = StoryAnnotations<StencilRenderer<ArgsFor<TArgs>>, ArgsFor<TArgs>>;
 
 export type Decorator<TArgs = StrictArgs> = DecoratorFunction<StencilRenderer<TArgs>, TArgs>;
 export type Loader<TArgs = StrictArgs> = LoaderFunction<StencilRenderer<TArgs>, TArgs>;

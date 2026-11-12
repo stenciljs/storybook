@@ -6,8 +6,8 @@
     "jsxFactory": "h",
     "jsxFragmentFactory": "h.Fragment",
     "moduleResolution": "bundler",
-    "target": "ES2020",
-    "module": "ES2020",
+    "target": "es2022",
+    "module": "es2022",
     "types": []
   },
   "include": ["src/**/*"]
