@@ -1,8 +1,9 @@
-import { h, render as renderStencil, VNode } from '@stencil/core';
+import { h, VNode } from '@stencil/core';
 import { ArgsStoryFn, RenderContext } from 'storybook/internal/types';
-import { simulatePageLoad } from 'storybook/preview-api';
+import { simulateDOMContentLoaded, simulatePageLoad } from 'storybook/preview-api';
 
 import type { StencilRenderer } from './types';
+import { createVdomRoot, type VdomRoot } from './vdom-root';
 
 export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => {
   const { component, parameters } = context;
@@ -49,26 +50,118 @@ export const render: ArgsStoryFn<StencilRenderer<unknown>> = (args, context) => 
   return h(Component, { ...args }, children);
 };
 
-export function renderToCanvas(
-  { storyFn, showMain, storyContext }: RenderContext<StencilRenderer<unknown>>,
+/**
+ * What is currently rendered into a canvas. Keyed by canvas element, so docs
+ * pages with several stories keep one entry per story.
+ */
+type CanvasState = { kind: 'vdom'; root: VdomRoot } | { kind: 'string'; html: string } | { kind: 'node'; node: Node };
+
+const canvases = new WeakMap<HTMLElement, CanvasState>();
+
+/**
+ * Renders a story into its canvas.
+ *
+ * Args changes arrive with `forceRemount: false`; for vnode output we then
+ * patch the existing tree so the component keeps its identity, internal state
+ * and focus, and its load lifecycle doesn't run again. The tree is rebuilt only
+ * when Storybook asks for it (`forceRemount`: story change, the Remount button)
+ * or when the kind of story output changes.
+ *
+ * Resolves once every Stencil component in the story reports
+ * `componentOnReady()`, so play functions and anything waiting on the render
+ * see a fully loaded component.
+ */
+export async function renderToCanvas(
+  { storyFn, showMain, showError, forceRemount, storyContext, name, title }: RenderContext<StencilRenderer<unknown>>,
   canvasElement: StencilRenderer<unknown>['canvasElement'],
 ) {
-  const vdom = storyFn();
-  showMain();
-
   /**
-   * If the component is not automatically registered after import, register it here
+   * If the component is not automatically registered after import, register it here.
+   * This must happen before `storyFn()`, because the default `render` throws for unregistered components.
    */
   if (storyContext.component && storyContext.component.is && !customElements.get(storyContext.component.is)) {
     customElements.define(storyContext.component.is, storyContext.component);
   }
 
-  if (canvasElement.firstChild) {
-    canvasElement.removeChild(canvasElement.firstChild);
+  const result = storyFn() as unknown;
+  showMain();
+
+  const teardown = () => clearCanvas(canvasElement);
+  const previous = canvases.get(canvasElement);
+
+  if (result === null || result === undefined) {
+    showError({
+      title: `Expecting a Stencil vnode, an HTML string or a DOM node from the story: "${name}" of "${title}".`,
+      description:
+        'Did you forget to return the JSX from the story? Use "() => <my-component />" when defining the story.',
+    });
+    return teardown;
   }
 
-  const element = document.createElement('div');
-  canvasElement.appendChild(element);
-  renderStencil(vdom, element);
-  simulatePageLoad(element);
+  if (typeof result === 'string') {
+    if (!forceRemount && previous?.kind === 'string' && previous.html === result) {
+      return teardown;
+    }
+    clearCanvas(canvasElement);
+    canvasElement.innerHTML = result;
+    canvases.set(canvasElement, { kind: 'string', html: result });
+    simulatePageLoad(canvasElement);
+    await whenComponentsReady(canvasElement);
+    return teardown;
+  }
+
+  if (result instanceof Node) {
+    if (!forceRemount && previous?.kind === 'node' && previous.node === result && result.parentNode === canvasElement) {
+      return teardown;
+    }
+    clearCanvas(canvasElement);
+    canvasElement.appendChild(result);
+    canvases.set(canvasElement, { kind: 'node', node: result });
+    simulateDOMContentLoaded();
+    await whenComponentsReady(canvasElement);
+    return teardown;
+  }
+
+  // Stencil vnode (or an array of them, e.g. from a fragment).
+  let state = previous;
+  const reuse = !forceRemount && state?.kind === 'vdom' && state.root.container.parentNode === canvasElement;
+  if (!reuse || state?.kind !== 'vdom') {
+    clearCanvas(canvasElement);
+    const container = document.createElement('div');
+    canvasElement.appendChild(container);
+    state = { kind: 'vdom', root: createVdomRoot(container) };
+    canvases.set(canvasElement, state);
+  }
+
+  state.root.patch(result);
+  if (!reuse) {
+    simulatePageLoad(state.root.container);
+  }
+  await whenComponentsReady(state.root.container);
+  return teardown;
+}
+
+function clearCanvas(canvasElement: HTMLElement) {
+  const state = canvases.get(canvasElement);
+  if (state?.kind === 'vdom') {
+    state.root.unmount();
+  }
+  canvases.delete(canvasElement);
+  canvasElement.replaceChildren();
+}
+
+/**
+ * Waits for every Stencil component under `root` to finish loading. Elements
+ * that aren't Stencil components (or aren't upgraded yet) have no
+ * `componentOnReady` and are skipped.
+ */
+async function whenComponentsReady(root: Element) {
+  const pending: Promise<unknown>[] = [];
+  root.querySelectorAll('*').forEach((el) => {
+    const ready = (el as { componentOnReady?: () => Promise<unknown> }).componentOnReady;
+    if (typeof ready === 'function') {
+      pending.push(ready.call(el));
+    }
+  });
+  await Promise.allSettled(pending);
 }
