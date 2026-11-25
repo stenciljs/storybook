@@ -61,7 +61,8 @@
   },
   "scripts": {
     "watch": "tsdown --watch",
-    "build": "tsdown"
+    "build": "tsdown",
+    "test": "vitest run"
   },
   "dependencies": {
     "@stencil-community/unplugin-stencil": "^0.5.2",
@@ -78,9 +79,11 @@
   "devDependencies": {
     "@stencil/core": "^4.33.1",
     "@types/node": "^22.15.3",
+    "jsdom": "^26.1.0",
     "tsdown": "^0.12.7",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "^3.2.7"
   },
   "engines": {
     "node": ">=20"
