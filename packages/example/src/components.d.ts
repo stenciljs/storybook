@@ -37,12 +37,49 @@ export namespace Components {
          */
         "stringTest"?: string;
     }
+    /**
+     * Diagnostic component for checking how the Storybook renderer treats a
+     * component when args change. It has internal state (`open`, `draft`), records
+     * every lifecycle call to `window.__probeLog`, and stamps each instance with a
+     * unique `data-instance` id so tests can check element identity.
+     */
+    interface MyProbe {
+        /**
+          * Object prop, must be set as a property
+          * @default { color: 'teal', size: 'small' }
+         */
+        "config": { color: string; size: 'small' | 'large' };
+        /**
+          * Number shown next to the heading
+          * @default 0
+         */
+        "count": number;
+        /**
+          * Disables the toggle button and the input
+          * @default false
+         */
+        "disabled": boolean;
+        /**
+          * Array prop, must be set as a property
+          * @default []
+         */
+        "items": string[];
+        /**
+          * Heading text
+          * @default 'Probe'
+         */
+        "label": string;
+    }
     interface MySlotted {
     }
 }
 export interface MyComponentCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLMyComponentElement;
+}
+export interface MyProbeCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLMyProbeElement;
 }
 declare global {
     interface HTMLMyComponentElementEventMap {
@@ -62,6 +99,29 @@ declare global {
         prototype: HTMLMyComponentElement;
         new (): HTMLMyComponentElement;
     };
+    interface HTMLMyProbeElementEventMap {
+        "probeToggle": boolean;
+    }
+    /**
+     * Diagnostic component for checking how the Storybook renderer treats a
+     * component when args change. It has internal state (`open`, `draft`), records
+     * every lifecycle call to `window.__probeLog`, and stamps each instance with a
+     * unique `data-instance` id so tests can check element identity.
+     */
+    interface HTMLMyProbeElement extends Components.MyProbe, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLMyProbeElementEventMap>(type: K, listener: (this: HTMLMyProbeElement, ev: MyProbeCustomEvent<HTMLMyProbeElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLMyProbeElementEventMap>(type: K, listener: (this: HTMLMyProbeElement, ev: MyProbeCustomEvent<HTMLMyProbeElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLMyProbeElement: {
+        prototype: HTMLMyProbeElement;
+        new (): HTMLMyProbeElement;
+    };
     interface HTMLMySlottedElement extends Components.MySlotted, HTMLStencilElement {
     }
     var HTMLMySlottedElement: {
@@ -70,6 +130,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "my-component": HTMLMyComponentElement;
+        "my-probe": HTMLMyProbeElement;
         "my-slotted": HTMLMySlottedElement;
     }
 }
@@ -106,10 +167,48 @@ declare namespace LocalJSX {
          */
         "stringTest"?: string;
     }
+    /**
+     * Diagnostic component for checking how the Storybook renderer treats a
+     * component when args change. It has internal state (`open`, `draft`), records
+     * every lifecycle call to `window.__probeLog`, and stamps each instance with a
+     * unique `data-instance` id so tests can check element identity.
+     */
+    interface MyProbe {
+        /**
+          * Object prop, must be set as a property
+          * @default { color: 'teal', size: 'small' }
+         */
+        "config"?: { color: string; size: 'small' | 'large' };
+        /**
+          * Number shown next to the heading
+          * @default 0
+         */
+        "count"?: number;
+        /**
+          * Disables the toggle button and the input
+          * @default false
+         */
+        "disabled"?: boolean;
+        /**
+          * Array prop, must be set as a property
+          * @default []
+         */
+        "items"?: string[];
+        /**
+          * Heading text
+          * @default 'Probe'
+         */
+        "label"?: string;
+        /**
+          * Fires when the panel is toggled
+         */
+        "onProbeToggle"?: (event: MyProbeCustomEvent<boolean>) => void;
+    }
     interface MySlotted {
     }
     interface IntrinsicElements {
         "my-component": MyComponent;
+        "my-probe": MyProbe;
         "my-slotted": MySlotted;
     }
 }
@@ -118,6 +217,13 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            /**
+             * Diagnostic component for checking how the Storybook renderer treats a
+             * component when args change. It has internal state (`open`, `draft`), records
+             * every lifecycle call to `window.__probeLog`, and stamps each instance with a
+             * unique `data-instance` id so tests can check element identity.
+             */
+            "my-probe": LocalJSX.MyProbe & JSXBase.HTMLAttributes<HTMLMyProbeElement>;
             "my-slotted": LocalJSX.MySlotted & JSXBase.HTMLAttributes<HTMLMySlottedElement>;
         }
     }
