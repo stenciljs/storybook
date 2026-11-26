@@ -79,9 +79,7 @@ function vnodeToString(node: VNode, options: RenderOptions, indentLevel = 0): st
   // Self-closing tags for JSX when no children
   if (children.length === 0) {
     const attrsStr = attrArray.length > 0 ? ' ' + attrArray.join(' ') : '';
-    const singleLine = mode === 'jsx'
-      ? `${indent}<${tag}${attrsStr} />`
-      : `${indent}<${tag}${attrsStr}></${tag}>`;
+    const singleLine = mode === 'jsx' ? `${indent}<${tag}${attrsStr} />` : `${indent}<${tag}${attrsStr}></${tag}>`;
 
     // If single line fits within LINE_WIDTH, use it
     if (singleLine.length <= LINE_WIDTH) {
@@ -90,13 +88,10 @@ function vnodeToString(node: VNode, options: RenderOptions, indentLevel = 0): st
 
     // Otherwise, break attributes to multiple lines
     const attrIndent = indent + '  ';
-    const formattedAttrs = attrArray.length > 0
-      ? '\n' + attrArray.map((attr) => `${attrIndent}${attr}`).join('\n') + '\n' + indent
-      : '';
+    const formattedAttrs =
+      attrArray.length > 0 ? '\n' + attrArray.map((attr) => `${attrIndent}${attr}`).join('\n') + '\n' + indent : '';
 
-    return mode === 'jsx'
-      ? `${indent}<${tag}${formattedAttrs}/>`
-      : `${indent}<${tag}${formattedAttrs}></${tag}>`;
+    return mode === 'jsx' ? `${indent}<${tag}${formattedAttrs}/>` : `${indent}<${tag}${formattedAttrs}></${tag}>`;
   }
 
   // Tags with children
@@ -105,20 +100,15 @@ function vnodeToString(node: VNode, options: RenderOptions, indentLevel = 0): st
 
   // Check if opening tag fits on one line
   if (openingTag.length <= LINE_WIDTH) {
-    const childrenString = children
-      .map((child) => vnodeToString(child, options, indentLevel + 1))
-      .join('\n');
+    const childrenString = children.map((child) => vnodeToString(child, options, indentLevel + 1)).join('\n');
     return `${openingTag}\n${childrenString}\n${indent}</${tag}>`;
   }
 
   // Break opening tag to multiple lines
   const attrIndent = indent + '  ';
-  const formattedAttrs = attrArray.length > 0
-    ? '\n' + attrArray.map((attr) => `${attrIndent}${attr}`).join('\n') + '\n' + indent
-    : '';
-  const childrenString = children
-    .map((child) => vnodeToString(child, options, indentLevel + 1))
-    .join('\n');
+  const formattedAttrs =
+    attrArray.length > 0 ? '\n' + attrArray.map((attr) => `${attrIndent}${attr}`).join('\n') + '\n' + indent : '';
+  const childrenString = children.map((child) => vnodeToString(child, options, indentLevel + 1)).join('\n');
 
   return `${indent}<${tag}${formattedAttrs}>\n${childrenString}\n${indent}</${tag}>`;
 }

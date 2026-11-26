@@ -12,11 +12,12 @@ on:
           - dev
           - production
       bump:
-        description: 'Semver bump to apply (patch, minor, major). For dev releases this only affects the computed prerelease version, not the committed package.json.'
+        description: 'Semver bump to apply. "none" uses package.json as-is (the normal choice for dev builds). Production releases must pick patch/minor/major explicitly.'
         required: false
         type: choice
-        default: patch
+        default: none
         options:
+          - none
           - patch
           - minor
           - major
