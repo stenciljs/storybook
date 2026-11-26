@@ -60,7 +60,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@stencil/unplugin": "^5.0.0-alpha.19",
+    "@stencil/unplugin": "^5.0.0-rc.12",
     "@storybook/builder-vite": "^10.4.6",
     "@storybook/global": "^5.0.0",
     "@storybook/html": "^10.4.6",
@@ -76,6 +76,7 @@
     "@stencil/core": "catalog:",
     "@types/node": "^26.1.0",
     "custom-elements-manifest": "^2.1.0",
+    "jsdom": "^26.1.0",
     "tsdown": "^0.22.3",
     "typescript": "^6.0.3",
     "vite": "^8.1.3",
